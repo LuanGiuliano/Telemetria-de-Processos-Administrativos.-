@@ -39,13 +39,42 @@ contagem_diaria = df.groupby('Data_Curta').size().reset_index(name='Processos_do
 # A Mágica: Cria a linha do tempo do "Impostrômetro" usando Soma Acumulada (cumsum)
 contagem_diaria['Processometro_Acumulado'] = contagem_diaria['Processos_do_Dia'].cumsum()
 
+# Novas Métricas para os Gráficos de Rosquinha (Donut)
+def truncate_label(label, max_len=40):
+    text = str(label)
+    return text[:max_len] + "..." if len(text) > max_len else text
+
+top_setores = df['SETOR ATUAL'].value_counts().head(5).reset_index()
+top_setores.columns = ['name', 'value']
+top_setores['name'] = top_setores['name'].apply(truncate_label)
+
+top_assuntos = df['ASSUNTO'].value_counts().head(5).reset_index()
+top_assuntos.columns = ['name', 'value']
+top_assuntos['name'] = top_assuntos['name'].apply(truncate_label)
+
+top_tipos = df['TIPO PROTOCOLO'].value_counts().head(5).reset_index()
+top_tipos.columns = ['name', 'value']
+top_tipos['name'] = top_tipos['name'].apply(truncate_label)
+
 # Mostra o resultado final ordenado de janeiro até março
 print("\n--- Linha do Tempo do Processômetro ---")
 print(contagem_diaria.to_string(index=False))
 
 # 4. Exportação dos Dados para o Frontend (React/Next.js)
+import json
 caminho_json = "processometro_dados.json"
-# Formatando a data de volta para string legível antes de exportar
-contagem_diaria['Data_Curta'] = contagem_diaria['Data_Curta'].dt.strftime('%d/%m/%Y')
-contagem_diaria.to_json(caminho_json, orient='records', force_ascii=False)
+
+# Preparando o objeto completo
+dados_exportacao = {
+    "timeline": contagem_diaria.assign(
+        Data_Curta=contagem_diaria['Data_Curta'].dt.strftime('%d/%m/%Y')
+    ).to_dict(orient='records'),
+    "setores": top_setores.to_dict(orient='records'),
+    "assuntos": top_assuntos.to_dict(orient='records'),
+    "tipos": top_tipos.to_dict(orient='records')
+}
+
+with open(caminho_json, 'w', encoding='utf-8') as f:
+    json.dump(dados_exportacao, f, ensure_ascii=False, indent=2)
+
 print(f"\n✅ Dados exportados com sucesso para: {caminho_json}")

@@ -1,1 +1,309 @@
-[{"Data_Curta":"05\/01\/2026","Processos_do_Dia":29,"Processometro_Acumulado":29},{"Data_Curta":"06\/01\/2026","Processos_do_Dia":46,"Processometro_Acumulado":75},{"Data_Curta":"07\/01\/2026","Processos_do_Dia":58,"Processometro_Acumulado":133},{"Data_Curta":"08\/01\/2026","Processos_do_Dia":49,"Processometro_Acumulado":182},{"Data_Curta":"09\/01\/2026","Processos_do_Dia":15,"Processometro_Acumulado":197},{"Data_Curta":"10\/01\/2026","Processos_do_Dia":1,"Processometro_Acumulado":198},{"Data_Curta":"12\/01\/2026","Processos_do_Dia":37,"Processometro_Acumulado":235},{"Data_Curta":"13\/01\/2026","Processos_do_Dia":55,"Processometro_Acumulado":290},{"Data_Curta":"14\/01\/2026","Processos_do_Dia":45,"Processometro_Acumulado":335},{"Data_Curta":"15\/01\/2026","Processos_do_Dia":75,"Processometro_Acumulado":410},{"Data_Curta":"16\/01\/2026","Processos_do_Dia":44,"Processometro_Acumulado":454},{"Data_Curta":"19\/01\/2026","Processos_do_Dia":45,"Processometro_Acumulado":499},{"Data_Curta":"20\/01\/2026","Processos_do_Dia":45,"Processometro_Acumulado":544},{"Data_Curta":"21\/01\/2026","Processos_do_Dia":48,"Processometro_Acumulado":592},{"Data_Curta":"22\/01\/2026","Processos_do_Dia":28,"Processometro_Acumulado":620},{"Data_Curta":"23\/01\/2026","Processos_do_Dia":47,"Processometro_Acumulado":667},{"Data_Curta":"26\/01\/2026","Processos_do_Dia":51,"Processometro_Acumulado":718},{"Data_Curta":"27\/01\/2026","Processos_do_Dia":59,"Processometro_Acumulado":777},{"Data_Curta":"28\/01\/2026","Processos_do_Dia":35,"Processometro_Acumulado":812},{"Data_Curta":"29\/01\/2026","Processos_do_Dia":28,"Processometro_Acumulado":840},{"Data_Curta":"30\/01\/2026","Processos_do_Dia":35,"Processometro_Acumulado":875},{"Data_Curta":"31\/01\/2026","Processos_do_Dia":1,"Processometro_Acumulado":876},{"Data_Curta":"01\/02\/2026","Processos_do_Dia":4,"Processometro_Acumulado":880},{"Data_Curta":"02\/02\/2026","Processos_do_Dia":38,"Processometro_Acumulado":918},{"Data_Curta":"03\/02\/2026","Processos_do_Dia":30,"Processometro_Acumulado":948},{"Data_Curta":"04\/02\/2026","Processos_do_Dia":15,"Processometro_Acumulado":963},{"Data_Curta":"05\/02\/2026","Processos_do_Dia":34,"Processometro_Acumulado":997},{"Data_Curta":"06\/02\/2026","Processos_do_Dia":21,"Processometro_Acumulado":1018},{"Data_Curta":"08\/02\/2026","Processos_do_Dia":2,"Processometro_Acumulado":1020},{"Data_Curta":"09\/02\/2026","Processos_do_Dia":21,"Processometro_Acumulado":1041},{"Data_Curta":"10\/02\/2026","Processos_do_Dia":39,"Processometro_Acumulado":1080},{"Data_Curta":"11\/02\/2026","Processos_do_Dia":35,"Processometro_Acumulado":1115},{"Data_Curta":"12\/02\/2026","Processos_do_Dia":29,"Processometro_Acumulado":1144},{"Data_Curta":"13\/02\/2026","Processos_do_Dia":52,"Processometro_Acumulado":1196},{"Data_Curta":"16\/02\/2026","Processos_do_Dia":6,"Processometro_Acumulado":1202},{"Data_Curta":"17\/02\/2026","Processos_do_Dia":10,"Processometro_Acumulado":1212},{"Data_Curta":"18\/02\/2026","Processos_do_Dia":14,"Processometro_Acumulado":1226},{"Data_Curta":"19\/02\/2026","Processos_do_Dia":16,"Processometro_Acumulado":1242},{"Data_Curta":"20\/02\/2026","Processos_do_Dia":27,"Processometro_Acumulado":1269},{"Data_Curta":"23\/02\/2026","Processos_do_Dia":44,"Processometro_Acumulado":1313},{"Data_Curta":"24\/02\/2026","Processos_do_Dia":27,"Processometro_Acumulado":1340},{"Data_Curta":"25\/02\/2026","Processos_do_Dia":46,"Processometro_Acumulado":1386},{"Data_Curta":"26\/02\/2026","Processos_do_Dia":22,"Processometro_Acumulado":1408},{"Data_Curta":"27\/02\/2026","Processos_do_Dia":37,"Processometro_Acumulado":1445},{"Data_Curta":"02\/03\/2026","Processos_do_Dia":32,"Processometro_Acumulado":1477},{"Data_Curta":"03\/03\/2026","Processos_do_Dia":42,"Processometro_Acumulado":1519},{"Data_Curta":"04\/03\/2026","Processos_do_Dia":31,"Processometro_Acumulado":1550},{"Data_Curta":"05\/03\/2026","Processos_do_Dia":33,"Processometro_Acumulado":1583},{"Data_Curta":"06\/03\/2026","Processos_do_Dia":38,"Processometro_Acumulado":1621},{"Data_Curta":"09\/03\/2026","Processos_do_Dia":20,"Processometro_Acumulado":1641},{"Data_Curta":"10\/03\/2026","Processos_do_Dia":18,"Processometro_Acumulado":1659}]
+{
+  "timeline": [
+    {
+      "Data_Curta": "05/01/2026",
+      "Processos_do_Dia": 29,
+      "Processometro_Acumulado": 29
+    },
+    {
+      "Data_Curta": "06/01/2026",
+      "Processos_do_Dia": 46,
+      "Processometro_Acumulado": 75
+    },
+    {
+      "Data_Curta": "07/01/2026",
+      "Processos_do_Dia": 58,
+      "Processometro_Acumulado": 133
+    },
+    {
+      "Data_Curta": "08/01/2026",
+      "Processos_do_Dia": 49,
+      "Processometro_Acumulado": 182
+    },
+    {
+      "Data_Curta": "09/01/2026",
+      "Processos_do_Dia": 15,
+      "Processometro_Acumulado": 197
+    },
+    {
+      "Data_Curta": "10/01/2026",
+      "Processos_do_Dia": 1,
+      "Processometro_Acumulado": 198
+    },
+    {
+      "Data_Curta": "12/01/2026",
+      "Processos_do_Dia": 37,
+      "Processometro_Acumulado": 235
+    },
+    {
+      "Data_Curta": "13/01/2026",
+      "Processos_do_Dia": 55,
+      "Processometro_Acumulado": 290
+    },
+    {
+      "Data_Curta": "14/01/2026",
+      "Processos_do_Dia": 45,
+      "Processometro_Acumulado": 335
+    },
+    {
+      "Data_Curta": "15/01/2026",
+      "Processos_do_Dia": 75,
+      "Processometro_Acumulado": 410
+    },
+    {
+      "Data_Curta": "16/01/2026",
+      "Processos_do_Dia": 44,
+      "Processometro_Acumulado": 454
+    },
+    {
+      "Data_Curta": "19/01/2026",
+      "Processos_do_Dia": 45,
+      "Processometro_Acumulado": 499
+    },
+    {
+      "Data_Curta": "20/01/2026",
+      "Processos_do_Dia": 45,
+      "Processometro_Acumulado": 544
+    },
+    {
+      "Data_Curta": "21/01/2026",
+      "Processos_do_Dia": 48,
+      "Processometro_Acumulado": 592
+    },
+    {
+      "Data_Curta": "22/01/2026",
+      "Processos_do_Dia": 28,
+      "Processometro_Acumulado": 620
+    },
+    {
+      "Data_Curta": "23/01/2026",
+      "Processos_do_Dia": 47,
+      "Processometro_Acumulado": 667
+    },
+    {
+      "Data_Curta": "26/01/2026",
+      "Processos_do_Dia": 51,
+      "Processometro_Acumulado": 718
+    },
+    {
+      "Data_Curta": "27/01/2026",
+      "Processos_do_Dia": 59,
+      "Processometro_Acumulado": 777
+    },
+    {
+      "Data_Curta": "28/01/2026",
+      "Processos_do_Dia": 35,
+      "Processometro_Acumulado": 812
+    },
+    {
+      "Data_Curta": "29/01/2026",
+      "Processos_do_Dia": 28,
+      "Processometro_Acumulado": 840
+    },
+    {
+      "Data_Curta": "30/01/2026",
+      "Processos_do_Dia": 35,
+      "Processometro_Acumulado": 875
+    },
+    {
+      "Data_Curta": "31/01/2026",
+      "Processos_do_Dia": 1,
+      "Processometro_Acumulado": 876
+    },
+    {
+      "Data_Curta": "01/02/2026",
+      "Processos_do_Dia": 4,
+      "Processometro_Acumulado": 880
+    },
+    {
+      "Data_Curta": "02/02/2026",
+      "Processos_do_Dia": 38,
+      "Processometro_Acumulado": 918
+    },
+    {
+      "Data_Curta": "03/02/2026",
+      "Processos_do_Dia": 30,
+      "Processometro_Acumulado": 948
+    },
+    {
+      "Data_Curta": "04/02/2026",
+      "Processos_do_Dia": 15,
+      "Processometro_Acumulado": 963
+    },
+    {
+      "Data_Curta": "05/02/2026",
+      "Processos_do_Dia": 34,
+      "Processometro_Acumulado": 997
+    },
+    {
+      "Data_Curta": "06/02/2026",
+      "Processos_do_Dia": 21,
+      "Processometro_Acumulado": 1018
+    },
+    {
+      "Data_Curta": "08/02/2026",
+      "Processos_do_Dia": 2,
+      "Processometro_Acumulado": 1020
+    },
+    {
+      "Data_Curta": "09/02/2026",
+      "Processos_do_Dia": 21,
+      "Processometro_Acumulado": 1041
+    },
+    {
+      "Data_Curta": "10/02/2026",
+      "Processos_do_Dia": 39,
+      "Processometro_Acumulado": 1080
+    },
+    {
+      "Data_Curta": "11/02/2026",
+      "Processos_do_Dia": 35,
+      "Processometro_Acumulado": 1115
+    },
+    {
+      "Data_Curta": "12/02/2026",
+      "Processos_do_Dia": 29,
+      "Processometro_Acumulado": 1144
+    },
+    {
+      "Data_Curta": "13/02/2026",
+      "Processos_do_Dia": 52,
+      "Processometro_Acumulado": 1196
+    },
+    {
+      "Data_Curta": "16/02/2026",
+      "Processos_do_Dia": 6,
+      "Processometro_Acumulado": 1202
+    },
+    {
+      "Data_Curta": "17/02/2026",
+      "Processos_do_Dia": 10,
+      "Processometro_Acumulado": 1212
+    },
+    {
+      "Data_Curta": "18/02/2026",
+      "Processos_do_Dia": 14,
+      "Processometro_Acumulado": 1226
+    },
+    {
+      "Data_Curta": "19/02/2026",
+      "Processos_do_Dia": 16,
+      "Processometro_Acumulado": 1242
+    },
+    {
+      "Data_Curta": "20/02/2026",
+      "Processos_do_Dia": 27,
+      "Processometro_Acumulado": 1269
+    },
+    {
+      "Data_Curta": "23/02/2026",
+      "Processos_do_Dia": 44,
+      "Processometro_Acumulado": 1313
+    },
+    {
+      "Data_Curta": "24/02/2026",
+      "Processos_do_Dia": 27,
+      "Processometro_Acumulado": 1340
+    },
+    {
+      "Data_Curta": "25/02/2026",
+      "Processos_do_Dia": 46,
+      "Processometro_Acumulado": 1386
+    },
+    {
+      "Data_Curta": "26/02/2026",
+      "Processos_do_Dia": 22,
+      "Processometro_Acumulado": 1408
+    },
+    {
+      "Data_Curta": "27/02/2026",
+      "Processos_do_Dia": 37,
+      "Processometro_Acumulado": 1445
+    },
+    {
+      "Data_Curta": "02/03/2026",
+      "Processos_do_Dia": 32,
+      "Processometro_Acumulado": 1477
+    },
+    {
+      "Data_Curta": "03/03/2026",
+      "Processos_do_Dia": 42,
+      "Processometro_Acumulado": 1519
+    },
+    {
+      "Data_Curta": "04/03/2026",
+      "Processos_do_Dia": 31,
+      "Processometro_Acumulado": 1550
+    },
+    {
+      "Data_Curta": "05/03/2026",
+      "Processos_do_Dia": 33,
+      "Processometro_Acumulado": 1583
+    },
+    {
+      "Data_Curta": "06/03/2026",
+      "Processos_do_Dia": 38,
+      "Processometro_Acumulado": 1621
+    },
+    {
+      "Data_Curta": "09/03/2026",
+      "Processos_do_Dia": 20,
+      "Processometro_Acumulado": 1641
+    },
+    {
+      "Data_Curta": "10/03/2026",
+      "Processos_do_Dia": 18,
+      "Processometro_Acumulado": 1659
+    }
+  ],
+  "setores": [
+    {
+      "name": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GES...",
+      "value": 112
+    },
+    {
+      "name": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE ...",
+      "value": 111
+    },
+    {
+      "name": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNO...",
+      "value": 99
+    },
+    {
+      "name": "SEDUC - CPS- COORDENADORIA DE PLANEJAMEN...",
+      "value": 81
+    },
+    {
+      "name": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃ...",
+      "value": 76
+    }
+  ],
+  "assuntos": [
+    {
+      "name": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PR...",
+      "value": 112
+    },
+    {
+      "name": "RECURSOS HUMANOS",
+      "value": 101
+    },
+    {
+      "name": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PR...",
+      "value": 96
+    },
+    {
+      "name": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PR...",
+      "value": 59
+    },
+    {
+      "name": "CELEBRAÇÃO DE CONVÊNIOS, ACORDOS E TERMO...",
+      "value": 50
+    }
+  ],
+  "tipos": [
+    {
+      "name": "ELETRONICO",
+      "value": 1659
+    }
+  ]
+}
