@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Animações Flutuantes Sutis */
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-xl rounded-2xl;
+}
