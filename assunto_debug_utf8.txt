@@ -1,0 +1,13 @@
+﻿=== PAGE 1 ===
+Y=265.8 | INT: ELETRONICO 20/01/2026 FUNDACAO PARAPAZ | ASSUN: ELABORAÃ├O PREENCHIMENTO DE    | COMPL: EXPEDIENTES DE FUNÃ├O-ATIVIDADE, PARA POSSE, ProrrogaþÒo de CessÒo - Denise de Souza Braga SEDUC DISTRIBUIDOS - GABINETE - PROCESSOS SEDUC
+Y=279.8 | INT:                                | ASSUN: PROVIMENTO E MOVIMENTAÃ├O DE CARGO, -> | COMPL: PRORROGAÃ┬O VAC┬NCIA, SUBSTITUIÃ├O DE CESS┬O
+Y=304.8 | INT: ELETRONICO 04/02/2026 Tribunal Regional Eleitoral | ASSUN: ELABORAÃ├O PREENCHIMENTO DE    | COMPL: EXPEDIENTES DE FUNÃ├O-ATIVIDADE, PARA POSSE, OfÝcio 211/2026-TRE Carla Rossy Freitas requisitando Monteiro. a servidora ASSUNTOS SEDUC - SAGEP INTERNOS N┌CLEO - SEDUC DE
+Y=318.8 | INT:                                | ASSUN: PROVIMENTO E MOVIMENTAÃ├O DE CARGO, | COMPL: VAC┬NCIA, -> CESS├O SUBSTITUIÃ├O
+Y=340.4 | INT:                                | ASSUN:                                | COMPL: TRAMITAÃıES: 2
+Y=406.8 | INT: ELETRONICO 12/08/2025 ROZILDA DA SILVA DOS SANTOS | ASSUN: CONCESS├O BENEF═CIOS DE        | COMPL: DIREITOS, -> TEMPO INTEGRAL VANTAGENS E SolicitaþÒo Integral da de servidora permuta Eunice de GratificaþÒo GuimarÒes de Tempo para SEDUC DE ALIMENTAÃ├O - CAE- COORDENADORIA ESCOLAR -
+Y=420.8 | INT:                                | ASSUN:                                | COMPL: servidora Rozilda dos Santos. SEDUC
+Y=442.4 | INT:                                | ASSUN:                                | COMPL: TRAMITAÃıES: 1
+Y=508.8 | INT: ELETRONICO 08/01/2026 VANESSA ALCANTARA CARDOSO | ASSUN: CONCESS├O BENEF═CIOS DE        | COMPL: DIREITOS, -> F╔RIAS VANTAGENS E FÚrias exercÝcio 2024. SEDUC DE APOSENTADORIA - CAPO - COORDENADORIA - SEDUC
+Y=530.4 | INT:                                | ASSUN:                                | COMPL: TRAMITAÃıES: 1
+Y=566.0 | INT:                                | ASSUN:                                | COMPL: Pßgina 1 de 19
+=== PAGE 2 ===

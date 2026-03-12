@@ -1,80 +1,185 @@
 import pdfplumber
 import pandas as pd
+import re
 
-# 1. Extração dos dados do PDF
-dados = []
-caminho_pdf = "tramitacoes-entre-setores-2026-01-02-2026-03-10.pdf"
+def extract_from_pdf(pdf_file) -> list:
+    """
+    Extrator Supremo baseado em Coordenadas X/Y + Máquina de Estado do Cabeçalho.
+    Lê a posição física exata de cada palavra para reconstruir as colunas principais,
+    e usa a linha cinza de 'SETOR DESTINO' como âncora absoluta para o setor de todo o bloco.
+    """
+    dados = []
+    
+    BOUNDS = {
+        'DATA': (0, 68),
+        'PROT': (68, 129),
+        'TIPO': (129, 155),
+        'DPROT': (155, 174),
+        'INTER': (174, 410),      # Segura nomes gigantes do Interessado
+        'ASSUN': (410, 480),      # Isola estritamente a 6ª Coluna
+        'COMPL': (480, 2000)      # O Complemento agora absorve o resto da página. Sem bleeding!
+    }
 
-print("Lendo as 132 páginas do PDF. Isso pode levar alguns segundos...")
-with pdfplumber.open(caminho_pdf) as pdf:
-    for pagina in pdf.pages:
-        tabela = pagina.extract_table()
-        if tabela:
-            # Ignora a primeira linha (cabeçalho) de cada página
-            for linha in tabela[1:]: 
-                # Verifica se a linha tem o número correto de colunas (8) e não está vazia
-                if len(linha) == 8 and linha[0]:
-                    dados.append(linha)
+    with pdfplumber.open(pdf_file) as pdf:
+        setor_destino_atual = "DESCONHECIDO"
+        
+        for page in pdf.pages:
+            words = page.extract_words()
+            
+            # Agrupar palavras por linha (Eixo Y com tolerância de 5pts)
+            linhas_y = {}
+            for w in words:
+                y_center = (w['top'] + w['bottom']) / 2
+                
+                found_y = None
+                for cy in linhas_y.keys():
+                    if abs(cy - y_center) < 7:
+                        found_y = cy
+                        break
+                
+                if not found_y:
+                    found_y = y_center
+                    linhas_y[found_y] = []
+                    
+                linhas_y[found_y].append(w)
+                
+            linhas_ordenadas = sorted(linhas_y.items(), key=lambda x: x[0])
+            proc_atual = None
+            
+            for y, word_list in linhas_ordenadas:
+                word_list = sorted(word_list, key=lambda x: x['x0'])
+                full_line = ' '.join([w['text'] for w in word_list]).strip()
+                
+                # --- MÁQUINA DE ESTADO DO SETOR ---
+                if 'SETOR DESTINO:' in full_line.upper():
+                    try:
+                        raw = full_line.upper().split('DESTINO:')[1].strip()
+                        parts = [p.strip() for p in raw.split('-') if p.strip()]
+                        if parts:
+                            orgao_principal = parts[0]
+                            # Regra: Se a primeira palavra do órgão for SEDUC, pegue a sigla seguinte
+                            if 'SEDUC' in orgao_principal and len(parts) > 1:
+                                setor_destino_atual = f"SEDUC {parts[1]}"
+                            else:
+                                setor_destino_atual = orgao_principal
+                    except Exception:
+                        pass
+                    continue
+                # ----------------------------------
+                
+                colunas = {k: [] for k in BOUNDS.keys()}
+                for w in word_list:
+                    x_center = (w['x0'] + w['x1']) / 2
+                    
+                    found_col = None
+                    for col, (xmin, xmax) in BOUNDS.items():
+                        if xmin <= x_center < xmax:
+                            found_col = col
+                            break
+                            
+                    if found_col:
+                        colunas[found_col].append(w)
+                            
+                textos = {}
+                for k, v in colunas.items():
+                    # Classifica as palavras verticalmente primeiro (para reconstruir linhas empilhadas) e depois horizontalmente
+                    v_sorted = sorted(v, key=lambda w: (round(w['top'] / 4), w['x0']))
+                    textos[k] = ' '.join([w['text'] for w in v_sorted]).strip()
+                
+                # Ignorar lixos de cabeçalho da tabela ou cabeçalhos de página
+                if 'PROTOCOLO' in textos['PROT'] or 'INTERESSADO' in textos['INTER']:
+                    continue
+                if 'SISTEMA DE PROCESSO' in textos['DATA'] or 'RELATÓRIO DE TRAMITAÇÕES' in textos['DATA'] or 'DATA PROTOCO' in full_line.upper():
+                    continue
+                if 'Página' in full_line:
+                    continue
+                    
+                match_prot = re.search(r'\d{4}/\d+', textos['PROT'])
+                
+                if textos['DATA'] and match_prot:
+                    if proc_atual:
+                        dados.append(proc_atual)
+                        
+                    proc_atual = {
+                        "DATA TRAMITAÇÃO": textos['DATA'],
+                        "PROTOCOLO": textos['PROT'],
+                        "TIPO PROTOCOLO": textos['TIPO'],
+                        "DATA PROTOCOLO": textos['DPROT'],
+                        "INTERESSADO": textos['INTER'],
+                        "ASSUNTO": textos['ASSUN'],
+                        "COMPLEMENTO": textos['COMPL'],
+                        "SETOR ATUAL": setor_destino_atual # Usa o estado da máquina!
+                    }
+                elif proc_atual:
+                    for k in BOUNDS.keys():
+                        if textos[k]:
+                            key_map = {
+                                'DATA': 'DATA TRAMITAÇÃO', 'PROT': 'PROTOCOLO', 'TIPO': 'TIPO PROTOCOLO',
+                                'DPROT': 'DATA PROTOCOLO', 'INTER': 'INTERESSADO', 'ASSUN': 'ASSUNTO',
+                                'COMPL': 'COMPLEMENTO'
+                            }
+                            proc_atual[key_map[k]] += ' ' + textos[k]
+                            proc_atual[key_map[k]] = proc_atual[key_map[k]].strip()
+                            
+            if proc_atual:
+                dados.append(proc_atual)
 
-# 2. Criação do DataFrame
-colunas = ["DATA TRAMITAÇÃO", "PROTOCOLO", "TIPO PROTOCOLO", "DATA PROTOCOLO", 
-           "INTERESSADO", "ASSUNTO", "COMPLEMENTO", "SETOR ATUAL"]
+    if not dados:
+        return []
 
-df = pd.DataFrame(dados, columns=colunas)
+    # ======================================================
+    # Criação do DataFrame e processamento
+    # ======================================================
+    df = pd.DataFrame(dados)
+    df = df.fillna('')
+    df = df.replace('\n', ' ', regex=True)
 
-# 3. Tratamento e Matemática do Processômetro
-# Limpa quebras de linha (\n) que o PDF gera dentro das células
-df = df.replace('\n', ' ', regex=True)
+    df['Data_Curta'] = df['DATA TRAMITAÇÃO'].apply(lambda x: str(x).strip().split(' ')[0] if x else '')
+    
+    # Sigla_setor se torna igual ao Setor Atual pois o Setor Atual já foi limpo no Header
+    df['SIGLA_SETOR'] = df['SETOR ATUAL'].apply(lambda x: extrair_sigla(x))
+    
+    df['Data_Curta_ISO'] = df['Data_Curta'].apply(converter_data_iso)
+    df = df.dropna(subset=['Data_Curta_ISO'])
 
-# Extrai apenas a data (dd/mm/yyyy), removendo a hora exata da tramitação
-df['Data_Curta'] = df['DATA TRAMITAÇÃO'].str.split(' ').str[0]
-df['Data_Curta'] = pd.to_datetime(df['Data_Curta'], format='%d/%m/%Y', errors='coerce')
+    df = df.rename(columns={
+        "DATA TRAMITAÇÃO": "data_tramitacao",
+        "PROTOCOLO": "protocolo",
+        "TIPO PROTOCOLO": "tipo_protocolo",
+        "DATA PROTOCOLO": "data_protocolo",
+        "INTERESSADO": "interessado",
+        "ASSUNTO": "assunto",
+        "COMPLEMENTO": "complemento",
+        "SETOR ATUAL": "setor_atual",
+        "SIGLA_SETOR": "sigla_setor",
+        "Data_Curta_ISO": "data_curta"
+    })
 
-# Removemos possíveis linhas que não conseguiram ser convertidas para data (sujeira do PDF)
-df = df.dropna(subset=['Data_Curta'])
+    colunas_finais = ["protocolo", "data_tramitacao", "data_curta", "tipo_protocolo",
+                      "data_protocolo", "interessado", "assunto", "complemento",
+                      "sigla_setor", "setor_atual"]
 
-# Conta quantos processos tramitaram por dia
-contagem_diaria = df.groupby('Data_Curta').size().reset_index(name='Processos_do_Dia')
+    for c in colunas_finais:
+        if c not in df.columns:
+            df[c] = ''
 
-# A Mágica: Cria a linha do tempo do "Impostrômetro" usando Soma Acumulada (cumsum)
-contagem_diaria['Processometro_Acumulado'] = contagem_diaria['Processos_do_Dia'].cumsum()
+    df_final = df[colunas_finais]
+    df_final = df_final.where(pd.notnull(df_final), None)
 
-# Novas Métricas para os Gráficos de Rosquinha (Donut)
-def truncate_label(label, max_len=40):
-    text = str(label)
-    return text[:max_len] + "..." if len(text) > max_len else text
+    result = df_final.to_dict(orient='records')
+    print(f"[extrator] Processos finalizados para upload via StateMachine: {len(result)}")
+    return result
 
-top_setores = df['SETOR ATUAL'].value_counts().head(5).reset_index()
-top_setores.columns = ['name', 'value']
-top_setores['name'] = top_setores['name'].apply(truncate_label)
+def extrair_sigla(setor: str) -> str:
+    # Retorna o nome até 30 caracteres para caber no dashboard sem quebrar os gráficos,
+    # caso passe um orgão bizarramente grande, mas geralmente SEDUC CCM ou SEPLAD são curtos
+    return setor.strip()[:30]
 
-top_assuntos = df['ASSUNTO'].value_counts().head(5).reset_index()
-top_assuntos.columns = ['name', 'value']
-top_assuntos['name'] = top_assuntos['name'].apply(truncate_label)
-
-top_tipos = df['TIPO PROTOCOLO'].value_counts().head(5).reset_index()
-top_tipos.columns = ['name', 'value']
-top_tipos['name'] = top_tipos['name'].apply(truncate_label)
-
-# Mostra o resultado final ordenado de janeiro até março
-print("\n--- Linha do Tempo do Processômetro ---")
-print(contagem_diaria.to_string(index=False))
-
-# 4. Exportação dos Dados para o Frontend (React/Next.js)
-import json
-caminho_json = "processometro_dados.json"
-
-# Preparando o objeto completo
-dados_exportacao = {
-    "timeline": contagem_diaria.assign(
-        Data_Curta=contagem_diaria['Data_Curta'].dt.strftime('%d/%m/%Y')
-    ).to_dict(orient='records'),
-    "setores": top_setores.to_dict(orient='records'),
-    "assuntos": top_assuntos.to_dict(orient='records'),
-    "tipos": top_tipos.to_dict(orient='records')
-}
-
-with open(caminho_json, 'w', encoding='utf-8') as f:
-    json.dump(dados_exportacao, f, ensure_ascii=False, indent=2)
-
-print(f"\n✅ Dados exportados com sucesso para: {caminho_json}")
+def converter_data_iso(data_str: str):
+    try:
+        partes = str(data_str).strip().split('/')
+        if len(partes) == 3:
+            return f"{partes[2]}-{partes[1]}-{partes[0]}"
+        return None
+    except Exception:
+        return None

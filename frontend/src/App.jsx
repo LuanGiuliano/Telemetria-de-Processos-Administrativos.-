@@ -199,9 +199,13 @@ const App = () => {
         {/* Header - TITLE UPDATED */}
         <motion.header variants={itemVariants} className="flex flex-col md:flex-row justify-between items-center mb-8 text-white">
           <div>
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-md">
-              Telemetria <span className="text-green-300">SAGEP</span>
-            </h1>
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="Logo SAGEP" className="h-12 w-12 object-contain drop-shadow-md" />
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-md">
+                Telemetria <span className="text-green-300">SAGEP</span>
+              </h1>
+              <img src="/seduc-logo.png" alt="SEDUC - Governo do Pará" className="h-16 object-contain ml-4 rounded-xl bg-white p-2 drop-shadow-md" />
+            </div>
             <p className="text-green-100 font-medium mt-1">
               Acompanhamento de Processos Administrativos
             </p>
@@ -211,7 +215,7 @@ const App = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            <span className="font-semibold text-sm">Atualizado: {ultimoDia}</span>
+            <span className="font-semibold text-sm">Atualizado: {ultimoDia ? ultimoDia.split('-').reverse().join('-') : ultimoDia}</span>
           </div>
         </motion.header>
 
@@ -424,15 +428,23 @@ const App = () => {
                 <AreaChart data={activeTimeline} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorAcumulado" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#16a34a" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#16a34a" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#0072CE" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#0072CE" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="Data_Curta" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 12 }} dy={10} tickFormatter={(val) => typeof val === 'string' ? val.substring(0, 5) : val} />
+                  <XAxis dataKey="Data_Curta" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 12 }} dy={10} tickFormatter={(val) => {
+                    if (!val) return val;
+                    // val está em formato YYYY-MM-DD
+                    const [ano, mes, dia] = String(val).split('-');
+                    if (!ano || !mes || !dia) return val;
+                    const date = new Date(Number(ano), Number(mes) - 1, Number(dia));
+                    const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                    return `${diasSemana[date.getDay()]} ${dia}/${mes}`;
+                  }} />
                   <YAxis dataKey="Processometro_Acumulado" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 12 }} tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val} />
                   <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} labelStyle={{ fontWeight: 'bold', color: '#1e293b', marginBottom: '8px' }} />
-                  <Area type="monotone" dataKey="Processometro_Acumulado" name="Total Acumulado Filtrado" stroke="#16a34a" strokeWidth={4} fillOpacity={1} fill="url(#colorAcumulado)" animationDuration={1000} />
+                  <Area type="monotone" dataKey="Processometro_Acumulado" name="Total Acumulado Filtrado" stroke="#0072CE" strokeWidth={4} fillOpacity={1} fill="url(#colorAcumulado)" animationDuration={1000} />
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
@@ -464,10 +476,27 @@ const App = () => {
                 </tr>
               </thead>
               <tbody>
-                {paginatedData.map((item, idx) => (
+                {paginatedData.map((item, idx) => {
+                  const protParts = item.PROTOCOLO ? item.PROTOCOLO.split(' ') : [];
+                  const hasTime = protParts.length > 1 && protParts[0].includes(':');
+                  const timeStr = hasTime ? protParts[0] : '';
+                  const protStr = hasTime ? protParts.slice(1).join(' ') : item.PROTOCOLO;
+                  
+                  let formattedDate = item.Data_Curta || '';
+                  if (formattedDate) {
+                    const parts = formattedDate.split('-');
+                    if (parts.length === 3) {
+                      formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                      if (timeStr) {
+                        formattedDate = `${formattedDate} ${timeStr}`;
+                      }
+                    }
+                  }
+
+                  return (
                   <tr key={idx} className="bg-white border-b hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap">{item.PROTOCOLO}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{item.Data_Curta}</td>
+                    <td className="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap">{protStr}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{formattedDate}</td>
                     <td className="px-6 py-4">
                       <span className="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-emerald-200">
                         {item.SIGLA_SETOR || 'N/A'}
@@ -480,7 +509,8 @@ const App = () => {
                       {item.INTERESSADO?.length > 30 ? item.INTERESSADO.substring(0, 30) + '...' : item.INTERESSADO}
                     </td>
                   </tr>
-                ))}
+                  );
+                })}
                 {paginatedData.length === 0 && (
                   <tr>
                     <td colSpan="5" className="px-6 py-12 text-center text-slate-500">Nenhum processo encontrado para este filtro.</td>
