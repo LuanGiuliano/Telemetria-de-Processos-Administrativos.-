@@ -1,0 +1,11 @@
+﻿--- RAW WORDS IN ASSUNTO ---
+Word: DE              | Y: 265.81 | X: 465.49
+Word: DE              | Y: 279.78 | X: 454.33
+Word: DE              | Y: 304.81 | X: 465.49
+Word: DE              | Y: 318.78 | X: 454.33
+Word: CONCESS├O       | Y: 406.81 | X: 428.82
+Word: DE              | Y: 406.81 | X: 468.83
+Word: BENEF═CIOS      | Y: 413.79 | X: 441.90
+Word: CONCESS├O       | Y: 508.81 | X: 428.82
+Word: DE              | Y: 508.81 | X: 468.83
+Word: BENEF═CIOS      | Y: 515.79 | X: 457.57

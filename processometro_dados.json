@@ -1,309 +1,1737 @@
 {
   "timeline": [
     {
-      "Data_Curta": "05/01/2026",
-      "Processos_do_Dia": 29,
-      "Processometro_Acumulado": 29
-    },
-    {
-      "Data_Curta": "06/01/2026",
-      "Processos_do_Dia": 46,
-      "Processometro_Acumulado": 75
-    },
-    {
-      "Data_Curta": "07/01/2026",
-      "Processos_do_Dia": 58,
-      "Processometro_Acumulado": 133
-    },
-    {
-      "Data_Curta": "08/01/2026",
-      "Processos_do_Dia": 49,
-      "Processometro_Acumulado": 182
-    },
-    {
-      "Data_Curta": "09/01/2026",
-      "Processos_do_Dia": 15,
-      "Processometro_Acumulado": 197
-    },
-    {
-      "Data_Curta": "10/01/2026",
-      "Processos_do_Dia": 1,
-      "Processometro_Acumulado": 198
-    },
-    {
-      "Data_Curta": "12/01/2026",
-      "Processos_do_Dia": 37,
-      "Processometro_Acumulado": 235
-    },
-    {
-      "Data_Curta": "13/01/2026",
-      "Processos_do_Dia": 55,
-      "Processometro_Acumulado": 290
-    },
-    {
-      "Data_Curta": "14/01/2026",
-      "Processos_do_Dia": 45,
-      "Processometro_Acumulado": 335
-    },
-    {
-      "Data_Curta": "15/01/2026",
-      "Processos_do_Dia": 75,
-      "Processometro_Acumulado": 410
-    },
-    {
-      "Data_Curta": "16/01/2026",
-      "Processos_do_Dia": 44,
-      "Processometro_Acumulado": 454
-    },
-    {
-      "Data_Curta": "19/01/2026",
-      "Processos_do_Dia": 45,
-      "Processometro_Acumulado": 499
-    },
-    {
-      "Data_Curta": "20/01/2026",
-      "Processos_do_Dia": 45,
-      "Processometro_Acumulado": 544
-    },
-    {
-      "Data_Curta": "21/01/2026",
-      "Processos_do_Dia": 48,
-      "Processometro_Acumulado": 592
-    },
-    {
-      "Data_Curta": "22/01/2026",
-      "Processos_do_Dia": 28,
-      "Processometro_Acumulado": 620
-    },
-    {
-      "Data_Curta": "23/01/2026",
-      "Processos_do_Dia": 47,
-      "Processometro_Acumulado": 667
-    },
-    {
-      "Data_Curta": "26/01/2026",
-      "Processos_do_Dia": 51,
-      "Processometro_Acumulado": 718
-    },
-    {
-      "Data_Curta": "27/01/2026",
-      "Processos_do_Dia": 59,
-      "Processometro_Acumulado": 777
-    },
-    {
-      "Data_Curta": "28/01/2026",
-      "Processos_do_Dia": 35,
-      "Processometro_Acumulado": 812
-    },
-    {
-      "Data_Curta": "29/01/2026",
-      "Processos_do_Dia": 28,
-      "Processometro_Acumulado": 840
-    },
-    {
-      "Data_Curta": "30/01/2026",
-      "Processos_do_Dia": 35,
-      "Processometro_Acumulado": 875
-    },
-    {
-      "Data_Curta": "31/01/2026",
-      "Processos_do_Dia": 1,
-      "Processometro_Acumulado": 876
-    },
-    {
-      "Data_Curta": "01/02/2026",
-      "Processos_do_Dia": 4,
-      "Processometro_Acumulado": 880
-    },
-    {
-      "Data_Curta": "02/02/2026",
-      "Processos_do_Dia": 38,
-      "Processometro_Acumulado": 918
-    },
-    {
-      "Data_Curta": "03/02/2026",
-      "Processos_do_Dia": 30,
-      "Processometro_Acumulado": 948
-    },
-    {
-      "Data_Curta": "04/02/2026",
-      "Processos_do_Dia": 15,
-      "Processometro_Acumulado": 963
-    },
-    {
-      "Data_Curta": "05/02/2026",
-      "Processos_do_Dia": 34,
-      "Processometro_Acumulado": 997
-    },
-    {
-      "Data_Curta": "06/02/2026",
-      "Processos_do_Dia": 21,
-      "Processometro_Acumulado": 1018
-    },
-    {
-      "Data_Curta": "08/02/2026",
-      "Processos_do_Dia": 2,
-      "Processometro_Acumulado": 1020
-    },
-    {
       "Data_Curta": "09/02/2026",
-      "Processos_do_Dia": 21,
-      "Processometro_Acumulado": 1041
+      "Processos_do_Dia": 13,
+      "Processometro_Acumulado": 13
     },
     {
       "Data_Curta": "10/02/2026",
-      "Processos_do_Dia": 39,
-      "Processometro_Acumulado": 1080
+      "Processos_do_Dia": 32,
+      "Processometro_Acumulado": 45
     },
     {
       "Data_Curta": "11/02/2026",
-      "Processos_do_Dia": 35,
-      "Processometro_Acumulado": 1115
+      "Processos_do_Dia": 28,
+      "Processometro_Acumulado": 73
     },
     {
       "Data_Curta": "12/02/2026",
       "Processos_do_Dia": 29,
-      "Processometro_Acumulado": 1144
+      "Processometro_Acumulado": 102
     },
     {
       "Data_Curta": "13/02/2026",
-      "Processos_do_Dia": 52,
-      "Processometro_Acumulado": 1196
-    },
-    {
-      "Data_Curta": "16/02/2026",
-      "Processos_do_Dia": 6,
-      "Processometro_Acumulado": 1202
-    },
-    {
-      "Data_Curta": "17/02/2026",
-      "Processos_do_Dia": 10,
-      "Processometro_Acumulado": 1212
-    },
-    {
-      "Data_Curta": "18/02/2026",
-      "Processos_do_Dia": 14,
-      "Processometro_Acumulado": 1226
-    },
-    {
-      "Data_Curta": "19/02/2026",
-      "Processos_do_Dia": 16,
-      "Processometro_Acumulado": 1242
-    },
-    {
-      "Data_Curta": "20/02/2026",
-      "Processos_do_Dia": 27,
-      "Processometro_Acumulado": 1269
-    },
-    {
-      "Data_Curta": "23/02/2026",
-      "Processos_do_Dia": 44,
-      "Processometro_Acumulado": 1313
-    },
-    {
-      "Data_Curta": "24/02/2026",
-      "Processos_do_Dia": 27,
-      "Processometro_Acumulado": 1340
-    },
-    {
-      "Data_Curta": "25/02/2026",
-      "Processos_do_Dia": 46,
-      "Processometro_Acumulado": 1386
-    },
-    {
-      "Data_Curta": "26/02/2026",
-      "Processos_do_Dia": 22,
-      "Processometro_Acumulado": 1408
-    },
-    {
-      "Data_Curta": "27/02/2026",
-      "Processos_do_Dia": 37,
-      "Processometro_Acumulado": 1445
-    },
-    {
-      "Data_Curta": "02/03/2026",
-      "Processos_do_Dia": 32,
-      "Processometro_Acumulado": 1477
-    },
-    {
-      "Data_Curta": "03/03/2026",
-      "Processos_do_Dia": 42,
-      "Processometro_Acumulado": 1519
-    },
-    {
-      "Data_Curta": "04/03/2026",
-      "Processos_do_Dia": 31,
-      "Processometro_Acumulado": 1550
-    },
-    {
-      "Data_Curta": "05/03/2026",
-      "Processos_do_Dia": 33,
-      "Processometro_Acumulado": 1583
-    },
-    {
-      "Data_Curta": "06/03/2026",
-      "Processos_do_Dia": 38,
-      "Processometro_Acumulado": 1621
-    },
-    {
-      "Data_Curta": "09/03/2026",
-      "Processos_do_Dia": 20,
-      "Processometro_Acumulado": 1641
-    },
-    {
-      "Data_Curta": "10/03/2026",
-      "Processos_do_Dia": 18,
-      "Processometro_Acumulado": 1659
+      "Processos_do_Dia": 36,
+      "Processometro_Acumulado": 138
     }
   ],
   "setores": [
     {
-      "name": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GES...",
-      "value": 112
+      "name": "CCM DISPONIBILIDADE/DIREÇÃO",
+      "value": 19
     },
     {
-      "name": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE ...",
-      "value": 111
+      "name": "COR",
+      "value": 12
     },
     {
-      "name": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNO...",
-      "value": 99
+      "name": "CFOP",
+      "value": 11
     },
     {
-      "name": "SEDUC - CPS- COORDENADORIA DE PLANEJAMEN...",
-      "value": 81
+      "name": "CPS",
+      "value": 11
     },
     {
-      "name": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃ...",
-      "value": 76
+      "name": "GABINETE PROCESSOS DISTRIBUIDOS",
+      "value": 9
     }
   ],
   "assuntos": [
     {
-      "name": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PR...",
-      "value": 112
+      "name": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -...",
+      "value": 16
     },
     {
-      "name": "RECURSOS HUMANOS",
-      "value": 101
-    },
-    {
-      "name": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PR...",
-      "value": 96
+      "name": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDI...",
+      "value": 11
     },
     {
       "name": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PR...",
-      "value": 59
+      "value": 9
     },
     {
-      "name": "CELEBRAÇÃO DE CONVÊNIOS, ACORDOS E TERMO...",
-      "value": 50
+      "name": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PR...",
+      "value": 5
+    },
+    {
+      "name": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEF...",
+      "value": 5
     }
   ],
   "tipos": [
     {
       "name": "ELETRONICO",
-      "value": 1659
+      "value": 138
+    }
+  ],
+  "raw_data": [
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 12:31",
+      "PROTOCOLO": "2026/2088468",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "20/01/2026",
+      "INTERESSADO": "FUNDACAO PARAPAZ",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "Prorrogação de Cessão - Denise de Souza Braga",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:17",
+      "PROTOCOLO": "2026/2174820",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "04/02/2026",
+      "INTERESSADO": "Tribunal Regional Eleitoral",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> CESSÃO",
+      "COMPLEMENTO": "Ofício 211/2026-TRE requisitando a servidora Carla Rossy Freitas Monteiro.",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNOS - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE ASSUNTOS INTERNOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 11:50",
+      "PROTOCOLO": "2025/3725701",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "04/12/2025",
+      "INTERESSADO": "ALDINA RODRIGUES DE SOUSA",
+      "ASSUNTO": "ELABORAÇÃO E REGISTRO DE ATOS RELATIVOS À VIDA FUNCIONAL -> ATUALIZAÇÃO CADASTRAL .",
+      "COMPLEMENTO": "servidora solicita atualização de email, para fins de acesso a declaração de bens(SISPATRI)",
+      "SETOR ATUAL": "SEDUC - CCM MANUTENÇÃO - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "CCM MANUTENÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 11:58",
+      "PROTOCOLO": "2026/2197313",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "SERGIO WILLIAM DAMASCENO DA SILVA",
+      "ASSUNTO": "RECURSOS HUMANOS -> DECLARAÇÃO DE VÍNCULO",
+      "COMPLEMENTO": "DECLARAÇÃO DE QUE O SERVIDOR NÃO ESTÁ RESPONDENDO A PAD",
+      "SETOR ATUAL": "SEDUC - CCM DECLARAÇÃO E ATESTADO - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "CCM DECLARAÇÃO E ATESTADO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 12:29",
+      "PROTOCOLO": "2025/2702943",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "21/05/2025",
+      "INTERESSADO": "PREFEITURA MUNICIPAL DE BELEM",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> CESSÃO",
+      "COMPLEMENTO": "OFÍCIO Nº 620/2025 - CESSÃO RECÍPROCA DE SERVIDORES",
+      "SETOR ATUAL": "SEDUC - CCM CESSÃO E REVOGAÇÃO ASSINATURA - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "CCM CESSÃO E REVOGAÇÃO ASSINATURA"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 09:49",
+      "PROTOCOLO": "2025/2927687",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "02/07/2025",
+      "INTERESSADO": "LUIZ CARLOS HAYNES LEITE",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA A FOLHA DE PAGAMENTO -> PECÚNIA",
+      "COMPLEMENTO": "SOLICITA PECUNIA",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 09:56",
+      "PROTOCOLO": "2025/2059184",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "15/01/2025",
+      "INTERESSADO": "MARCELO DA NATIVIDADE LUZ",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA A FOLHA DE PAGAMENTO -> PECÚNIA",
+      "COMPLEMENTO": "Solicitação de Pecúnia para MARCELO DA NATIVIDADE LUZ, filho da ex-servidora(falecida) Raimunda Neves S. da Natividade, da EE. Antônio Marçal/Inhangapi.",
+      "SETOR ATUAL": "SEDUC - DRE CASTANHAL- DIRETORIA REGIONAL DE ENSINO CASTANHAL - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "DRE CASTANHAL"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 09:57",
+      "PROTOCOLO": "2026/2202991",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Inquérito Civil SAJ nº 06.2024.00001325-2",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 10:05",
+      "PROTOCOLO": "2026/2033613",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/01/2026",
+      "INTERESSADO": "DOROTEIA DOS SANTOS MESQUITA",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> RECONDUÇÃO",
+      "COMPLEMENTO": "RECONDUCAO",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 11:06",
+      "PROTOCOLO": "2025/2505769",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/04/2025",
+      "INTERESSADO": "ANDREA LIMA DE SOUZA COZZI",
+      "ASSUNTO": "SAÚDE OCUPACIONAL -> PERÍCIA MÉDICA",
+      "COMPLEMENTO": "SOLICITO PERÍCIA MÉDICA",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 14:30",
+      "PROTOCOLO": "2026/2197313",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "SERGIO WILLIAM DAMASCENO DA SILVA",
+      "ASSUNTO": "RECURSOS HUMANOS -> DECLARAÇÃO DE VÍNCULO",
+      "COMPLEMENTO": "DECLARAÇÃO DE QUE O SERVIDOR NÃO ESTÁ RESPONDENDO A PAD",
+      "SETOR ATUAL": "SEDUC - CCM DECLARAÇÃO E ATESTADO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CCM DECLARAÇÃO E ATESTADO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 14:56",
+      "PROTOCOLO": "2026/2201793",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "SECRETARIA DE ESTADO DE PLANEJAMENTO E ADMINISTRAÇÃO",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS",
+      "COMPLEMENTO": "Aplicação da Lei Complementar Federal nº 226/2026 – contagem do tempo da pandemia para fins de ATS, quinquênios e licença-prêmio.",
+      "SETOR ATUAL": "SEDUC - CCM- COORDENADORIA DE CONTROLE E MOVIMENTAÇÃO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CCM"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 16:02",
+      "PROTOCOLO": "2026/2205495",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "LIANA VICENCIA DA CUNHA",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> LICENÇA PARA TRATAR DE INTERESSE PARTICULAR",
+      "COMPLEMENTO": "LICENÇA SEM VENCIMENTO",
+      "SETOR ATUAL": "IGEPREV - SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA - IGEPREV-SEDE",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 21:48",
+      "PROTOCOLO": "2026/2148906",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "30/01/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "DISTRIBUIÇÃO E ACOMPANHAMENTO DO TRÂMITE -> SOLICITAÇÃO DE INFORMAÇÃO",
+      "COMPLEMENTO": "Notícia de Fato nº 01.2026.00003799-6",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 22:32",
+      "PROTOCOLO": "2026/2029997",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/01/2026",
+      "INTERESSADO": "GLORIA MARIA FARIAS DA ROCHA",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> APOSENTADORIA VOLUNTÁRIA",
+      "COMPLEMENTO": "APOSENTADORIA VOLUNTÁRIA",
+      "SETOR ATUAL": "SEDUC - CAPO - COORDENADORIA DE APOSENTADORIA - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CAPO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 09:26",
+      "PROTOCOLO": "2026/2208421",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "PREFEITURA MUNICIPAL DE CANAA DOS CARAJAS.",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "PREFEITURA CANAÃ DOS CARAJÁS OF.nº057/2026 SEGOV",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 09:45",
+      "PROTOCOLO": "2026/2207534",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "DRE SANTARÉM- DIRETORIA REGIONAL DE ENSINO SANTARÉM > DRE SANTAREM > SEDUC",
+      "ASSUNTO": "DISTRIBUIÇÃO E ACOMPANHAMENTO DO TRÂMITE -> REITERAÇÃO DE SOLICITAÇÃO DE DOCUMENTOS",
+      "COMPLEMENTO": "Retorno de servidora ao órgão de origem- ANA PAULA DANTAS NERY SALES FERREIRA.",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 10:38",
+      "PROTOCOLO": "2025/2850776",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "18/06/2025",
+      "INTERESSADO": "AGOSTINHO PAULO LOPES PINHEIRO",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> SOLICITAÇÃO DE DOCUMENTO DECLARATÓRIO",
+      "COMPLEMENTO": "DECLARAÇÃO DE TEMPO DE SERVIÇO COM HISTÓRICO FUNCIONAL",
+      "SETOR ATUAL": "SEDUC - CCM CERTIDÕES - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CCM CERTIDÕES"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 13:44",
+      "PROTOCOLO": "2025/2183597",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2025",
+      "INTERESSADO": "DIRETORIA REGIONAL DE ENSINO CAPANEMA > DRE CAPANEMA > SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> LICENÇA PARA ATIVIDADE POLÍTICA",
+      "COMPLEMENTO": "PEDIDO DE LICENÇA PARA EXERCER CARGO POLÍTICO DO EXECUTIVO",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 15:03",
+      "PROTOCOLO": "2026/2209655",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "COMANDO DA AERONAUTICA",
+      "ASSUNTO": "RECURSOS HUMANOS",
+      "COMPLEMENTO": "SOLICITAÇÃO DE ESCLARECIMENTO SOBRE VÍNCULO DE TRABALHO.",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 18:11",
+      "PROTOCOLO": "2025/3794870",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "19/12/2025",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "Ofício nº 1225/2025-PGJ/MPPA - Devoluçãoservidora Ana Paula Dantas Nery",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 08:17",
+      "PROTOCOLO": "2026/2207604",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "VANESSA COSTA MONTEIRO",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> OUTRAS GRATIFICAÇÕES",
+      "COMPLEMENTO": "Solicitação de função de Coordenação",
+      "SETOR ATUAL": "SEDUC - CCM/DESIGNAÇÃO E SUBSTITUIÇÃO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CCM/DESIGNAÇÃO E SUBSTITUIÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 09:50",
+      "PROTOCOLO": "2026/2220338",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/02/2026",
+      "INTERESSADO": "SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS > SAGEP > SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> FÉRIAS",
+      "COMPLEMENTO": "PERÍODO AQUISITIVO DE FÉRIAS",
+      "SETOR ATUAL": "SEDUC - CCM/FÉRIAS - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CCM/FÉRIAS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:22",
+      "PROTOCOLO": "2026/2218588",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "11/02/2026",
+      "INTERESSADO": "TRIBUNAL REGIONAL ELEITORAL DO PARA - T.R.E",
+      "ASSUNTO": "RECURSOS HUMANOS",
+      "COMPLEMENTO": "OFICIO 18/2026- DECLARACAO INSTRUCAO PROCESSUAL REQUISICAO DE SERVIDORA GILVANEIDE DO SOCORRO LIMA DAMASCENO",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:33",
+      "PROTOCOLO": "2025/3384701",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "24/09/2025",
+      "INTERESSADO": "LUCILEIDE DE ARAUJO OLIVEIRA.",
+      "ASSUNTO": "CAPACITAÇÃO E VALORIZAÇÃO FUNCIONAL DO MAGISTÉRIO -> PROGRESSÃO HORIZONTAL OU VERTICAL",
+      "COMPLEMENTO": "PROGRESSÃO HORIZONTAL",
+      "SETOR ATUAL": "SEDUC - CCM COMUNICAÇÃO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CCM COMUNICAÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 12:21",
+      "PROTOCOLO": "2026/2221923",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/02/2026",
+      "INTERESSADO": "MINISTERIO DO TURISMO",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> CESSÃO",
+      "COMPLEMENTO": "Encerramento da cessão, a contar do dia 10 de fevereiro de 2026, o servidor MARCOS CÉSAR BARBOSA E SILVA.",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 11:07",
+      "PROTOCOLO": "2026/2225023",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/02/2026",
+      "INTERESSADO": "SEAC-SECRETARIA ESTRATEGICA DE ARTICULACAO",
+      "ASSUNTO": "PROCESSO ADMINISTRATIVO ELETRÔNICO (PAE) -> CADASTRO NO PAE",
+      "COMPLEMENTO": "Cessão de Servidor.",
+      "SETOR ATUAL": "SEDUC - GABINETE DA SECRETARIA DE ESTADO EDUCAÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "GABINETE DA SECRETARIA DE ESTADO EDUCAÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 11:53",
+      "PROTOCOLO": "2026/2210119",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "UNIVERSIDADE FEDERAL DO PARA - UFPA",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> AUXÍLIO ALIMENTAÇÃO",
+      "COMPLEMENTO": "AUXILIO - ALIMENTAÇÃO RECEBIDO EM DUPLICIDADE.",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 14:56",
+      "PROTOCOLO": "2026/2032132",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/01/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Procedimento Administrativo nº 09.2025.00001898-4",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 14:56",
+      "PROTOCOLO": "2026/2026793",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/01/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Ofício nº 262/2025-MP/5ºPJDPPMA",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:34",
+      "PROTOCOLO": "2025/2028942",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/01/2025",
+      "INTERESSADO": "Andreany dos Santos Silva",
+      "ASSUNTO": "EXECUÇÃO, ACOMPANHAMENTO E AVALIAÇÃO DE ATIVIDADES -> SOLICITAÇÃO DE ORIENTAÇÃO TÉCNICA",
+      "COMPLEMENTO": "ORIENTAÇÕES SOBRE PERMUTA",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE GESTÃO DE CESSÃO E MOVIMENTAÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE GESTÃO DE CESSÃO E MOVIMENTAÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 16:07",
+      "PROTOCOLO": "2025/3159360",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/08/2025",
+      "INTERESSADO": "ROZILDA DA SILVA DOS SANTOS",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> TEMPO INTEGRAL",
+      "COMPLEMENTO": "Solicitação de permuta de Gratificação de Tempo Integral da servidora Eunice Guimarães para servidora Rozilda dos Santos.",
+      "SETOR ATUAL": "SEDUC - CAE- COORDENADORIA DE ALIMENTAÇÃO ESCOLAR - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CAE"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 17:27",
+      "PROTOCOLO": "2026/2088809",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "20/01/2026",
+      "INTERESSADO": "Fundação Paraense de Radiodifusão",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> RESSARCIMENTO DE CUSTOS DE CESSÃO DE SERVIDOR",
+      "COMPLEMENTO": "Solicitação de Cessão de Servidor",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 09:19",
+      "PROTOCOLO": "2025/3779485",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "17/12/2025",
+      "INTERESSADO": "Camila Dias de Oliveira",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> LICENÇA PARA TRATAR DE INTERESSE PARTICULAR",
+      "COMPLEMENTO": "Licença para Tratar de Interesses Particulares - Camila Dias",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE VIDA FUNCIONAL - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE VIDA FUNCIONAL"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 13:38",
+      "PROTOCOLO": "2026/2197772",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "SILVANA DA CONCEICAO FRANCA DOS SANTOS",
+      "ASSUNTO": "COORDENAÇÃO DA EDUCAÇÃO ESPECIAL -> PROJETO PEDAGÓGICO - EDUCAÇÃO ESPECIAL",
+      "COMPLEMENTO": "SOLICITO RETORNO DE 50% DA GRATIFICAÇÃO DE EDUCAÇÃO ESPECIAL QUE FOI RETIRADO",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 09:02",
+      "PROTOCOLO": "2025/2139021",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "31/01/2025",
+      "INTERESSADO": "CAMILO DA COSTA SOARES",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> LICENÇA PARA TRATAR DE INTERESSE PARTICULAR",
+      "COMPLEMENTO": "VEM ENCAMINHAR, SOLICITAÇÃO DE LICENÇA SEM VENCIMENTO, DO SERVIDOR CAMILO DA COSTA SOARES, MATRÍCULA: 6403341-1. SEGUE DOCUMENTAÇÃO EM ANEXO.",
+      "SETOR ATUAL": "IGEPREV - SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA - IGEPREV-SEDE",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 10:25",
+      "PROTOCOLO": "2026/2204045",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "Tribunal de Justiça do Estado",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> COMPLEMENTAÇÃO DO VALOR DA PENSÃO",
+      "COMPLEMENTO": "REVISÃO DO DESCONTO DE PENSÃO ALIMENTÍCIA SOBRE O VENCIMENTO DO SERVIDOR BENEDITO DAMASCENO BIBIANO FILHO",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 11:42",
+      "PROTOCOLO": "2025/2581724",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "28/04/2025",
+      "INTERESSADO": "FRANCISCA DOS SANTOS MACEDO",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA A FOLHA DE PAGAMENTO -> PECÚNIA",
+      "COMPLEMENTO": "PECUNIA POR MORTE",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 14:52",
+      "PROTOCOLO": "2026/2209484",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> VALE TRANSPORTE",
+      "COMPLEMENTO": "Concessão de Vale Transporte para estagiária Fabiola Donatoni da Silva",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNOS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE ASSUNTOS INTERNOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 14:54",
+      "PROTOCOLO": "2026/2209254",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "SEDUC",
+      "ASSUNTO": "RECURSOS HUMANOS -> BOLETIM DE FREQUÊNCIA",
+      "COMPLEMENTO": "Mapa de Frequência Gabinete/SAGEP",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 15:28",
+      "PROTOCOLO": "2026/2192829",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "06/02/2026",
+      "INTERESSADO": "Procuradoria Geral do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ACOMPANHAMENTO DE AÇÃO JUDICIAL",
+      "COMPLEMENTO": "Ofício nº 32/2026-PGE-PCTA1",
+      "SETOR ATUAL": "PGE - Central de Cadastros - Procuradoria Cível, Administrativa e Trabalhista 1 - Sede",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "Central de Cadastros"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 10:27",
+      "PROTOCOLO": "2026/2210434",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "UNIVERSIDADE FEDERAL DO PARA - UFPA",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> AUXÍLIO ALIMENTAÇÃO",
+      "COMPLEMENTO": "AUXILIO - ALIMENTAÇÃO RECEDIDO EM DUPLICIDADE.",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 13:33",
+      "PROTOCOLO": "2026/2215811",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "11/02/2026",
+      "INTERESSADO": "SAPF- SECRETARIA ADJUNTA DE PLANEJAMENTO E FINANÇAS > SAPF > SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> VALE TRANSPORTE",
+      "COMPLEMENTO": "Solicitação de vale transporte",
+      "SETOR ATUAL": "SEDUC - SAPF- SECRETARIA ADJUNTA DE PLANEJAMENTO E FINANÇAS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAPF"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 14:16",
+      "PROTOCOLO": "2026/2209484",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> VALE TRANSPORTE",
+      "COMPLEMENTO": "Concessão de Vale Transporte para estagiária Fabiola Donatoni da Silva",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNOS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE ASSUNTOS INTERNOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 15:52",
+      "PROTOCOLO": "2026/2032638",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/01/2026",
+      "INTERESSADO": "SEDUC",
+      "ASSUNTO": "RECURSOS HUMANOS -> BOLETIM DE FREQUÊNCIA",
+      "COMPLEMENTO": "Boletim de Frequência Novembro/Dezembro 2025",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 15:53",
+      "PROTOCOLO": "2026/2179186",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "05/02/2026",
+      "INTERESSADO": "JESSICA SUELLEN FLEXA RIBEIRO STRYMPL RODRIGUES",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> VALE TRANSPORTE",
+      "COMPLEMENTO": "Auxílio Transporte - Alteração de Trajeto",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 19:33",
+      "PROTOCOLO": "2025/3797584",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "22/12/2025",
+      "INTERESSADO": "MARIA ISABEL GARCIA CASTRO",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS",
+      "COMPLEMENTO": "Restituição de valores descontados indevidamente, Proc. 2024-1176692",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 12:53",
+      "PROTOCOLO": "2025/2145760",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/02/2025",
+      "INTERESSADO": "ELIENNE FERNANDES MORENO MEDEIROS",
+      "ASSUNTO": "ELABORAÇÃO DE FOLHA DE PAGAMENTO -> AUDITORIA DA FOLHA DE PAGAMENTO",
+      "COMPLEMENTO": "Pagamento indevido de ELIENNE FERNANDES MORENO MEDEIROS",
+      "SETOR ATUAL": "SEDUC - CCM- COORDENADORIA DE CONTROLE E MOVIMENTAÇÃO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CCM"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 14:48",
+      "PROTOCOLO": "2026/2044109",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/01/2026",
+      "INTERESSADO": "NEEMISIA BARROS DE AQUINO FERREIRA",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> EXONERAÇÃO DO CARGO",
+      "COMPLEMENTO": "Encaminha Requerimento com PEDIDO DE EXONERAÇÃO da servidora NEEMISIA BARROS DE AQUINO FERREIRA, matrícula nº 57211538- 1, Auxiliar Operacional e Educacional B.",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 15:29",
+      "PROTOCOLO": "2026/2098291",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "22/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "PODER JUDICIARIO SEÇÃO JUDICIARIA DO PARÁ",
+      "SETOR ATUAL": "SEDUC - ACONT - ASSESSORIA DE CONTABILIDADE - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "ACONT"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 17:05",
+      "PROTOCOLO": "2026/2091588",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "21/01/2026",
+      "INTERESSADO": "SUZANA KARLA MELO DE ARAUJO",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> LICENÇA PARA TRATAR DE INTERESSE PARTICULAR",
+      "COMPLEMENTO": "CANCELAMENTO DA LICENÇA SEM VENCIMENTO E RETORNO DA FUNÇÃO",
+      "SETOR ATUAL": "IGEPREV - SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA - IGEPREV-SEDE",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 10:25",
+      "PROTOCOLO": "2026/2205495",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "LIANA VICENCIA DA CUNHA",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> LICENÇA PARA TRATAR DE INTERESSE PARTICULAR",
+      "COMPLEMENTO": "LICENÇA SEM VENCIMENTO",
+      "SETOR ATUAL": "IGEPREV - SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA - IGEPREV-SEDE",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "SETOR DE ARRECADAÇÃO PREVIDÊNCIÁRIA"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:02",
+      "PROTOCOLO": "2025/2562777",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "23/04/2025",
+      "INTERESSADO": "IZAIAS NAZARENO DO CARMO CARDOSO",
+      "ASSUNTO": "REGISTRO DE FREQUÊNCIA",
+      "COMPLEMENTO": "SOLICITAÇÃO DE DISPENSA DE PONTO - EEEFM PAULINO DE BRITO(DRE BELÉM 07)",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:42",
+      "PROTOCOLO": "2025/3612958",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "06/11/2025",
+      "INTERESSADO": "DOUGLAS GLESIAS CALADO DE BRITO",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> EXONERAÇÃO DO CARGO",
+      "COMPLEMENTO": "Solicitação de Exoneração para DOUGLAS GLESIAS CALADO DE BRITO, da EE. Cônego Leitão/Castanhal.",
+      "SETOR ATUAL": "SEDUC - DIFOB- DIRETORIA DE FOLHA DE BENEFÍCIOS - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "DIFOB"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 19:57",
+      "PROTOCOLO": "2025/2899876",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "27/06/2025",
+      "INTERESSADO": "MOACIR ROBLEDO DE OLIVEIRA",
+      "ASSUNTO": "DEFESA DOS DIREITOS DE USUÁRIOS DO SERVIÇO PÚBLICO -> SOLICITAÇÂO (DIREITOS DE USUÁRIOS)",
+      "COMPLEMENTO": "RETIRADA DE FALTAS GREVE",
+      "SETOR ATUAL": "SEDUC - DIFOB- DIRETORIA DE FOLHA DE BENEFÍCIOS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "DIFOB"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 16:46",
+      "PROTOCOLO": "2026/2213132",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "11/02/2026",
+      "INTERESSADO": "TEOFILO DA SILVA NEVES",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> REINTEGRAÇÃO DE CARGO",
+      "COMPLEMENTO": "CONFORME REQUERIMENTO",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 17:14",
+      "PROTOCOLO": "2025/3676517",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "25/11/2025",
+      "INTERESSADO": "JEANNY CRISTINA SILVA LIRA FIGUEIRA",
+      "ASSUNTO": "AUTUAÇÃO E PROTOCOLO",
+      "COMPLEMENTO": "OF 3610 PGE GAB JEANNY CRISTINA SILVA LIRA FIGUEIRA",
+      "SETOR ATUAL": "PGE - Secretaria da Procuradoria da Regional - Sede",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "Secretaria da Procuradoria da Regional"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 17:14",
+      "PROTOCOLO": "2024/2541117",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/12/2024",
+      "INTERESSADO": "JEANNY CRISTINA SILVA LIRA FIGUEIRA",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> EXONERAÇÃO DO CARGO",
+      "COMPLEMENTO": "EXONERAÇÃO",
+      "SETOR ATUAL": "PGE - Secretaria da Procuradoria da Regional - Sede",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "Secretaria da Procuradoria da Regional"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 17:15",
+      "PROTOCOLO": "2025/2660829",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "13/05/2025",
+      "INTERESSADO": "JOSE ALBERTO PINHO S.FILHO",
+      "ASSUNTO": "RECURSOS HUMANOS",
+      "COMPLEMENTO": "RETIRADA DE FALTAS",
+      "SETOR ATUAL": "SEDUC - CONJUR/Processos-SAGEP - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CONJUR/Processos"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 13:54",
+      "PROTOCOLO": "2026/2197061",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "DENISE DA SILVA CAVALCANTI",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> REMOÇÃO",
+      "COMPLEMENTO": "solicita remoção desta unidade de ensino, conforme documento anexo.",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 10:37",
+      "PROTOCOLO": "2026/2204750",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "ANDREZZA DA SILVA MACEDO",
+      "ASSUNTO": "PROCESSO ADMINISTRATIVO ELETRÔNICO (PAE)",
+      "COMPLEMENTO": "Solicitação de redução de jornada de trabalho da servidora Andrezza da Silva Macedo, matrícula 57208491/1 que é lotada na E.E. Dr. José Márcio Ayres.",
+      "SETOR ATUAL": "SEDUC - DRE BELEM 08- DIRETORIA REGIONAL DE ENSINO BELÉM 08 - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "DRE BELEM 08"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 13:53",
+      "PROTOCOLO": "2026/2178023",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "05/02/2026",
+      "INTERESSADO": "Conselho Estadual de Educação",
+      "ASSUNTO": "PROCESSO ADMINISTRATIVO ELETRÔNICO (PAE) -> CADASTRO NO PAE",
+      "COMPLEMENTO": "Solicitação Servidora",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 17:09",
+      "PROTOCOLO": "2026/2146613",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "30/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "EXECUÇÃO DE SERVIÇOS DE INFRAESTRUTURA",
+      "COMPLEMENTO": "Despacho/mandado/ofício nº 015/2026-MP/2ª PJR",
+      "SETOR ATUAL": "SEDUC - SAL JUDICIAL - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SAL JUDICIAL"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 11:55",
+      "PROTOCOLO": "2025/3324802",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/09/2025",
+      "INTERESSADO": "ELIANA CAMARA CUTRIM",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> RESSARCIMENTO DE CUSTOS DE CESSÃO DE SERVIDOR",
+      "COMPLEMENTO": "Cedência de Servidor",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNOS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE ASSUNTOS INTERNOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 15:49",
+      "PROTOCOLO": "2026/2088246",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "20/01/2026",
+      "INTERESSADO": "DRE BRAGANÇA- DIRETORIA REGIONAL DE ENSINO BRAGANÇA > DRE BRAGANCA > SEDUC",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> LOTAÇÃO",
+      "COMPLEMENTO": "SOLICITAÇÃO DE AUTORIZAÇÃO DE LOTAÇÃO DA PROFESSORA KELUBIA SOARES TEIXEIRA EM TURMAS DA EDUCAÇÃO ESPECIAL",
+      "SETOR ATUAL": "SEDUC - DRE BRAGANÇA- DIRETORIA REGIONAL DE ENSINO BRAGANÇA - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "DRE BRAGANÇA"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 10:00",
+      "PROTOCOLO": "2025/3794870",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "19/12/2025",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "Ofício nº 1225/2025-PGJ/MPPA - Devoluçãoservidora Ana Paula Dantas Nery",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:49",
+      "PROTOCOLO": "2026/2029997",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/01/2026",
+      "INTERESSADO": "GLORIA MARIA FARIAS DA ROCHA",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> APOSENTADORIA VOLUNTÁRIA",
+      "COMPLEMENTO": "APOSENTADORIA VOLUNTÁRIA",
+      "SETOR ATUAL": "SEDUC - CAPO - COORDENADORIA DE APOSENTADORIA - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CAPO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 12:10",
+      "PROTOCOLO": "2026/2006547",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "05/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "REGULARIZAÇÃO ESCOLAR -> REGIMENTO ESCOLAR - REGULARIZAÇÃO ESCOLAR",
+      "COMPLEMENTO": "ALTERAÇÃO DE NOMENCLATURA DE ESCOLA",
+      "SETOR ATUAL": "SEDUC - DIOP- DIRETORIA DE ORGANIZAÇÃO DE PESSOAL - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "DIOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 10:21",
+      "PROTOCOLO": "2026/2170851",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "04/02/2026",
+      "INTERESSADO": "Secretaria de Estado de Esporte e Lazer",
+      "ASSUNTO": "EXECUÇÃO, ACOMPANHAMENTO E AVALIAÇÃO DE ATIVIDADES -> RELATÓRIO DE ACOMPANHAMENTO DE CONVÊNIO, TERMO DE COOPERAÇÃO, ACORDO, PROTOCOLO DE INTENÇÕES, TERMO DE PARCERIA",
+      "COMPLEMENTO": "ACORDO DE COOPERAÇÃO TÉCNICA Nº 01/2025",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 10:56",
+      "PROTOCOLO": "2026/2229793",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "13/02/2026",
+      "INTERESSADO": "LUCILENE LIMA DIAS PIMENTEL",
+      "ASSUNTO": "MOVIMENTAÇÃO E REGISTRO FUNCIONAL DO MAGISTÉRIO -> LOTAÇÃO DO MAGISTÉRIO",
+      "COMPLEMENTO": "EM VIRTUDE DA NÃO PRORROGAÇÃO DO ACORDO TECNICO DESISTEMCIA",
+      "SETOR ATUAL": "SEDUC - DRE BELEM 03- DIRETORIA REGIONAL DE ENSINO BELÉM 03 - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "DRE BELEM 03"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 14:14",
+      "PROTOCOLO": "2026/2230841",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "13/02/2026",
+      "INTERESSADO": "DRE TUCURUI- DIRETORIA REGIONAL DE ENSINO TUCURUI > DRE TUCURUI > SEDUC",
+      "ASSUNTO": "MOVIMENTAÇÃO E REGISTRO FUNCIONAL DO MAGISTÉRIO -> CONTRATAÇÃO TEMPORÁRIA DE DOCENTE",
+      "COMPLEMENTO": "Solicitamos a contratações de docentes.",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 14:00",
+      "PROTOCOLO": "2026/2199156",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "DRE MONTE ALEGRE- DIRETORIA REGIONAL DE ENSINO MONTE ALEGRE > DRE MONTE ALEGRE > SEDUC",
+      "ASSUNTO": "DISTRIBUIÇÃO E ACOMPANHAMENTO DO TRÂMITE -> REITERAÇÃO DE SOLICITAÇÃO DE DOCUMENTOS",
+      "COMPLEMENTO": "SAGEP- SOLICITAÇÃO FORMAL DE DOCUMENTAÇÃO",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 10:18",
+      "PROTOCOLO": "2026/2167390",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/02/2026",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Acórdãos TCE. ADMISSÃO DE PESSOAL - TEMPORÁRIO.",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 13:16",
+      "PROTOCOLO": "2026/2061260",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "14/01/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "COORDENAÇÃO DA EDUCAÇÃO ESPECIAL",
+      "COMPLEMENTO": "Procedimento Administrativo SAJ nº 09.2026.00000034-3",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 09:55",
+      "PROTOCOLO": "2026/2148361",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "30/01/2026",
+      "INTERESSADO": "CENTRO DE INTEGRACAO EMPRESA ESCOLA - CIEE",
+      "ASSUNTO": "PAGAMENTO DE DESPESAS ESPECÍFICAS -> PAGAMENTO DE FATURA / NOTAS FISCAIS",
+      "COMPLEMENTO": "SOLICITAÇÃO DE PAGAMENTO CIEE, DOS MESES DE SETEMBRO, OUTUBRO, NOVEMBRO E DEZEMBRO / 2024",
+      "SETOR ATUAL": "SEFA - CONJUR-GTAF - Grupo Técnico de Ajuste Fiscal - ÓRGÃO CENTRAL",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CONJUR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 16:30",
+      "PROTOCOLO": "2026/2172415",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "04/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "COORDENAÇÃO DA EDUCAÇÃO ESPECIAL",
+      "COMPLEMENTO": "P.A nº 09.2026.00000714-7 - Solicitação de Acompanhamento Especializado",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 11:17",
+      "PROTOCOLO": "2026/2229425",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "13/02/2026",
+      "INTERESSADO": "DRE TUCURUI- DIRETORIA REGIONAL DE ENSINO TUCURUI > DRE TUCURUI > SEDUC",
+      "ASSUNTO": "MOVIMENTAÇÃO E REGISTRO FUNCIONAL DO MAGISTÉRIO -> CONTRATAÇÃO TEMPORÁRIA DE DOCENTE",
+      "COMPLEMENTO": "Solicitamos a contratações de docentes.",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 12:14",
+      "PROTOCOLO": "2025/2432529",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "27/03/2025",
+      "INTERESSADO": "OUVIDORIA > OUVIS > SEDUC",
+      "ASSUNTO": "DEFESA DOS DIREITOS DE USUÁRIOS DO SERVIÇO PÚBLICO -> RECLAMAÇÃO OU SUGESTÃO",
+      "COMPLEMENTO": "SIGO 2919",
+      "SETOR ATUAL": "SEDUC - DIFOB- DIRETORIA DE FOLHA DE BENEFÍCIOS - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "DIFOB"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 14:27",
+      "PROTOCOLO": "2025/2635391",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "08/05/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA A FOLHA DE PAGAMENTO -> PAGAMENTO DE RETROATIVOS",
+      "COMPLEMENTO": "SOLICITA RESSARCIMENTO DOS VALORES DE MARÇO/2024 A MAIO/2025 DA SERVIDORA CEDIDA AO TCE/PA",
+      "SETOR ATUAL": "SEDUC - DIFOB- DIRETORIA DE FOLHA DE BENEFÍCIOS - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "DIFOB"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 09:55",
+      "PROTOCOLO": "2025/3799133",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "22/12/2025",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "ELABORAÇÃO DE FOLHA DE PAGAMENTO",
+      "COMPLEMENTO": "UFPA-MILENE RISUENHO LUANDE",
+      "SETOR ATUAL": "SEDUC - DIFOB- DIRETORIA DE FOLHA DE BENEFÍCIOS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "DIFOB"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 11:09",
+      "PROTOCOLO": "2025/2411479",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "24/03/2025",
+      "INTERESSADO": "Instituto de Gestão Previdenciária do Estado do Pará",
+      "ASSUNTO": "RECOLHIMENTO -> CONTRIBUIÇÃO PREVIDENCIÁRIA",
+      "COMPLEMENTO": "Notificação sobre irregularidade previdenciária de servidores em Licença sem Remuneração",
+      "SETOR ATUAL": "SEDUC - SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 12:35",
+      "PROTOCOLO": "2026/2187159",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "06/02/2026",
+      "INTERESSADO": "MARIA DILMA SANTOS ALMEIDA",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA A FOLHA DE PAGAMENTO -> REALIZAÇÃO DE PAGAMENTO DE PRECATÓRIO",
+      "COMPLEMENTO": "Trata-se do ofício 058/2026 que reiterar o ofício 860/2025-SEAC Porcesso 0801265- 76.2024.8.14.0008 - existência de valores do FUNDEF para servidora Maria Dilma Santos Almeida",
+      "SETOR ATUAL": "SEDUC - DIFOB- DIRETORIA DE FOLHA DE BENEFÍCIOS - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "DIFOB"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 10:58",
+      "PROTOCOLO": "2026/2204931",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "Iranilda Carvalheiro Bahia",
+      "ASSUNTO": "ELABORAÇÃO DE CONTRATOS DE TRABALHO E ATOS RELATIVOS À SUA ALTERAÇÃO, SUSPENSÃO E RESCISÃO -> DISPENSA OU DESLIGAMENTO",
+      "COMPLEMENTO": "Desligamento de estagiário à pedido.",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 11:08",
+      "PROTOCOLO": "2026/2203752",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "COPI- COORDENADORIA DE PATRIMONIAL IMOBILIÁRIO > COPI > SEDUC",
+      "ASSUNTO": "ELABORAÇÃO DE CONTRATOS DE TRABALHO E ATOS RELATIVOS À SUA ALTERAÇÃO, SUSPENSÃO E RESCISÃO -> CONTRATAÇÃO DE ESTAGIÁRIO",
+      "COMPLEMENTO": "SOLICITAÇÃO DE ENCERRAMENTO DE ESTÁGIO",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 14:55",
+      "PROTOCOLO": "2026/2209355",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "DRE TUCURUI- DIRETORIA REGIONAL DE ENSINO TUCURUI > DRE TUCURUI > SEDUC",
+      "ASSUNTO": "MOVIMENTAÇÃO E REGISTRO FUNCIONAL DO MAGISTÉRIO -> CONTRATAÇÃO TEMPORÁRIA DE DOCENTE",
+      "COMPLEMENTO": "Contratação temporária docente.",
+      "SETOR ATUAL": "SEDUC - COR- COORDENADORIA DE ORGANIZAÇÃO DE REDE - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "COR"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 15:42",
+      "PROTOCOLO": "2026/2209855",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "DRE TUCURUI- DIRETORIA REGIONAL DE ENSINO TUCURUI > DRE TUCURUI > SEDUC",
+      "ASSUNTO": "MOVIMENTAÇÃO E REGISTRO FUNCIONAL DO MAGISTÉRIO -> CONTRATAÇÃO TEMPORÁRIA DE DOCENTE",
+      "COMPLEMENTO": "CONTRATAÇÃO TEMPORARIA DOCENTE.",
+      "SETOR ATUAL": "SEDUC - DRE TUCURUI- DIRETORIA REGIONAL DE ENSINO TUCURUI - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "DRE TUCURUI"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 16:13",
+      "PROTOCOLO": "2026/2205854",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "MARIA DO SOCORRO DOS SANTOS JUCA",
+      "ASSUNTO": "RECURSOS HUMANOS",
+      "COMPLEMENTO": "OFICIO Nº 001/2026 , SOLICITAMOS A V.Sa; UM ESPACO NA AGENDA ANTES DO DIA: 25 DE FEVEREIRO DE 2026, COM ACOMISSÃO D PROFESSORES DE LETRAS LIBRAS, PARA INCLUSÃO DE VAGAS.",
+      "SETOR ATUAL": "SEDUC - DIPSE- DIRETORIA DE PLANEJAMENTO SELEÇÃO E EVIDÊNCIA - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "DIPSE"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 13:32",
+      "PROTOCOLO": "2026/2232305",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "13/02/2026",
+      "INTERESSADO": "MARGARIZE RUTE CANTAO LOPES",
+      "ASSUNTO": "ELABORAÇÃO DE CONTRATOS DE TRABALHO E ATOS RELATIVOS À SUA ALTERAÇÃO, SUSPENSÃO E RESCISÃO -> DISPENSA OU DESLIGAMENTO",
+      "COMPLEMENTO": "Desligamento do estagiário Marcello Gabriel de Deus do Nascimento",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 14:42",
+      "PROTOCOLO": "2026/2230249",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "13/02/2026",
+      "INTERESSADO": "RODRIGO WENDELL RODRIGUES DA SILVA",
+      "ASSUNTO": "ELABORAÇÃO DE CONTRATOS DE TRABALHO E ATOS RELATIVOS À SUA ALTERAÇÃO, SUSPENSÃO E RESCISÃO -> RESCISÃO DE CONTRATO INDIVIDUAL DE TRABALHO",
+      "COMPLEMENTO": "SOLICITA CÓPIA DE CONTRATO DO EX SERVIDOR RODRIGO WENDEL RODRIGUES DA SILVA, CONF. DOCUMENTO EM ANEXO.",
+      "SETOR ATUAL": "SEDUC - DIPSE- DIRETORIA DE PLANEJAMENTO SELEÇÃO E EVIDÊNCIA - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "DIPSE"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:01",
+      "PROTOCOLO": "2026/2207821",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "DRE BELEM 01- DIRETORIA REGIONAL DE ENSINO BELÉM 01 > DRE BELEM 01 > SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> TEMPO INTEGRAL",
+      "COMPLEMENTO": "GRATIFICAÇÃO DE TEMPO INTEGRAL PARA O PROTOCOLISTA (MODULO DRE BELÉM 01 - PAE 2026/2202684)",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 15:10",
+      "PROTOCOLO": "2026/2207862",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "DRE BELEM 01- DIRETORIA REGIONAL DE ENSINO BELÉM 01 > DRE BELEM 01 > SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> TEMPO INTEGRAL",
+      "COMPLEMENTO": "GRATIFICAÇÃO DE TEMPO INTEGRAL PARA O APOIO ADMINISTRATIVO A COORDENADORIA REGIONAL DE ADMINISTRAÇÃO (MODULO DRE BELÉM 01 - PAE 2026/2202684)",
+      "SETOR ATUAL": "SEDUC - CFOP- COORDENADORIA DE FOLHA DE PAGAMENTO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "CFOP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 12:00",
+      "PROTOCOLO": "2026/2212389",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "11/02/2026",
+      "INTERESSADO": "DRE BELEM 01- DIRETORIA REGIONAL DE ENSINO BELÉM 01 > DRE BELEM 01 > SEDUC",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> TEMPO INTEGRAL",
+      "COMPLEMENTO": "GRATIFICAÇÃO DE GTI PARA O APOIO ADMINISTRATIVO DA GESTÃO MODULO DE LOTAÇÃO DRE BELÉM 01, PAE (2026/2202684).",
+      "SETOR ATUAL": "SEDUC - DRE BELEM 01- DIRETORIA REGIONAL DE ENSINO BELÉM 01 - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "DRE BELEM 01"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 09:39",
+      "PROTOCOLO": "2025/3309168",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/09/2025",
+      "INTERESSADO": "Fundação Centro de Hemoterapia e Hematologia do Pará",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> CESSÃO",
+      "COMPLEMENTO": "Retorno de servidor",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNOS - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE ASSUNTOS INTERNOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 10:47",
+      "PROTOCOLO": "2025/3596046",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "04/11/2025",
+      "INTERESSADO": "PREFEITURA MUNICIPAL DE CASTANHAL",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "Rosimar Possidonio do Nascimento/castanlhal",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE GESTÃO DE CESSÃO E MOVIMENTAÇÃO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE GESTÃO DE CESSÃO E MOVIMENTAÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 14:25",
+      "PROTOCOLO": "2026/2201144",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "PUBLICAÇÃO OFICIAL E COEDIÇÃO",
+      "COMPLEMENTO": "Envio de minuta da PORTARIA, que dispõe sobre a instituição da Comissão Gestora do Pagamento da Bonificação do Programa de Melhoria da Gestão de Aprendizagem da Educação Básica",
+      "SETOR ATUAL": "SEDUC - SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 08:45",
+      "PROTOCOLO": "2026/2088809",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "20/01/2026",
+      "INTERESSADO": "Fundação Paraense de Radiodifusão",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> RESSARCIMENTO DE CUSTOS DE CESSÃO DE SERVIDOR",
+      "COMPLEMENTO": "Solicitação de Cessão de Servidor",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 11:42",
+      "PROTOCOLO": "2025/3661484",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "19/11/2025",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "Ofício nº 1086/2025-PGJ/MPPA",
+      "SETOR ATUAL": "MPPA - Procuradoria-Geral de Justiça - Ministério Público do Estado do Pará - Sede Administrativa",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "Procuradoria"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 14:17",
+      "PROTOCOLO": "2026/2141307",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "29/01/2026",
+      "INTERESSADO": "Governo do Estado do Amazonas",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> RESSARCIMENTO DE CUSTOS DE CESSÃO DE SERVIDOR",
+      "COMPLEMENTO": "SOLICITAÇÃO DO PAGAMENTO REFERENTE AO REEMBOLSO DA CESSÃO DO SERVIDOR TIAGO LIMA E SILVA DE MARÇO A AGOSTO- 2025",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO ADMINISTRATIVO DE CONTROLE DE RECURSOS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO ADMINISTRATIVO DE CONTROLE DE RECURSOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 15:44",
+      "PROTOCOLO": "2026/2059956",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "14/01/2026",
+      "INTERESSADO": "DRE CAPANEMA- DIRETORIA REGIONAL DE ENSINO CAPANEMA > DRE CAPANEMA > SEDUC",
+      "ASSUNTO": "CELEBRAÇÃO DE CONVÊNIOS, ACORDOS E TERMOS EDUCACIONAIS -> CELEBRAÇÃO TÉCNICA DE CONVÊNIOS OU ACORDOS EM APOIO TÉCNICO PARA A CEDÊNCIA DE PROFISSIONAIS DO MAGISTÉRIO",
+      "COMPLEMENTO": "SOLICITAÇÃO DE CESSÃO DE SERVIDOR",
+      "SETOR ATUAL": "SEDUC - SAGEP- SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "SAGEP"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 16:23",
+      "PROTOCOLO": "2025/3615532",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "07/11/2025",
+      "INTERESSADO": "Tribunal de Justiça do Estado",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "Processo: SEI/TJPA nº 0028479- 81.2025.8.14.0900 - DECISÃO",
+      "SETOR ATUAL": "SEPLAD - Secretaria Adjunta de Gestão de Pessoas - SEDE",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "Secretaria Adjunta de Gestão de Pessoas"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 16:28",
+      "PROTOCOLO": "2025/3674174",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "24/11/2025",
+      "INTERESSADO": "MILTON BOULHOSA RIBEIRO MALATO",
+      "ASSUNTO": "ELABORAÇÃO DE ESTUDOS E PESQUISAS -> CONTRATAÇÃO E QUALIFICAÇÃO DE RECURSOS HUMANOS",
+      "COMPLEMENTO": "Prorrogação de cessão de MILTON BOULHOSA RIBEIRO MALATO",
+      "SETOR ATUAL": "GABGOV (Casa Civil) - Assessoria Jurídica - Governadoria do Estado",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "Assessoria Jurídica"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 18:28",
+      "PROTOCOLO": "2025/3681599",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "26/11/2025",
+      "INTERESSADO": "CELINA FROTA DE ALMEIDA KOURY",
+      "ASSUNTO": "ELABORAÇÃO DE CONTRATOS DE TRABALHO E ATOS RELATIVOS À SUA ALTERAÇÃO, SUSPENSÃO E RESCISÃO -> PRORROGAÇÃO DE CONTRATO INDIVIDUAL DE TRABALHO",
+      "COMPLEMENTO": "Servidora : Geisa Acácia",
+      "SETOR ATUAL": "DETRAN - CHEFIA DE GABINETE - DEPARTAMENTO DE TRÂNSITO DO ESTADO DO PARÁ- SEDE",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CHEFIA DE GABINETE"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 08:23",
+      "PROTOCOLO": "2026/2174820",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "04/02/2026",
+      "INTERESSADO": "Tribunal Regional Eleitoral",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> CESSÃO",
+      "COMPLEMENTO": "Ofício 211/2026-TRE requisitando a servidora Carla Rossy Freitas Monteiro.",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE ASSUNTOS INTERNOS - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE ASSUNTOS INTERNOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 16:19",
+      "PROTOCOLO": "2026/2086962",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "20/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "ELABORAÇÃO DE EXPEDIENTES PARA POSSE, PREENCHIMENTO DE FUNÇÃO-ATIVIDADE, PROVIMENTO DE CARGO, VACÂNCIA, SUBSTITUIÇÃO E MOVIMENTAÇÃO -> PRORROGAÇÂO DE CESSÂO",
+      "COMPLEMENTO": "of.nº04/2026-GP",
+      "SETOR ATUAL": "SEDUC - SAGEP NÚCLEO DE GESTÃO DE CESSÃO E MOVIMENTAÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "SAGEP NÚCLEO DE GESTÃO DE CESSÃO E MOVIMENTAÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 10:14",
+      "PROTOCOLO": "2025/2655449",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/05/2025",
+      "INTERESSADO": "MINISTÉRIO PÚBLICO DO ESTADO DO PARÁ",
+      "ASSUNTO": "MOVIMENTAÇÃO E REGISTRO FUNCIONAL DO MAGISTÉRIO -> CONTRATAÇÃO TEMPORÁRIA DE DOCENTE",
+      "COMPLEMENTO": "Procedimento Administrativo nº 09.2025.00000428-0 / Solicitação de contratação de Professores e outras demandas.",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 12:35",
+      "PROTOCOLO": "2026/2197931",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "DISTRIBUIÇÃO E ACOMPANHAMENTO DO TRÂMITE -> REITERAÇÃO DE SOLICITAÇÃO DE DOCUMENTOS",
+      "COMPLEMENTO": "INQUERITO CIVIL Nº 06.2025.00000551-2- REITERAÇÃO.",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "09/02/2026 16:34",
+      "PROTOCOLO": "2026/2167548",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/02/2026",
+      "INTERESSADO": "JUAREZ FAIAL DE AQUINO NETO",
+      "ASSUNTO": "AUTUAÇÃO E PROTOCOLO",
+      "COMPLEMENTO": "Ofício nº 085/2026-MPPA/STM/11PJ - Procedimento Administrativo SAJ nº 09.2025.00003420-7",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "09/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 08:18",
+      "PROTOCOLO": "2026/2202991",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Inquérito Civil SAJ nº 06.2024.00001325-2",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 10:06",
+      "PROTOCOLO": "2026/2203966",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "OUVIDORIA > OUVIS > SEDUC",
+      "ASSUNTO": "DEFESA DOS DIREITOS DE USUÁRIOS DO SERVIÇO PÚBLICO -> RECLAMAÇÃO OU SUGESTÃO",
+      "COMPLEMENTO": "SIGO 5554",
+      "SETOR ATUAL": "SEDUC - OUVIDORIA - SEDUC",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "OUVIDORIA"
+    },
+    {
+      "DATA TRAMITAÇÃO": "10/02/2026 11:18",
+      "PROTOCOLO": "2026/2204963",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "AUTUAÇÃO E PROTOCOLO",
+      "COMPLEMENTO": "Ofício n.º 083/2026 – MPPA/1ªPJCAM",
+      "SETOR ATUAL": "MPPA - Gabinete da Promotoria de Justiça de Cametá - Região Administrativa Tocantins - Sede Abaetetuba",
+      "Data_Curta": "10/02/2026",
+      "SIGLA_SETOR": "Gabinete da Promotoria de Justiça de Cametá"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 10:39",
+      "PROTOCOLO": "2026/2192829",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "06/02/2026",
+      "INTERESSADO": "Procuradoria Geral do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ACOMPANHAMENTO DE AÇÃO JUDICIAL",
+      "COMPLEMENTO": "Ofício nº 32/2026-PGE-PCTA1",
+      "SETOR ATUAL": "PGE - Central de Cadastros - Procuradoria Cível, Administrativa e Trabalhista 1 - Sede",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "Central de Cadastros"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 10:42",
+      "PROTOCOLO": "2026/2204045",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "Tribunal de Justiça do Estado",
+      "ASSUNTO": "CONCESSÃO DE DIREITOS, VANTAGENS E BENEFÍCIOS -> COMPLEMENTAÇÃO DO VALOR DA PENSÃO",
+      "COMPLEMENTO": "REVISÃO DO DESCONTO DE PENSÃO ALIMENTÍCIA SOBRE O VENCIMENTO DO SERVIDOR BENEDITO DAMASCENO BIBIANO FILHO",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 13:05",
+      "PROTOCOLO": "2026/2209436",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "10/02/2026",
+      "INTERESSADO": "COMANDO DA AERONAUTICA",
+      "ASSUNTO": "RECURSOS HUMANOS",
+      "COMPLEMENTO": "SOLICITAÇÃO DE ESCLARECIMENTO SOBRE VINCULO DE TRABALHO",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "11/02/2026 15:38",
+      "PROTOCOLO": "2026/2118055",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "26/01/2026",
+      "INTERESSADO": "Procuradoria Geral do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ACOMPANHAMENTO DE AÇÃO JUDICIAL",
+      "COMPLEMENTO": "EDMILSON DO AMARAL SARRAZIN JUNIOR",
+      "SETOR ATUAL": "PGE - Central de Cadastros - Procuradoria Cível, Administrativa e Trabalhista 2 - Sede",
+      "Data_Curta": "11/02/2026",
+      "SIGLA_SETOR": "Central de Cadastros"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:09",
+      "PROTOCOLO": "2026/2221622",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "REQUISIÇÃO DE INFORMAÇÕES/DOCUMENTOS.",
+      "SETOR ATUAL": "SEDUC - DIARF/JUDICIAL - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "DIARF/JUDICIAL"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:16",
+      "PROTOCOLO": "2026/2219228",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "11/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "DEFESA DOS DIREITOS DE USUÁRIOS DO SERVIÇO PÚBLICO -> SOLICITAÇÂO (DIREITOS DE USUÁRIOS)",
+      "COMPLEMENTO": "Inquérito Civil nº 06.2023.00000727-9",
+      "SETOR ATUAL": "SEDUC - GABINETE PROCESSOS DISTRIBUIDOS - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "GABINETE PROCESSOS DISTRIBUIDOS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 10:10",
+      "PROTOCOLO": "2026/2226936",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "12/02/2026",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Procedimento Administrativo nº 09.2026.00000805-7",
+      "SETOR ATUAL": "SEDUC - CPS- COORDENADORIA DE PLANEJAMENTO E SELEÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CPS"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2025/3716264",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/12/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA referente ao Processo TC/013448/2023 afirmada através do Acórdão n.º 68776",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2025/3714530",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/12/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA - referente ao Processo TC/007470/2023 Acórdão n.º 68772",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2025/3715136",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/12/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA - referente ao Processo TC/007480/2023 Acórdão n.º 68773",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2025/3715772",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/12/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA referente ao Processo TC/009949/2023 Acórdão n.º 68774",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2025/3716134",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/12/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA referente ao Processo TC/001842/2024, formalizada pelo Acórdão nº 68.778",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2025/3743256",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/12/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Referente ao Processo TC/001852/2024, formalizada pelo Acórdão nº 68.806",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2025/3743432",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "09/12/2025",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Referente ao Processo TC/009969/2023, formalizada pelo Acórdão nº 68.804",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2106784",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "23/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de decisão do Plenário do TCE-PA a respeito da Admissão de contratos temporários - SEDUC.",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2107151",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "23/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA sobre admissão de servidor temporário - Seduc.",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2107211",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "23/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA sobre admissão de servidor temporário - Seduc.",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2107261",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "23/01/2026",
+      "INTERESSADO": "Secretaria de Estado de Educação",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA sobre admissão de servidor temporário - Seduc.",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2123330",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "27/01/2026",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA - Referente ao Processo TC/017058/2023 formalizada pelo Acórdão n.º 68.904",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2160858",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/02/2026",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA - Referente ao Processo TC/017068/2023, Acórdão nº 68.970",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2161015",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/02/2026",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "ELABORAÇÃO DE FOLHA DE PAGAMENTO -> AUDITORIA DA FOLHA DE PAGAMENTO",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA - referente ao Processo TC/019407/2023, Acórdão nº 68.971",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2161115",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/02/2026",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA - referente ao Processo TC/019407/2023, Acórdão nº 68.972",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "13/02/2026 15:12",
+      "PROTOCOLO": "2026/2161149",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "03/02/2026",
+      "INTERESSADO": "TRIBUNAL DE CONTAS DO ESTADO",
+      "ASSUNTO": "PRESTAÇÃO DE CONTAS E CONTROLE INTERNO -> AUDITORIA DO TRIBUNAL DE CONTAS DO ESTADO DO PARÁ",
+      "COMPLEMENTO": "Comunicação de Decisão do Plenário do TCE-PA - referente ao Processo TC/019438/2023, formalizada pelo Acórdão nº 69.035",
+      "SETOR ATUAL": "SEDUC - CCM DISPONIBILIDADE/DIREÇÃO - SEDUC",
+      "Data_Curta": "13/02/2026",
+      "SIGLA_SETOR": "CCM DISPONIBILIDADE/DIREÇÃO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:50",
+      "PROTOCOLO": "2025/3507852",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "20/10/2025",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Inquérito Civil nº 09.2025.00001898-4",
+      "SETOR ATUAL": "SEDUC - SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:50",
+      "PROTOCOLO": "2025/3022176",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "16/07/2025",
+      "INTERESSADO": "MINISTÉRIO PÚBLICO DO ESTADO DO PARÁ",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Procedimento Administrativo nº 09.2025.00001898-4",
+      "SETOR ATUAL": "SEDUC - SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:50",
+      "PROTOCOLO": "2025/3372737",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "22/09/2025",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "5PJ-198-2025 - PA 09.2025.00001898-4 - SEDUC",
+      "SETOR ATUAL": "SEDUC - SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:50",
+      "PROTOCOLO": "2025/3383604",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "24/09/2025",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Procedimento Administrativo nº 09.2025.00001898-4",
+      "SETOR ATUAL": "SEDUC - SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO"
+    },
+    {
+      "DATA TRAMITAÇÃO": "12/02/2026 11:50",
+      "PROTOCOLO": "2025/3013879",
+      "TIPO PROTOCOLO": "ELETRONICO",
+      "DATA PROTOCOLO": "15/07/2025",
+      "INTERESSADO": "Ministério Público do Estado do Pará",
+      "ASSUNTO": "ACOMPANHAMENTO E INSTRUÇÃO DE AÇÕES JUDICIAIS E ADMINISTRATIVAS -> ATENDIMENTO DE REQUISIÇÕES, ORDENS JUDICIAIS OU ADMINISTRATIVAS",
+      "COMPLEMENTO": "Ofício n.° 102/2025-5ºPJDPPMA - (REITERAÇÃO OF. 075/2025-5ºPJDPPMA)",
+      "SETOR ATUAL": "SEDUC - SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO - SEDUC",
+      "Data_Curta": "12/02/2026",
+      "SIGLA_SETOR": "SAGEP SOBRESTAR DECISÃO DO SECRETÁRIO"
     }
   ]
 }
