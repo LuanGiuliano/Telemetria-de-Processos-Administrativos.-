@@ -1,0 +1,10 @@
+*.py
+requirements.txt
+motor_etl/
+__pycache__/
+relatorios_semanais/
+*.pdf
+*.txt
+*.json
+!frontend/
+!frontend/**
