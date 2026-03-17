@@ -124,8 +124,7 @@ const DashboardMicro = () => {
     });
     return Object.entries(counts)
       .map(([name, value]) => ({ name, value }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
+      .sort((a, b) => b.value - a.value);
   }, [filteredData]);
 
   useEffect(() => {
@@ -140,6 +139,23 @@ const DashboardMicro = () => {
   const totalProcessos = filteredData.length;
   const mediaDiaria = activeTimeline.length > 0 ? Math.round(totalProcessos / activeTimeline.length) : 0;
   const diasAnalisados = activeTimeline.length;
+
+  const dateRange = useMemo(() => {
+    if (rawData.length === 0) return null;
+    const dates = rawData.map(d => new Date(d.Data_Curta)).filter(d => !isNaN(d.getTime()));
+    if (dates.length === 0) return null;
+    const minDate = new Date(Math.min(...dates));
+    const maxDate = new Date(Math.max(...dates));
+    
+    const format = (d) => {
+      const day = String(d.getUTCDate()).padStart(2, '0');
+      const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+      const year = d.getUTCFullYear();
+      return `${day}/${month}/${year}`;
+    };
+    
+    return `de ${format(minDate)} a ${format(maxDate)}`;
+  }, [rawData]);
 
   const totalItems = filteredData.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -159,6 +175,15 @@ const DashboardMicro = () => {
     <div className="z-10 relative">
       <motion.div initial="hidden" animate="show" variants={containerVariants}>
         
+        {dateRange && (
+          <div className="flex justify-end mb-4">
+            <div className="bg-white/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/40 shadow-sm flex items-center gap-2 text-white text-xs font-bold uppercase tracking-wider">
+              <Calendar size={14} className="text-green-200" />
+              <span>Atualizado: {dateRange}</span>
+            </div>
+          </div>
+        )}
+
         {/* Filtros em Glassmorphism */}
         <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-slate-100 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="flex items-center gap-2 w-full md:w-1/2 relative">
@@ -277,7 +302,7 @@ const DashboardMicro = () => {
         <AnimatePresence mode='wait'>
           <motion.div key={`${selectedSetor}-${searchTerm}`} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative group" onClick={() => setIsSetorModalOpen(true)}>
-              <div className="absolute top-4 right-4 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Ver Todos</div>
+              <div className="absolute top-4 right-4 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">Ver Todos</div>
               <div className="flex items-center gap-3 text-slate-800 mb-4 px-2">
                 <PieChartIcon className="text-emerald-500" />
                 <h3 className="text-lg font-bold">Top 5 - Setores Demandantes</h3>
@@ -290,7 +315,13 @@ const DashboardMicro = () => {
                         {activeSetores.slice(0, 5).map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS_SETORES[index % COLORS_SETORES.length]} />)}
                       </Pie>
                       <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} itemStyle={{ color: '#1e293b', fontWeight: 'bold' }} />
-                      <Legend verticalAlign="bottom" height={80} iconType="circle" wrapperStyle={{ fontSize: '13px', paddingTop: '20px', fontWeight: '500' }} />
+                      <Legend 
+                        verticalAlign="bottom" 
+                        height={110} 
+                        iconType="circle" 
+                        formatter={(value) => <span className="text-slate-600 font-medium">{value.length > 35 ? value.substring(0, 35) + '...' : value}</span>}
+                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} 
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (<div className="h-full flex items-center justify-center text-slate-400">Nenhum dado</div>)}
@@ -298,7 +329,7 @@ const DashboardMicro = () => {
             </div>
 
             <div className="bg-white rounded-3xl p-6 shadow-xl border border-slate-100 cursor-pointer hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative group" onClick={() => setIsAssuntoModalOpen(true)}>
-              <div className="absolute top-4 right-4 bg-teal-100 text-teal-700 text-[10px] font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Ver Todos</div>
+              <div className="absolute top-4 right-4 bg-teal-100 text-teal-700 text-[10px] font-bold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">Ver Todos</div>
               <div className="flex items-center gap-3 text-slate-800 mb-4 px-2">
                 <PieChartIcon className="text-teal-500" />
                 <h3 className="text-lg font-bold">Top 5 - Assuntos Principais</h3>
@@ -307,11 +338,17 @@ const DashboardMicro = () => {
                 {activeAssuntos.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
-                      <Pie data={activeAssuntos} cx="50%" cy="40%" innerRadius={70} outerRadius={100} paddingAngle={5} dataKey="value" stroke="none">
-                        {activeAssuntos.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS_ASSUNTOS[index % COLORS_ASSUNTOS.length]} />)}
+                      <Pie data={activeAssuntos.slice(0, 5)} cx="50%" cy="40%" innerRadius={70} outerRadius={100} paddingAngle={5} dataKey="value" stroke="none">
+                        {activeAssuntos.slice(0, 5).map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS_ASSUNTOS[index % COLORS_ASSUNTOS.length]} />)}
                       </Pie>
                       <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} itemStyle={{ color: '#1e293b', fontWeight: 'bold' }} />
-                      <Legend verticalAlign="bottom" height={80} iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }} />
+                      <Legend 
+                        verticalAlign="bottom" 
+                        height={110} 
+                        iconType="circle" 
+                        formatter={(value) => <span className="text-slate-600 font-medium">{value.length > 35 ? value.substring(0, 35) + '...' : value}</span>}
+                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} 
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (<div className="h-full flex items-center justify-center text-slate-400">Nenhum dado</div>)}
@@ -383,9 +420,20 @@ const DashboardMicro = () => {
                       formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
                     }
                   }
+
+                  // Extrai a hora do protocolo se existir (formato "HH:MM PROTOCOLO")
+                  const fullProt = item.PROTOCOLO || '';
+                  const timeMatch = fullProt.match(/^(\d{2}:\d{2})\s/);
+                  const timePart = timeMatch ? timeMatch[1] : '';
+                  const protPart = fullProt.replace(/^(\d{2}:\d{2})\s/, '').trim();
+                  
+                  if (timePart) {
+                    formattedDate = `${formattedDate} ${timePart}`;
+                  }
+
                   return (
                   <tr key={idx} className="bg-white border-b hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap">{item.PROTOCOLO}</td>
+                    <td className="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap">{protPart}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{formattedDate}</td>
                     <td className="px-6 py-4">
                       <span className="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-emerald-200">
@@ -424,6 +472,92 @@ const DashboardMicro = () => {
           )}
         </motion.div>
       </motion.div>
+
+      {/* Modal - Lista Completa Setores */}
+      <AnimatePresence>
+        {isSetorModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setIsSetorModalOpen(false)}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[80vh] overflow-hidden shadow-2xl relative z-10 flex flex-col"
+            >
+              <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <div>
+                  <h3 className="text-2xl font-black text-slate-800">Todos os Setores</h3>
+                  <p className="text-slate-400 text-sm font-medium uppercase tracking-widest mt-1">Ranking Completo</p>
+                </div>
+                <button 
+                  onClick={() => setIsSetorModalOpen(false)}
+                  className="p-3 hover:bg-slate-200 rounded-full transition-colors text-slate-400 hover:text-slate-600"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-6 space-y-3 custom-scrollbar">
+                {activeSetores.map((setor, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 transition-all group">
+                    <div className="flex items-center gap-4">
+                      <span className="w-8 h-8 flex items-center justify-center bg-white rounded-full text-xs font-bold text-slate-400 group-hover:text-emerald-600 shadow-sm border border-slate-100">{idx + 1}</span>
+                      <span className="font-bold text-slate-700 text-base">{setor.name}</span>
+                    </div>
+                    <span className="bg-emerald-100 text-emerald-700 font-black px-4 py-1.5 rounded-xl text-lg">{setor.value}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal - Lista Completa Assuntos */}
+      <AnimatePresence>
+        {isAssuntoModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setIsAssuntoModalOpen(false)}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-white rounded-[2.5rem] w-full max-w-2xl max-h-[80vh] overflow-hidden shadow-2xl relative z-10 flex flex-col"
+            >
+              <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <div>
+                  <h3 className="text-2xl font-black text-slate-800">Todos os Assuntos</h3>
+                  <p className="text-slate-400 text-sm font-medium uppercase tracking-widest mt-1">Ranking Completo</p>
+                </div>
+                <button 
+                  onClick={() => setIsAssuntoModalOpen(false)}
+                  className="p-3 hover:bg-slate-200 rounded-full transition-colors text-slate-400 hover:text-slate-600"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-6 space-y-3 custom-scrollbar">
+                {activeAssuntos.map((assunto, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-teal-200 hover:bg-teal-50/30 transition-all group">
+                    <div className="flex items-center gap-4">
+                      <span className="w-8 h-8 flex items-center justify-center bg-white rounded-full text-xs font-bold text-slate-400 group-hover:text-teal-600 shadow-sm border border-slate-100">{idx + 1}</span>
+                      <span className="font-bold text-slate-700 text-base">{assunto.name}</span>
+                    </div>
+                    <span className="bg-teal-100 text-teal-700 font-black px-4 py-1.5 rounded-xl text-lg">{assunto.value}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
