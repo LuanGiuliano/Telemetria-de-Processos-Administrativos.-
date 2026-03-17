@@ -74,11 +74,11 @@ const DashboardMacro = () => {
       const sex = parseInt(item.Estoque_Final || item.Estoque_Sexta || 0, 10);
       const delta = sex - seg;
 
-      const leaf = { 
+      const leaf = {
         ...item,
-        name: setorName, 
-        seg, 
-        sex, 
+        name: setorName,
+        seg,
+        sex,
         delta,
         Semana_Referencia: item.Semana_Referencia || `${item.Data_Inicio} a ${item.Data_Fim}`
       };
@@ -113,7 +113,7 @@ const DashboardMacro = () => {
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { staggerChildren: 0.1 } }
   };
-  
+
   const itemVariants = {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0 }
@@ -126,13 +126,13 @@ const DashboardMacro = () => {
       { name: 'Final da Semana', value: selectedSector.sex, color: selectedSector.delta > 0 ? '#ef4444' : '#10b981' }
     ];
 
-    const efficiency = selectedSector.seg > 0 
-      ? Math.round(((selectedSector.seg - selectedSector.sex) / selectedSector.seg) * 100) 
+    const efficiency = selectedSector.seg > 0
+      ? Math.round(((selectedSector.seg - selectedSector.sex) / selectedSector.seg) * 100)
       : 0;
 
     return (
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="pt-4 pb-12 w-full z-10 relative">
-        <button 
+        <button
           onClick={() => setSelectedSector(null)}
           className="flex items-center gap-2 text-white font-bold mb-8 hover:bg-white/10 px-4 py-2 rounded-xl transition-all"
         >
@@ -170,10 +170,10 @@ const DashboardMacro = () => {
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <RechartsTooltip 
+                    <RechartsTooltip
                       contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                     />
-                    <Legend verticalAlign="bottom" height={36}/>
+                    <Legend verticalAlign="bottom" height={36} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -192,24 +192,24 @@ const DashboardMacro = () => {
                 </div>
 
                 <div className={`p-8 rounded-[2.5rem] flex flex-col justify-center border-2 ${selectedSector.delta > 0 ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'}`}>
-                   <p className="text-sm font-bold opacity-60 uppercase mb-2">Variação Líquida (Delta)</p>
-                   <div className="flex items-center gap-4">
-                      <span className={`text-6xl font-black ${selectedSector.delta > 0 ? 'text-red-600' : 'text-emerald-600'}`}>
-                        {selectedSector.delta > 0 ? '+' : ''}{selectedSector.delta}
-                      </span>
-                      {selectedSector.delta > 0 ? <TrendingUp size={48} className="text-red-400" /> : <TrendingDown size={48} className="text-emerald-400" />}
-                   </div>
-                   <p className="text-sm font-medium mt-4 text-slate-600">
-                     {selectedSector.delta > 0 
-                       ? "Atenção: O estoque cresceu neste período." 
-                       : "Excelente: Houve vazão líquida positiva (redução de estoque)."}
-                   </p>
+                  <p className="text-sm font-bold opacity-60 uppercase mb-2">Variação Líquida (Delta)</p>
+                  <div className="flex items-center gap-4">
+                    <span className={`text-6xl font-black ${selectedSector.delta > 0 ? 'text-red-600' : 'text-emerald-600'}`}>
+                      {selectedSector.delta > 0 ? '+' : ''}{selectedSector.delta}
+                    </span>
+                    {selectedSector.delta > 0 ? <TrendingUp size={48} className="text-red-400" /> : <TrendingDown size={48} className="text-emerald-400" />}
+                  </div>
+                  <p className="text-sm font-medium mt-4 text-slate-600">
+                    {selectedSector.delta > 0
+                      ? "Atenção: O estoque cresceu neste período."
+                      : "Excelente: Houve vazão líquida positiva (redução de estoque)."}
+                  </p>
                 </div>
-                
+
                 <div className="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-lg shadow-blue-200">
-                   <p className="text-sm font-bold opacity-80 uppercase mb-2">Indice de Produtividade</p>
-                   <p className="text-5xl font-black">{efficiency}%</p>
-                   <p className="text-xs mt-2 opacity-80 font-medium leading-relaxed">Considerando a redução proporcional da caixa em relação ao estoque inicial do período.</p>
+                  <p className="text-sm font-bold opacity-80 uppercase mb-2">Indice de Produtividade</p>
+                  <p className="text-5xl font-black">{efficiency}%</p>
+                  <p className="text-xs mt-2 opacity-80 font-medium leading-relaxed">Considerando a redução proporcional da caixa em relação ao estoque inicial do período.</p>
                 </div>
               </div>
             </div>
@@ -223,7 +223,7 @@ const DashboardMacro = () => {
 
   return (
     <motion.div initial="hidden" animate="show" variants={containerVariants} className="pt-4 pb-12 w-full z-10 relative">
-      
+
       {errorStatus && (
         <div className="bg-amber-100 border-l-4 border-amber-500 text-amber-800 p-4 mb-8 rounded shadow-sm flex items-center gap-3">
           <AlertCircle size={24} />
@@ -241,7 +241,7 @@ const DashboardMacro = () => {
             <Layers size={140} className="transform rotate-12 -translate-y-6 translate-x-6 opacity-40 text-blue-100" />
           </div>
           <div className="relative z-10">
-            <h2 className="text-lg font-bold text-slate-500 uppercase tracking-wider mb-2">Estoque Total SAGEP</h2>
+            <h2 className="text-lg font-bold text-slate-500 uppercase tracking-wider mb-2">VOLUME TOTAL - SAGEP</h2>
             <div className="flex items-baseline gap-4 mt-2">
               <span className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter">
                 <CountUp end={totalEstoqueHoje} duration={1.5} />
@@ -249,7 +249,7 @@ const DashboardMacro = () => {
               <span className="text-xl font-bold text-slate-500">processos</span>
             </div>
             <div className="mt-4 inline-block bg-slate-100 rounded-full px-4 py-1 text-xs font-bold text-slate-600">
-               Período: {timeframe}
+              Período: {timeframe}
             </div>
           </div>
         </motion.div>
@@ -257,26 +257,26 @@ const DashboardMacro = () => {
         <motion.div variants={itemVariants} className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 flex flex-col justify-center relative group">
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-2">
-               <h2 className="text-lg font-bold text-slate-500 uppercase tracking-wider">Vazão Líquida (Delta)</h2>
-               <div className="group/tooltip relative">
-                  <Info size={18} className="text-slate-400 cursor-help" />
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 bg-slate-900/95 backdrop-blur-sm text-white text-xs p-5 rounded-2xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-[100] leading-relaxed border border-slate-700 pointer-events-none">
-                    <div className="font-bold text-sm mb-2 text-emerald-400 border-b border-slate-700 pb-2">O que é o Delta?</div>
-                    O Delta representa a variação líquida do estoque no período. É a métrica mais pura de produtividade.
-                    <div className="mt-4 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></span>
-                        <span className="text-red-400 font-bold">Positivo (+):</span> O estoque aumentou. Entrou mais do que saiu.
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
-                        <span className="text-emerald-400 font-bold">Negativo (-):</span> O estoque baixou. Excelente produtividade!
-                      </div>
+              <h2 className="text-lg font-bold text-slate-500 uppercase tracking-wider">Vazão Líquida (Delta)</h2>
+              <div className="group/tooltip relative">
+                <Info size={18} className="text-slate-400 cursor-help" />
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 bg-slate-900/95 backdrop-blur-sm text-white text-xs p-5 rounded-2xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-[100] leading-relaxed border border-slate-700 pointer-events-none">
+                  <div className="font-bold text-sm mb-2 text-emerald-400 border-b border-slate-700 pb-2">O que é o Delta?</div>
+                  O Delta representa a variação líquida do estoque no período. É a métrica mais pura de produtividade.
+                  <div className="mt-4 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></span>
+                      <span className="text-red-400 font-bold">Positivo (+):</span> O estoque aumentou. Entrou mais do que saiu.
                     </div>
-                    {/* Tooltip Arrow */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-slate-900/95"></div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
+                      <span className="text-emerald-400 font-bold">Negativo (-):</span> O estoque baixou. Excelente produtividade!
+                    </div>
                   </div>
-               </div>
+                  {/* Tooltip Arrow */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-slate-900/95"></div>
+                </div>
+              </div>
             </div>
             <div className="flex items-center gap-4 mt-2">
               <span className={`text-6xl md:text-8xl font-black tracking-tighter ${totalDelta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
@@ -294,7 +294,7 @@ const DashboardMacro = () => {
       <div className="space-y-4">
         {treeData.map((dir, dIdx) => (
           <div key={dIdx} className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden">
-            <div 
+            <div
               className="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition-all border-l-8 border-emerald-600 group/dir"
               onClick={(e) => {
                 const isChevron = e.target.closest('.chevron-area');
@@ -306,7 +306,7 @@ const DashboardMacro = () => {
               }}
             >
               <div className="flex items-center gap-3">
-                <div 
+                <div
                   className="p-1 rounded bg-slate-100 chevron-area hover:bg-slate-200 transition-colors"
                   onClick={(e) => { e.stopPropagation(); toggleNode(`dir-${dir.name}`); }}
                 >
@@ -331,7 +331,7 @@ const DashboardMacro = () => {
                 <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden bg-slate-50/50">
                   {dir.coords.map((coord, cIdx) => (
                     <div key={cIdx} className="ml-8 border-l-2 border-slate-200">
-                      <div 
+                      <div
                         className="p-4 flex justify-between items-center cursor-pointer hover:bg-white transition-all border-b border-slate-100 group/coord"
                         onClick={(e) => {
                           const isChevron = e.target.closest('.chevron-area');
@@ -343,7 +343,7 @@ const DashboardMacro = () => {
                         }}
                       >
                         <div className="flex items-center gap-3">
-                          <div 
+                          <div
                             className="p-1 rounded bg-white shadow-sm border border-slate-100 chevron-area hover:bg-slate-50 transition-colors"
                             onClick={(e) => { e.stopPropagation(); toggleNode(`coord-${dir.name}-${coord.name}`); }}
                           >
@@ -368,8 +368,8 @@ const DashboardMacro = () => {
                           <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
                             <div className="ml-10 py-2 space-y-1">
                               {coord.setores.map((setor, sIdx) => (
-                                <div 
-                                  key={sIdx} 
+                                <div
+                                  key={sIdx}
                                   onClick={() => setSelectedSector({ ...setor, level: 'Setor', Coordenadoria: coord.name, Diretoria: dir.name })}
                                   className="p-3 mr-4 flex justify-between items-center bg-white rounded-lg border border-slate-200/60 shadow-sm cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group/leaf"
                                 >
