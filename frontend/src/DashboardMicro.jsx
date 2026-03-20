@@ -8,6 +8,7 @@ import {
   FileText, TrendingUp, Calendar, Activity, PieChart as PieChartIcon, Search, Filter, Layers, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { supabase } from './lib/supabase';
 
 // Paleta Melhorada
 const COLORS_SETORES = ['#059669', '#10b981', '#34d399', '#6ee7b7', '#a7f3d0'];
@@ -17,15 +18,40 @@ const DashboardMicro = () => {
   const [rawData, setRawData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Busca os dados do JSON local gerado pelo batch_processor.py
+  // Busca os dados diretamente da tabela tramitacoes_micro no Supabase sem limite de 1000 linhas
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        const response = await fetch('/tramitacoes_consolidadas.json');
-        if (!response.ok) throw new Error('Falha ao buscar JSON');
-        const data = await response.json();
+        let allData = [];
+        let from = 0;
+        let to = 999;
+        let hasMore = true;
 
-        const normalizedData = (data || []).map(row => ({
+        // O Supabase limita as respostas a 1000 linhas por padrão.
+        // O loop busca blocos de 1000 iterativamente até acabar os dados.
+        while (hasMore) {
+          const { data, error } = await supabase
+              .from('tramitacoes_micro')
+              .select('*')
+              .range(from, to);
+              
+          if (error) throw error;
+
+          if (data && data.length > 0) {
+            allData = [...allData, ...data];
+            from += 1000;
+            to += 1000;
+            
+            // Se vieram menos de 1000 linhas, chegamos no final da tabela
+            if (data.length < 1000) {
+              hasMore = false;
+            }
+          } else {
+            hasMore = false;
+          }
+        }
+
+        const normalizedData = (allData || []).map(row => ({
           PROTOCOLO: row.protocolo,
           ASSUNTO: row.assunto,
           INTERESSADO: row.interessado,
@@ -42,7 +68,7 @@ const DashboardMicro = () => {
 
         setRawData(normalizedData);
       } catch (error) {
-        console.error("Erro ao carregar os dados:", error);
+        console.error("Erro ao carregar os dados do Supabase:", error);
       } finally {
         setIsLoading(false);
       }
@@ -362,7 +388,7 @@ const DashboardMicro = () => {
           <div className="flex justify-between items-center mb-6 px-2">
             <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
               <TrendingUp className="text-emerald-500" />
-              Evolução da Telemetria
+              Evolução de Tramitações
             </h3>
           </div>
           <div className="h-96 w-full">
