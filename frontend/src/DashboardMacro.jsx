@@ -5,14 +5,12 @@ import { Layers, Activity, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, 
 import { motion, AnimatePresence } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
 
-// URL do CSV Público no Google Sheets
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKS0W7esYzKsp5jFoEwjQijfIPgYAZz0fgWVTiLYu2DBwCfNY5PCTh1MRC_iQwLNXGLvPtORCDIlGk/pub?output=csv";
+// URL do CSV Público no Google Sheets (Planilha NOVA - Janeiro)
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=803624263";
+const CSV_URL_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=0";
 
 const MOCK_DATA = [
-  { Diretoria: 'DIOP', Coordenadoria: 'CCM', Setor: 'Férias', Estoque_Inicial: '50', Estoque_Final: '60', Data_Inicio: '02/03', Data_Fim: '06/03' },
-  { Diretoria: 'DIOP', Coordenadoria: 'CCM', Setor: 'Licença Especial', Estoque_Inicial: '100', Estoque_Final: '120', Data_Inicio: '02/03', Data_Fim: '06/03' },
-  { Diretoria: 'DIFOB', Coordenadoria: 'GAB', Setor: 'Administrativo', Estoque_Inicial: '45', Estoque_Final: '30', Data_Inicio: '02/03', Data_Fim: '06/03' },
-  { Diretoria: 'DIPSE', Coordenadoria: 'TI', Setor: 'Suporte', Estoque_Inicial: '10', Estoque_Final: '0', Data_Inicio: '02/03', Data_Fim: '06/03' }
+  { NOME: 'SEDUC > TESTE > GERAL', DIRETORIA: 'DIOP', 'INICIO SEMANA': '50', 'FINAL SEMANA': '60', SEMANA: '1' }
 ];
 
 const DashboardMacro = () => {
@@ -22,6 +20,11 @@ const DashboardMacro = () => {
   const [expandedNodes, setExpandedNodes] = useState({});
   const [selectedSector, setSelectedSector] = useState(null);
 
+  // Filtros
+  const [selectedMonth, setSelectedMonth] = useState('Janeiro');
+  const [selectedWeek, setSelectedWeek] = useState('Todas');
+  const [weekPeriods, setWeekPeriods] = useState({});
+
   useEffect(() => {
     const fetchCSV = async () => {
       if (!CSV_URL) {
@@ -30,84 +33,245 @@ const DashboardMacro = () => {
         return;
       }
 
-      Papa.parse(CSV_URL, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: (results) => {
-          if (results.data && results.data.length > 0 && (results.data[0].Diretoria || results.data[0].Setor)) {
-            setData(results.data);
-          } else {
+      try {
+        const [resBase, resData] = await Promise.all([
+          fetch(CSV_URL_BASE),
+          fetch(CSV_URL)
+        ]);
+
+        const baseText = await resBase.text();
+        const text = await resData.text();
+        
+        // Processar as datas de cada semana da base
+        const periods = {};
+        let currentMonth = "";
+        baseText.split('\n').forEach(line => {
+           const cols = line.split(',');
+           const c0 = (cols[0] || "").trim();
+           const c1 = (cols[1] || "").trim();
+           
+           if (c0 && !c0.toUpperCase().includes('SEMANA') && (!c1 || c1 === '')) {
+              currentMonth = c0.toUpperCase();
+           } else if (c0.toUpperCase().includes('SEMANA')) {
+              const m = c0.match(/SEMANA\s+(\d+)/i);
+              // Como estamos trabalhando com a aba JANEIRO como base inicial do cliente:
+              if (m && currentMonth === 'JANEIRO') {
+                 periods[m[1]] = c1; 
+              }
+           }
+        });
+        setWeekPeriods(periods);
+
+        // A planilha tem uma linha de título antes do cabeçalho real ("UNIDADES PAE EM ORDEM")
+        // Vamos remover a primeira linha para o PapaParse não confundir os headers
+        const lines = text.split('\n');
+        if (lines.length > 0 && lines[0].includes('UNIDADES PAE EM ORDEM')) {
+          lines.shift(); // Remove a primeira linha inteira
+        }
+        const cleanCSV = lines.join('\n');
+
+        Papa.parse(cleanCSV, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            if (results.data && results.data.length > 0 && (results.data[0].DIRETORIA !== undefined || results.data[0].NOME !== undefined)) {
+              setData(results.data);
+              setErrorStatus(false);
+            } else {
+              console.warn("Colunas lidas:", Object.keys(results.data[0] || {}));
+              setData(MOCK_DATA);
+              setErrorStatus(true);
+            }
+            setIsLoading(false);
+          },
+          error: (err) => {
+            console.error("Erro no PapaParse:", err);
             setData(MOCK_DATA);
             setErrorStatus(true);
+            setIsLoading(false);
           }
-          setIsLoading(false);
-        },
-        error: (err) => {
-          console.error("Erro no PapaParse:", err);
-          setData(MOCK_DATA);
-          setErrorStatus(true);
-          setIsLoading(false);
-        }
-      });
+        });
+      } catch (err) {
+        console.error("Erro ao baixar o CSV:", err);
+        setData(MOCK_DATA);
+        setErrorStatus(true);
+        setIsLoading(false);
+      }
     };
 
     fetchCSV();
   }, []);
 
+  const availableWeeks = useMemo(() => {
+    const weeks = new Set();
+    data.forEach(item => {
+      const val = String(item.SEMANA).trim();
+      // Ignorar strings vazias ou cabeçalhos repetidos tipo a palavra literal "SEMANA"
+      if (val !== '' && val.toUpperCase() !== 'SEMANA' && !isNaN(parseInt(val, 10))) {
+        weeks.add(val);
+      }
+    });
+    return Array.from(weeks).sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  }, [data]);
+
   const treeData = useMemo(() => {
     const root = {};
+    const sectorMap = new Map();
+
     data.forEach(item => {
-      const dirName = item.Diretoria || "OUTROS";
-      const coordName = item.Coordenadoria || "GERAL";
-      const setorName = item.Setor || "PADRÃO";
+      // Filtragem por semana
+      if (selectedWeek !== 'Todas' && String(item.SEMANA).trim() !== String(selectedWeek)) {
+        return;
+      }
+
+      // Ignorar cabeçalhos extras
+      if (!item.NOME || item.NOME.includes("UNIDADES PAE EM ORDEM")) return;
+
+      const dirName = item.DIRETORIA && item.DIRETORIA !== '-' ? item.DIRETORIA : "OUTROS";
+      
+      let rawName = item.NOME || "PADRÃO";
+      if (item.NOME && item.NOME.includes('>')) {
+         const parts = item.NOME.split('>').map(p => p.trim());
+         rawName = parts.length >= 3 ? parts[1] : parts[parts.length - 1];
+      }
+
+      const COORDENADORIAS = {
+        "SAGEP": "SAGEP - SECRETARIA ADJUNTA DE GESTÃO DE PESSOAS",
+        "CCM": "CCM - COORDENADORIA DE CONTROLE E MOVIMENTAÇÃO",
+        "CVAS": "CVAS - COORDENADORIA DE VALORIZAÇÃO E ASSISTÊNCIA AO SERVIDOR",
+        "COR": "COR - COORDENADORIA DE ORGANIZAÇÃO DE REDE",
+        "CAPO": "CAPO - COORDENADORIA DE APOSENTADORIA",
+        "CPS": "CPS - COORDENADORIA DE PLANEJAMENTO E SELEÇÃO",
+        "CFOP": "CFOP - COORDENADORIA DE FOLHA DE PAGAMENTO"
+      };
+
+      let coordName = "DIRETORIAS";
+      let setorName = rawName;
+
+      for (const [sigla, descricao] of Object.entries(COORDENADORIAS)) {
+        if (rawName.startsWith(sigla) || (item.NOME && item.NOME.includes(`> ${sigla}`))) {
+            coordName = descricao;
+            
+            const isMain = rawName.toUpperCase().includes("COORDENADORIA") || rawName.toUpperCase().includes("SECRETARIA") || rawName.trim() === sigla;
+            
+            if (isMain) {
+                setorName = `Caixa Principal (${sigla})`;
+            } else {
+                setorName = rawName.replace(new RegExp(`^${sigla}[/\\-\\s]*`, 'i'), '').trim();
+            }
+            break;
+        }
+      }
+
+      const rawWeek = parseInt(item.SEMANA || 0, 10) || 0;
+      if (rawWeek === 0) return; // Ignora linhas de headers repetidas
+
+      const key = `${dirName}|${coordName}|${setorName}`;
+      
+      const segVal = parseInt(item['INICIO SEMANA'] || 0, 10) || 0;
+      const sexVal = parseInt(item['FINAL SEMANA'] || 0, 10) || 0;
+
+      if (!sectorMap.has(key)) {
+        sectorMap.set(key, {
+          itemObj: item,
+          dirName,
+          coordName,
+          setorName,
+          seg: segVal,
+          sex: sexVal,
+          minWeek: rawWeek,
+          maxWeek: rawWeek,
+          allWeeksMsg: `Semana ${item.SEMANA}`,
+          weeklyHistory: [{ week: rawWeek, init: segVal, final: sexVal }]
+        });
+      } else {
+        const existing = sectorMap.get(key);
+        // Atualiza mínimo e máximo das semanas para pegar o "início do mês" e "fim do mês"
+        if (rawWeek < existing.minWeek) existing.seg = segVal;
+        if (rawWeek > existing.maxWeek) existing.sex = sexVal;
+        
+        existing.minWeek = Math.min(existing.minWeek, rawWeek);
+        existing.maxWeek = Math.max(existing.maxWeek, rawWeek);
+        existing.allWeeksMsg = `Semanas ${existing.minWeek} a ${existing.maxWeek}`;
+        existing.weeklyHistory.push({ week: rawWeek, init: segVal, final: sexVal });
+      }
+    });
+
+    // Mapeamento final para agrupamento hierárquico
+    for (let [, sectorAgg] of sectorMap) {
+      const { dirName, coordName, setorName, seg, sex, allWeeksMsg, itemObj, weeklyHistory } = sectorAgg;
+      const delta = sex - seg;
+
+      // Calcular quantos processos "saíram" (Baixados / Resolvidos) comparando semana a semana
+      let resolved = 0;
+      // 1. Ocorreram baixas dentro da própria semana (se fim < inicio)
+      weeklyHistory.forEach(w => {
+         if (w.init > w.final) {
+             resolved += (w.init - w.final);
+         }
+      });
+      // 2. Ocorreram baixas entre o fim de uma semana e o fim da próxima
+      weeklyHistory.sort((a, b) => a.week - b.week);
+      for (let i = 1; i < weeklyHistory.length; i++) {
+          const prevFinal = weeklyHistory[i-1].final;
+          const currFinal = weeklyHistory[i].final;
+          // Se a semana seguinte fechou com menos que a anterior, saíram processos!
+          if (currFinal < prevFinal) {
+              resolved += (prevFinal - currFinal);
+          }
+      }
 
       if (!root[dirName]) {
-        root[dirName] = { name: dirName, seg: 0, sex: 0, delta: 0, coords: {} };
+        root[dirName] = { name: dirName, seg: 0, sex: 0, delta: 0, resolved: 0, coords: {} };
       }
 
       if (!root[dirName].coords[coordName]) {
-        root[dirName].coords[coordName] = { name: coordName, seg: 0, sex: 0, delta: 0, setores: [] };
+        root[dirName].coords[coordName] = { name: coordName, seg: 0, sex: 0, delta: 0, resolved: 0, setores: [] };
       }
 
-      const seg = parseInt(item.Estoque_Inicial || item.Estoque_Segunda || 0, 10);
-      const sex = parseInt(item.Estoque_Final || item.Estoque_Sexta || 0, 10);
-      const delta = sex - seg;
-
       const leaf = {
-        ...item,
+        ...itemObj,
         name: setorName,
         seg,
         sex,
         delta,
-        Semana_Referencia: item.Semana_Referencia || `${item.Data_Inicio} a ${item.Data_Fim}`
+        resolved,
+        Semana_Referencia: selectedWeek === 'Todas' ? `Mês Inteiro (${allWeeksMsg})` : (weekPeriods[selectedWeek] || `Semana ${selectedWeek}`)
       };
 
       root[dirName].coords[coordName].setores.push(leaf);
       root[dirName].coords[coordName].seg += seg;
       root[dirName].coords[coordName].sex += sex;
       root[dirName].coords[coordName].delta += delta;
+      root[dirName].coords[coordName].resolved += resolved;
       root[dirName].seg += seg;
       root[dirName].sex += sex;
       root[dirName].delta += delta;
-    });
+      root[dirName].resolved += resolved;
+    }
 
+    // Ordenação: maiores deltas primeiro
     return Object.values(root).map(dir => ({
       ...dir,
       coords: Object.values(dir.coords).sort((a, b) => b.delta - a.delta)
     })).sort((a, b) => b.delta - a.delta);
-  }, [data]);
+  }, [data, selectedWeek]);
 
+  const totalEstoqueInicial = treeData.reduce((acc, curr) => acc + curr.seg, 0);
   const totalEstoqueHoje = treeData.reduce((acc, curr) => acc + curr.sex, 0);
   const totalDelta = treeData.reduce((acc, curr) => acc + curr.delta, 0);
+  const totalResolved = treeData.reduce((acc, curr) => acc + curr.resolved, 0);
+  const totalEntered = totalDelta + totalResolved;
 
   const toggleNode = (id) => setExpandedNodes(prev => ({ ...prev, [id]: !prev[id] }));
 
   const timeframe = useMemo(() => {
-    if (data.length === 0) return "Período Indefinido";
-    const item = data[0];
-    return item.Semana_Referencia || (item.Data_Inicio && item.Data_Fim ? `${item.Data_Inicio} a ${item.Data_Fim}` : "Período Indefinido");
-  }, [data]);
+    if (selectedWeek !== 'Todas') {
+      const period = weekPeriods[selectedWeek];
+      return period ? `${selectedMonth} (${period})` : `${selectedMonth} - Semana ${selectedWeek}`;
+    }
+    return `${selectedMonth} - Mês Inteiro`;
+  }, [selectedMonth, selectedWeek, weekPeriods]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -122,13 +286,13 @@ const DashboardMacro = () => {
   // Visão de Detalhe do Setor
   if (selectedSector) {
     const chartData = [
-      { name: 'Início da Semana', value: selectedSector.seg, color: '#94a3b8' },
-      { name: 'Final da Semana', value: selectedSector.sex, color: selectedSector.delta > 0 ? '#ef4444' : '#10b981' }
+      { name: selectedWeek === 'Todas' ? 'Início do Mês' : 'Início da Semana', value: selectedSector.seg, color: '#94a3b8' },
+      { name: selectedWeek === 'Todas' ? 'Final do Mês' : 'Final da Semana', value: selectedSector.sex, color: selectedSector.delta > 0 ? '#ef4444' : '#10b981' }
     ];
 
-    const efficiency = selectedSector.seg > 0
-      ? Math.round(((selectedSector.seg - selectedSector.sex) / selectedSector.seg) * 100)
-      : 0;
+    const resolvedValue = selectedSector.resolved || 0;
+    const totalVolume = selectedSector.sex + resolvedValue;
+    const resolutionRate = totalVolume > 0 ? Math.round((resolvedValue / totalVolume) * 100) : 0;
 
     return (
       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="pt-4 pb-12 w-full z-10 relative">
@@ -181,13 +345,13 @@ const DashboardMacro = () => {
               {/* Métricas Detalhadas */}
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                    <p className="text-xs font-bold text-slate-400 uppercase">Início Semana</p>
-                    <p className="text-4xl font-black text-slate-700 mt-2">{selectedSector.seg}</p>
+                  <div className="bg-slate-50 p-6 lg:p-8 rounded-[2.5rem] border border-slate-100 flex flex-col justify-center">
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{selectedWeek === 'Todas' ? 'Início do Mês' : 'Início da Semana'}</p>
+                    <p className="text-5xl font-black text-slate-700">{selectedSector.seg}</p>
                   </div>
-                  <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                    <p className="text-xs font-bold text-slate-400 uppercase">Final Semana</p>
-                    <p className="text-4xl font-black text-slate-900 mt-2">{selectedSector.sex}</p>
+                  <div className="bg-slate-50 p-6 lg:p-8 rounded-[2.5rem] border border-slate-100 flex flex-col justify-center">
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{selectedWeek === 'Todas' ? 'Final do Mês' : 'Final da Semana'}</p>
+                    <p className="text-5xl font-black text-slate-900">{selectedSector.sex}</p>
                   </div>
                 </div>
 
@@ -206,10 +370,18 @@ const DashboardMacro = () => {
                   </p>
                 </div>
 
-                <div className="bg-blue-600 p-8 rounded-[2.5rem] text-white shadow-lg shadow-blue-200">
-                  <p className="text-sm font-bold opacity-80 uppercase mb-2">Indice de Produtividade</p>
-                  <p className="text-5xl font-black">{efficiency}%</p>
-                  <p className="text-xs mt-2 opacity-80 font-medium leading-relaxed">Considerando a redução proporcional da caixa em relação ao estoque inicial do período.</p>
+                <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-8 rounded-[2.5rem] text-emerald-100 shadow-xl shadow-emerald-200 border border-emerald-400 flex flex-col justify-center">
+                  <p className="text-xs font-bold opacity-90 uppercase mb-2">Produtividade (Tramitados)</p>
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-5xl lg:text-6xl font-black text-white">{resolvedValue}</p>
+                    <p className="text-xl font-bold text-emerald-200">/ {totalVolume}</p>
+                  </div>
+                  <div className="mt-3 inline-block bg-white/20 rounded-full px-3 py-1 text-xs font-bold text-white self-start backdrop-blur-sm border border-emerald-400/50">
+                    {resolutionRate}% de Taxa de Resolução
+                  </div>
+                  <p className="text-[10px] mt-4 opacity-80 font-medium leading-tight">
+                    Dos {totalVolume} processos que passaram pela unidade no período (somando tudo), a equipe conseguiu tramitar e finalizar a grande maioria de {resolvedValue}.
+                  </p>
                 </div>
               </div>
             </div>
@@ -229,61 +401,143 @@ const DashboardMacro = () => {
           <AlertCircle size={24} />
           <div>
             <p className="font-bold">Aviso: Usando Dados de Demonstração</p>
-            <p className="text-sm">Houve um problema ao ler a planilha. Verifique se as colunas (Diretoria, Coordenadoria, Setor, Estoque_Inicial, Estoque_Final) estão presentes.</p>
+            <p className="text-sm">Houve um problema ao ler a planilha. Verifique se as colunas (NOME, DIRETORIA, INICIO SEMANA, FINAL SEMANA, SEMANA) estão presentes.</p>
           </div>
         </div>
       )}
 
+      {/* Filtros de Mês e Semana */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row gap-6 items-center justify-between">
+        <div className="flex items-center gap-3">
+          <BarChart3 className="text-emerald-600" size={24} />
+          <h2 className="font-bold text-slate-700 text-lg">Filtros de Período</h2>
+        </div>
+        <div className="flex gap-4 w-full sm:w-auto">
+          <div className="flex-1 sm:flex-none">
+            <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Mês</label>
+            <select
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="w-full sm:w-48 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+            >
+              <option value="Janeiro">Janeiro de 2026</option>
+              {/* Futuramente outros meses podem ser adicionados aqui */}
+            </select>
+          </div>
+          <div className="flex-1 sm:flex-none">
+            <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Período</label>
+            <select
+              value={selectedWeek}
+              onChange={(e) => setSelectedWeek(e.target.value)}
+              className="w-full sm:w-64 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+            >
+              <option value="Todas">Mês Inteiro (Consolidado)</option>
+              {availableWeeks.map(week => (
+                <option key={week} value={week}>
+                  {weekPeriods[week] ? `${weekPeriods[week]}` : `Semana ${week}`}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
       {/* KPI Global Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        
+        {/* CARD 1: ESTOQUE INICIAL */}
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 text-slate-100 transition-transform duration-700 group-hover:scale-110">
-            <Layers size={140} className="transform rotate-12 -translate-y-6 translate-x-6 opacity-40 text-blue-100" />
+            <Layers size={100} className="transform -rotate-12 -translate-y-6 translate-x-6 opacity-40 text-emerald-50" />
           </div>
           <div className="relative z-10">
-            <h2 className="text-lg font-bold text-slate-500 uppercase tracking-wider mb-2">VOLUME TOTAL - SAGEP</h2>
-            <div className="flex items-baseline gap-4 mt-2">
-              <span className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter">
-                <CountUp end={totalEstoqueHoje} duration={1.5} />
+            <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider mb-2" title="Total exato de processos na gaveta no INÍCIO deste período.">ESTOQUE INICIAL (ABERTURA)</h2>
+            <div className="flex items-baseline gap-2 mt-2">
+              <span className="text-5xl xl:text-6xl font-black text-slate-400 tracking-tighter">
+                <CountUp end={totalEstoqueInicial} duration={1.5} />
               </span>
-              <span className="text-xl font-bold text-slate-500">processos</span>
             </div>
-            <div className="mt-4 inline-block bg-slate-100 rounded-full px-4 py-1 text-xs font-bold text-slate-600">
-              Período: {timeframe}
+            <div className="mt-4 inline-block bg-slate-50 rounded-full px-4 py-1 text-[10px] font-bold text-slate-500 border border-slate-200">
+              Abertura do Período Filtrado
             </div>
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 flex flex-col justify-center relative group">
+        {/* CARD 2: ESTOQUE FINAL */}
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-8 text-slate-100 transition-transform duration-700 group-hover:scale-110">
+            <Layers size={100} className="transform rotate-12 -translate-y-6 translate-x-6 opacity-40 text-blue-100" />
+          </div>
+          <div className="relative z-10">
+            <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider mb-2" title="Total exato de processos estocados/parados no fim deste período.">ESTOQUE ATUAL (FECHAMENTO)</h2>
+            <div className="flex items-baseline gap-2 mt-2">
+              <span className="text-5xl xl:text-6xl font-black text-slate-900 tracking-tighter">
+                <CountUp end={totalEstoqueHoje} duration={1.5} />
+              </span>
+              <span className="text-xs font-bold text-slate-500 leading-tight">parados</span>
+            </div>
+            <div className="mt-4 inline-block bg-slate-100 rounded-full px-4 py-1 text-[10px] font-bold text-slate-600">
+              Posição: {timeframe}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CARD 3: DELTA */}
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 flex flex-col justify-center relative group">
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-2">
-              <h2 className="text-lg font-bold text-slate-500 uppercase tracking-wider">Vazão Líquida (Delta)</h2>
+              <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider">
+                {totalDelta > 0 ? 'ACÚMULO (+)' : totalDelta < 0 ? 'DESACÚMULO (-)' : 'SALDO ESTÁVEL'}
+              </h2>
               <div className="group/tooltip relative">
-                <Info size={18} className="text-slate-400 cursor-help" />
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 bg-slate-900/95 backdrop-blur-sm text-white text-xs p-5 rounded-2xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-[100] leading-relaxed border border-slate-700 pointer-events-none">
-                  <div className="font-bold text-sm mb-2 text-emerald-400 border-b border-slate-700 pb-2">O que é o Delta?</div>
-                  O Delta representa a variação líquida do estoque no período. É a métrica mais pura de produtividade.
+                <Info size={16} className="text-slate-400 cursor-help" />
+                <div className="absolute bottom-full right-0 lg:left-1/2 lg:-translate-x-1/2 mb-4 w-72 bg-slate-900/95 backdrop-blur-sm text-white text-xs p-5 rounded-2xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-[100] leading-relaxed border border-slate-700 pointer-events-none">
+                  <div className="font-bold text-sm mb-2 text-emerald-400 border-b border-slate-700 pb-2">Como ler o Delta?</div>
+                  O Delta mostra a diferença matemática do estoque inicial para o estoque final.
                   <div className="mt-4 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></span>
-                      <span className="text-red-400 font-bold">Positivo (+):</span> O estoque aumentou. Entrou mais do que saiu.
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
-                      <span className="text-emerald-400 font-bold">Negativo (-):</span> O estoque baixou. Excelente produtividade!
+                    <div className="flex items-start gap-2">
+                      <span className="w-2 h-2 mt-1.5 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)] shrink-0"></span>
+                      <span className="text-red-400 font-bold">Positivo (+): Retenção.</span> Mais processos entraram na rede. O estoque acumulou.
                     </div>
                   </div>
-                  {/* Tooltip Arrow */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-slate-900/95"></div>
+                  <div className="hidden lg:block absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-slate-900/95"></div>
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-4 mt-2">
-              <span className={`text-6xl md:text-8xl font-black tracking-tighter ${totalDelta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+            <div className="flex items-center justify-between gap-1 mt-2">
+              <span className={`text-5xl xl:text-6xl font-black tracking-tighter ${totalDelta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
                 {totalDelta > 0 ? '+' : ''}<CountUp end={totalDelta} duration={1.5} />
               </span>
-              <div className="flex items-center justify-center p-3 rounded-full bg-slate-50 shadow-inner">
-                {totalDelta > 0 ? <TrendingUp size={48} className="text-red-500" /> : <TrendingDown size={48} className="text-emerald-500" />}
+              <div className="flex items-center justify-center p-2 xl:p-3 rounded-full bg-slate-50 shadow-inner shrink-0">
+                {totalDelta > 0 ? <TrendingUp size={24} className="text-red-500" /> : <TrendingDown size={24} className="text-emerald-500" />}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CARD 4: FLUXO DE PRODUÇÃO */}
+        <motion.div variants={itemVariants} className="bg-slate-900 rounded-3xl p-6 lg:p-7 shadow-xl shadow-slate-300/50 border border-slate-800 flex flex-col justify-center relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-6 text-slate-800 transition-transform duration-700 group-hover:scale-110">
+            <Activity size={120} className="transform rotate-12 -translate-y-4 translate-x-4 opacity-50" />
+          </div>
+          <div className="relative z-10 w-full">
+            <h2 className="text-xs lg:text-[11px] xl:text-xs font-bold text-slate-400 uppercase tracking-normal mb-4" title="Total de processos novos que chegaram vs Total que foram tramitados/saíram da gaveta.">FLUXO DO PERÍODO (ENTRADAS E BAIXAS)</h2>
+            
+            <div className="flex flex-col gap-3 w-full">
+              {/* Entradas */}
+              <div className="flex justify-between items-center bg-slate-800/80 px-4 py-3 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
+                <span className="text-[10px] xl:text-xs font-bold text-slate-300 uppercase">1. Chegaram (Novos) +</span>
+                <span className="text-2xl lg:text-3xl font-black text-white tracking-tighter shadow-sm">
+                  <CountUp end={totalEntered} duration={1.5} />
+                </span>
+              </div>
+              
+              {/* Saídas */}
+              <div className="flex justify-between items-center bg-emerald-500/20 px-4 py-3 rounded-2xl border border-emerald-500/30 backdrop-blur-sm">
+                <span className="text-[10px] xl:text-xs font-bold text-emerald-400 uppercase">2. Tramitados (Saíram) -</span>
+                <span className="text-2xl lg:text-3xl font-black text-emerald-400 tracking-tighter shadow-sm">
+                  <CountUp end={totalResolved} duration={1.5} />
+                </span>
               </div>
             </div>
           </div>
@@ -321,8 +575,8 @@ const DashboardMacro = () => {
                 </div>
               </div>
               <div className="flex gap-6 text-right">
-                <div className="w-20"><p className="text-[9px] font-bold text-slate-400 uppercase">Total</p><p className="font-extrabold text-slate-900">{dir.sex}</p></div>
-                <div className="w-16"><p className="text-[9px] font-bold text-slate-400 uppercase">DELTA</p><p className={`font-black ${dir.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{dir.delta > 0 ? '+' : ''}{dir.delta}</p></div>
+                <div className="w-24"><p className="text-[9px] font-bold text-slate-400 uppercase" title="Estoque retido fisicamente na gaveta no final do período filtrado.">Estoque Fim</p><p className="font-extrabold text-slate-900">{dir.sex}</p></div>
+                <div className="w-24"><p className="text-[9px] font-bold text-slate-400 uppercase">ACÚMULO (+/-)</p><p className={`font-black ${dir.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{dir.delta > 0 ? '+' : ''}{dir.delta}</p></div>
               </div>
             </div>
 
@@ -358,8 +612,8 @@ const DashboardMacro = () => {
                           </div>
                         </div>
                         <div className="flex gap-6 text-right">
-                          <div className="w-16"><p className="text-[8px] font-bold text-slate-300 uppercase underline decoration-emerald-200">Estoque</p><p className="font-bold text-slate-700">{coord.sex}</p></div>
-                          <div className="w-12"><p className="text-[8px] font-bold text-slate-300 uppercase">DELTA</p><p className={`font-bold ${coord.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{coord.delta > 0 ? '+' : ''}{coord.delta}</p></div>
+                          <div className="w-20"><p className="text-[8px] font-bold text-slate-300 uppercase underline decoration-emerald-200" title="Estoque retido fisicamente na gaveta no final do período filtrado.">Estoque Fim</p><p className="font-bold text-slate-700">{coord.sex}</p></div>
+                          <div className="w-20"><p className="text-[8px] font-bold text-slate-300 uppercase">ACÚMULO (+/-)</p><p className={`font-bold ${coord.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{coord.delta > 0 ? '+' : ''}{coord.delta}</p></div>
                         </div>
                       </div>
 
@@ -381,9 +635,9 @@ const DashboardMacro = () => {
                                     <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Nível 3: Unidade Operacional (Clique p/ detalhes)</p>
                                   </div>
                                   <div className="flex gap-4 text-right">
-                                    <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">INICIO SEMANA</p><p className="text-xs font-medium text-slate-500">{setor.seg}</p></div>
-                                    <div className="text-right w-10"><p className="text-[7px] font-bold text-slate-400">DELTA</p><p className={`text-xs font-black ${setor.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{setor.delta > 0 ? '+' : ''}{setor.delta}</p></div>
-                                    <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">FINAL SEMANA</p><p className="text-xs font-bold text-slate-800">{setor.sex}</p></div>
+                                    <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'INÍCIO DO MÊS' : 'INÍCIO SEMANA'}</p><p className="text-xs font-medium text-slate-500">{setor.seg}</p></div>
+                                    <div className="text-right w-16"><p className="text-[7px] font-bold text-slate-400">ACÚMULO</p><p className={`text-xs font-black ${setor.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{setor.delta > 0 ? '+' : ''}{setor.delta}</p></div>
+                                    <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'FINAL DO MÊS' : 'FINAL SEMANA'}</p><p className="text-xs font-bold text-slate-800">{setor.sex}</p></div>
                                   </div>
                                 </div>
                               ))}
