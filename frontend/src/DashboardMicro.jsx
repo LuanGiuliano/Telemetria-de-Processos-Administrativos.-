@@ -31,17 +31,17 @@ const DashboardMicro = () => {
         // O loop busca blocos de 1000 iterativamente até acabar os dados.
         while (hasMore) {
           const { data, error } = await supabase
-              .from('tramitacoes_micro')
-              .select('*')
-              .range(from, to);
-              
+            .from('tramitacoes_micro')
+            .select('*')
+            .range(from, to);
+
           if (error) throw error;
 
           if (data && data.length > 0) {
             allData = [...allData, ...data];
             from += 1000;
             to += 1000;
-            
+
             // Se vieram menos de 1000 linhas, chegamos no final da tabela
             if (data.length < 1000) {
               hasMore = false;
@@ -55,7 +55,7 @@ const DashboardMicro = () => {
           PROTOCOLO: row.protocolo,
           ASSUNTO: row.assunto,
           INTERESSADO: row.interessado,
-          Data_Curta: row.data, 
+          Data_Curta: row.data,
           Data_Protocolo: row.data_protocolo,
           Tipo_Protocolo: row.tipo_protocolo,
           SIGLA_SETOR: row.Setor_Origem,
@@ -64,7 +64,7 @@ const DashboardMicro = () => {
         }));
 
         // Ordena por data decrescente
-        normalizedData.sort((a,b) => new Date(b.Data_Curta) - new Date(a.Data_Curta));
+        normalizedData.sort((a, b) => new Date(b.Data_Curta) - new Date(a.Data_Curta));
 
         setRawData(normalizedData);
       } catch (error) {
@@ -137,7 +137,7 @@ const DashboardMicro = () => {
     });
     return Object.entries(counts)
       .map(([name, value]) => ({ name, value }))
-      .sort((a, b) => b.value - a.value); 
+      .sort((a, b) => b.value - a.value);
   }, [filteredData]);
 
   const activeAssuntos = useMemo(() => {
@@ -172,14 +172,14 @@ const DashboardMicro = () => {
     if (dates.length === 0) return null;
     const minDate = new Date(Math.min(...dates));
     const maxDate = new Date(Math.max(...dates));
-    
+
     const format = (d) => {
       const day = String(d.getUTCDate()).padStart(2, '0');
       const month = String(d.getUTCMonth() + 1).padStart(2, '0');
       const year = d.getUTCFullYear();
       return `${day}/${month}/${year}`;
     };
-    
+
     return `de ${format(minDate)} a ${format(maxDate)}`;
   }, [rawData]);
 
@@ -200,7 +200,7 @@ const DashboardMicro = () => {
   return (
     <div className="z-10 relative">
       <motion.div initial="hidden" animate="show" variants={containerVariants}>
-        
+
         {dateRange && (
           <div className="flex justify-end mb-4">
             <div className="bg-white/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/40 shadow-sm flex items-center gap-2 text-white text-xs font-bold uppercase tracking-wider">
@@ -245,7 +245,7 @@ const DashboardMicro = () => {
             <div className="relative z-10">
               <div className="flex items-center gap-3 text-emerald-600 mb-2">
                 <Activity size={24} />
-                <h2 className="text-xl font-bold uppercase tracking-wider">Volume de Processos</h2>
+                <h2 className="text-xl font-bold uppercase tracking-wider">Volume de Processos Tramitados</h2>
               </div>
               <div className="mt-4 flex items-baseline">
                 <span className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter shadow-sm">
@@ -291,7 +291,7 @@ const DashboardMicro = () => {
                 >
                   <Layers size={140} className="absolute -right-4 -bottom-4 text-emerald-900 opacity-20 transform -rotate-12" />
                   <div className="z-10 flex-col w-2/3">
-                     <span className="bg-emerald-800/50 text-emerald-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-emerald-500/30">Top Setor</span>
+                    <span className="bg-emerald-800/50 text-emerald-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-emerald-500/30">Top Setor</span>
                     <h3 className="text-2xl font-extrabold tracking-tight mt-3 drop-shadow-sm line-clamp-2" title={currentSectorCard.name}>{currentSectorCard.name}</h3>
                   </div>
                   <div className="z-10 text-right w-1/3">
@@ -341,12 +341,12 @@ const DashboardMicro = () => {
                         {activeSetores.slice(0, 5).map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS_SETORES[index % COLORS_SETORES.length]} />)}
                       </Pie>
                       <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} itemStyle={{ color: '#1e293b', fontWeight: 'bold' }} />
-                      <Legend 
-                        verticalAlign="bottom" 
-                        height={110} 
-                        iconType="circle" 
+                      <Legend
+                        verticalAlign="bottom"
+                        height={110}
+                        iconType="circle"
                         formatter={(value) => <span className="text-slate-600 font-medium">{value.length > 35 ? value.substring(0, 35) + '...' : value}</span>}
-                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} 
+                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -368,12 +368,12 @@ const DashboardMicro = () => {
                         {activeAssuntos.slice(0, 5).map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS_ASSUNTOS[index % COLORS_ASSUNTOS.length]} />)}
                       </Pie>
                       <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }} itemStyle={{ color: '#1e293b', fontWeight: 'bold' }} />
-                      <Legend 
-                        verticalAlign="bottom" 
-                        height={110} 
-                        iconType="circle" 
+                      <Legend
+                        verticalAlign="bottom"
+                        height={110}
+                        iconType="circle"
                         formatter={(value) => <span className="text-slate-600 font-medium">{value.length > 35 ? value.substring(0, 35) + '...' : value}</span>}
-                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} 
+                        wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -452,27 +452,27 @@ const DashboardMicro = () => {
                   const timeMatch = fullProt.match(/^(\d{2}:\d{2})\s/);
                   const timePart = timeMatch ? timeMatch[1] : '';
                   const protPart = fullProt.replace(/^(\d{2}:\d{2})\s/, '').trim();
-                  
+
                   if (timePart) {
                     formattedDate = `${formattedDate} ${timePart}`;
                   }
 
                   return (
-                  <tr key={idx} className="bg-white border-b hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap">{protPart}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">{formattedDate}</td>
-                    <td className="px-6 py-4">
-                      <span className="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-emerald-200">
-                        {item.SIGLA_SETOR || 'N/A'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-xs font-medium text-slate-600 truncate max-w-[300px]" title={item.ASSUNTO}>
-                      {item.ASSUNTO?.length > 70 ? item.ASSUNTO.substring(0, 70) + '...' : item.ASSUNTO}
-                    </td>
-                    <td className="px-6 py-4 text-xs text-slate-400 truncate max-w-[200px]" title={item.INTERESSADO}>
-                      {item.INTERESSADO?.length > 30 ? item.INTERESSADO.substring(0, 30) + '...' : item.INTERESSADO}
-                    </td>
-                  </tr>
+                    <tr key={idx} className="bg-white border-b hover:bg-slate-50 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap">{protPart}</td>
+                      <td className="px-6 py-4 whitespace-nowrap">{formattedDate}</td>
+                      <td className="px-6 py-4">
+                        <span className="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-emerald-200">
+                          {item.SIGLA_SETOR || 'N/A'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-xs font-medium text-slate-600 truncate max-w-[300px]" title={item.ASSUNTO}>
+                        {item.ASSUNTO?.length > 70 ? item.ASSUNTO.substring(0, 70) + '...' : item.ASSUNTO}
+                      </td>
+                      <td className="px-6 py-4 text-xs text-slate-400 truncate max-w-[200px]" title={item.INTERESSADO}>
+                        {item.INTERESSADO?.length > 30 ? item.INTERESSADO.substring(0, 30) + '...' : item.INTERESSADO}
+                      </td>
+                    </tr>
                   );
                 })}
               </tbody>
@@ -503,12 +503,12 @@ const DashboardMicro = () => {
       <AnimatePresence>
         {isSetorModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setIsSetorModalOpen(false)}
               className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
             />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -519,7 +519,7 @@ const DashboardMicro = () => {
                   <h3 className="text-2xl font-black text-slate-800">Todos os Setores</h3>
                   <p className="text-slate-400 text-sm font-medium uppercase tracking-widest mt-1">Ranking Completo</p>
                 </div>
-                <button 
+                <button
                   onClick={() => setIsSetorModalOpen(false)}
                   className="p-3 hover:bg-slate-200 rounded-full transition-colors text-slate-400 hover:text-slate-600"
                 >
@@ -546,12 +546,12 @@ const DashboardMicro = () => {
       <AnimatePresence>
         {isAssuntoModalOpen && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setIsAssuntoModalOpen(false)}
               className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
             />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -562,7 +562,7 @@ const DashboardMicro = () => {
                   <h3 className="text-2xl font-black text-slate-800">Todos os Assuntos</h3>
                   <p className="text-slate-400 text-sm font-medium uppercase tracking-widest mt-1">Ranking Completo</p>
                 </div>
-                <button 
+                <button
                   onClick={() => setIsAssuntoModalOpen(false)}
                   className="p-3 hover:bg-slate-200 rounded-full transition-colors text-slate-400 hover:text-slate-600"
                 >

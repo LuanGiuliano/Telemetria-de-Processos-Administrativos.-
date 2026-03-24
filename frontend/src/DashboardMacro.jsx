@@ -6,8 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
 
 // URL do CSV Público no Google Sheets (Planilha NOVA - Janeiro)
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=803624263";
 const CSV_URL_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=0";
+const SHEET_SOURCES = [
+  { mes: 'Janeiro', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=803624263' },
+  { mes: 'Fevereiro', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=121971937' },
+  { mes: 'Março', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2097433804' }
+];
 
 const MOCK_DATA = [
   { NOME: 'SEDUC > TESTE > GERAL', DIRETORIA: 'DIOP', 'INICIO SEMANA': '50', 'FINAL SEMANA': '60', SEMANA: '1' }
@@ -27,70 +31,89 @@ const DashboardMacro = () => {
 
   useEffect(() => {
     const fetchCSV = async () => {
-      if (!CSV_URL) {
+      if (!SHEET_SOURCES || SHEET_SOURCES.length === 0) {
         setData(MOCK_DATA);
         setIsLoading(false);
         return;
       }
 
       try {
-        const [resBase, resData] = await Promise.all([
-          fetch(CSV_URL_BASE),
-          fetch(CSV_URL)
-        ]);
+        const fetchPromises = [fetch(CSV_URL_BASE)];
+        SHEET_SOURCES.forEach(s => fetchPromises.push(fetch(s.url)));
+
+        const responses = await Promise.all(fetchPromises);
+        const resBase = responses.shift();
 
         const baseText = await resBase.text();
-        const text = await resData.text();
-        
+        const sheetTexts = await Promise.all(responses.map(r => r.text()));
+
         // Processar as datas de cada semana da base
         const periods = {};
         let currentMonth = "";
         baseText.split('\n').forEach(line => {
-           const cols = line.split(',');
-           const c0 = (cols[0] || "").trim();
-           const c1 = (cols[1] || "").trim();
-           
-           if (c0 && !c0.toUpperCase().includes('SEMANA') && (!c1 || c1 === '')) {
-              currentMonth = c0.toUpperCase();
-           } else if (c0.toUpperCase().includes('SEMANA')) {
-              const m = c0.match(/SEMANA\s+(\d+)/i);
-              // Como estamos trabalhando com a aba JANEIRO como base inicial do cliente:
-              if (m && currentMonth === 'JANEIRO') {
-                 periods[m[1]] = c1; 
-              }
-           }
+          const cols = line.split(',');
+          const c0 = (cols[0] || "").trim();
+          const c1 = (cols[1] || "").trim();
+
+          if (c0 && !c0.toUpperCase().includes('SEMANA') && (!c1 || c1 === '')) {
+            currentMonth = c0.toUpperCase();
+          } else if (c0.toUpperCase().includes('SEMANA')) {
+            const m = c0.match(/SEMANA\s+(\d+)/i);
+            // Como estamos trabalhando com a aba JANEIRO como base inicial do cliente:
+            if (m && currentMonth === 'JANEIRO') {
+              periods[m[1]] = c1;
+            }
+          }
         });
         setWeekPeriods(periods);
 
-        // A planilha tem uma linha de título antes do cabeçalho real ("UNIDADES PAE EM ORDEM")
-        // Vamos remover a primeira linha para o PapaParse não confundir os headers
-        const lines = text.split('\n');
-        if (lines.length > 0 && lines[0].includes('UNIDADES PAE EM ORDEM')) {
-          lines.shift(); // Remove a primeira linha inteira
-        }
-        const cleanCSV = lines.join('\n');
+        const combinedData = [];
+        let hasError = false;
 
-        Papa.parse(cleanCSV, {
-          header: true,
-          skipEmptyLines: true,
-          complete: (results) => {
-            if (results.data && results.data.length > 0 && (results.data[0].DIRETORIA !== undefined || results.data[0].NOME !== undefined)) {
-              setData(results.data);
-              setErrorStatus(false);
-            } else {
-              console.warn("Colunas lidas:", Object.keys(results.data[0] || {}));
-              setData(MOCK_DATA);
-              setErrorStatus(true);
-            }
-            setIsLoading(false);
-          },
-          error: (err) => {
-            console.error("Erro no PapaParse:", err);
-            setData(MOCK_DATA);
-            setErrorStatus(true);
-            setIsLoading(false);
+        for (let i = 0; i < sheetTexts.length; i++) {
+          const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
+          const source = SHEET_SOURCES[i];
+          const mIdx = mOrder[source.mes] || 0;
+
+          const lines = sheetTexts[i].split('\n');
+          if (lines.length > 0 && lines[0].includes('UNIDADES PAE EM ORDEM')) {
+            lines.shift(); // Remove a primeira linha inteira
           }
-        });
+          const cleanCSV = lines.join('\n');
+
+          Papa.parse(cleanCSV, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+              if (results.data && results.data.length > 0) {
+                const enhanced = results.data.filter(r => r && r.NOME && r.NOME !== '' && r.NOME.toUpperCase() !== 'NOME' && !r.NOME.includes('UNIDADES PAE EM ORDEM')).map(row => {
+                  let weekVal = String(row.SEMANA || '').trim();
+                  if (weekVal !== '' && weekVal.toUpperCase() !== 'SEMANA' && !isNaN(parseInt(weekVal, 10))) {
+                    row.SEMANA = weekVal;
+                  }
+                  row._monthName = source.mes;
+                  return row;
+                });
+                combinedData.push(...enhanced);
+              } else {
+                hasError = true;
+              }
+            },
+            error: (err) => {
+              console.error(err);
+              hasError = true;
+            }
+          });
+        }
+
+        if (!hasError && combinedData.length > 0) {
+          setData(combinedData);
+          setErrorStatus(false);
+        } else {
+          setData(MOCK_DATA);
+          setErrorStatus(true);
+        }
+        setIsLoading(false);
       } catch (err) {
         console.error("Erro ao baixar o CSV:", err);
         setData(MOCK_DATA);
@@ -102,37 +125,38 @@ const DashboardMacro = () => {
     fetchCSV();
   }, []);
 
+  const filteredData = useMemo(() => {
+    if (selectedMonth === 'Ano') return data;
+    return data.filter(item => item._monthName && item._monthName.toUpperCase() === selectedMonth.toUpperCase());
+  }, [data, selectedMonth]);
+
   const availableWeeks = useMemo(() => {
     const weeks = new Set();
-    data.forEach(item => {
-      const val = String(item.SEMANA).trim();
+    filteredData.forEach(item => {
+      const val = String(item.SEMANA || '').trim();
       // Ignorar strings vazias ou cabeçalhos repetidos tipo a palavra literal "SEMANA"
       if (val !== '' && val.toUpperCase() !== 'SEMANA' && !isNaN(parseInt(val, 10))) {
         weeks.add(val);
       }
     });
+
     return Array.from(weeks).sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
-  }, [data]);
+  }, [filteredData]);
 
   const treeData = useMemo(() => {
     const root = {};
     const sectorMap = new Map();
 
-    data.forEach(item => {
-      // Filtragem por semana
-      if (selectedWeek !== 'Todas' && String(item.SEMANA).trim() !== String(selectedWeek)) {
-        return;
-      }
-
+    filteredData.forEach(item => {
       // Ignorar cabeçalhos extras
       if (!item.NOME || item.NOME.includes("UNIDADES PAE EM ORDEM")) return;
 
       const dirName = item.DIRETORIA && item.DIRETORIA !== '-' ? item.DIRETORIA : "OUTROS";
-      
+
       let rawName = item.NOME || "PADRÃO";
       if (item.NOME && item.NOME.includes('>')) {
-         const parts = item.NOME.split('>').map(p => p.trim());
-         rawName = parts.length >= 3 ? parts[1] : parts[parts.length - 1];
+        const parts = item.NOME.split('>').map(p => p.trim());
+        rawName = parts.length >= 3 ? parts[1] : parts[parts.length - 1];
       }
 
       const COORDENADORIAS = {
@@ -150,16 +174,16 @@ const DashboardMacro = () => {
 
       for (const [sigla, descricao] of Object.entries(COORDENADORIAS)) {
         if (rawName.startsWith(sigla) || (item.NOME && item.NOME.includes(`> ${sigla}`))) {
-            coordName = descricao;
-            
-            const isMain = rawName.toUpperCase().includes("COORDENADORIA") || rawName.toUpperCase().includes("SECRETARIA") || rawName.trim() === sigla;
-            
-            if (isMain) {
-                setorName = `Caixa Principal (${sigla})`;
-            } else {
-                setorName = rawName.replace(new RegExp(`^${sigla}[/\\-\\s]*`, 'i'), '').trim();
-            }
-            break;
+          coordName = descricao;
+
+          const isMain = rawName.toUpperCase().includes("COORDENADORIA") || rawName.toUpperCase().includes("SECRETARIA") || rawName.trim() === sigla;
+
+          if (isMain) {
+            setorName = `Caixa Principal (${sigla})`;
+          } else {
+            setorName = rawName.replace(new RegExp(`^${sigla}[/\\-\\s]*`, 'i'), '').trim();
+          }
+          break;
         }
       }
 
@@ -167,7 +191,7 @@ const DashboardMacro = () => {
       if (rawWeek === 0) return; // Ignora linhas de headers repetidas
 
       const key = `${dirName}|${coordName}|${setorName}`;
-      
+
       const segVal = parseInt(item['INICIO SEMANA'] || 0, 10) || 0;
       const sexVal = parseInt(item['FINAL SEMANA'] || 0, 10) || 0;
 
@@ -181,44 +205,93 @@ const DashboardMacro = () => {
           sex: sexVal,
           minWeek: rawWeek,
           maxWeek: rawWeek,
+          minMonth: item._monthName,
+          maxMonth: item._monthName,
           allWeeksMsg: `Semana ${item.SEMANA}`,
-          weeklyHistory: [{ week: rawWeek, init: segVal, final: sexVal }]
+          weeklyHistory: [{ week: rawWeek, init: segVal, final: sexVal, month: item._monthName }]
         });
       } else {
         const existing = sectorMap.get(key);
-        // Atualiza mínimo e máximo das semanas para pegar o "início do mês" e "fim do mês"
-        if (rawWeek < existing.minWeek) existing.seg = segVal;
-        if (rawWeek > existing.maxWeek) existing.sex = sexVal;
+        // Em visão consolidada anual, a mínima semana global é a do mês mais antigo
+        const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
         
-        existing.minWeek = Math.min(existing.minWeek, rawWeek);
-        existing.maxWeek = Math.max(existing.maxWeek, rawWeek);
-        existing.allWeeksMsg = `Semanas ${existing.minWeek} a ${existing.maxWeek}`;
-        existing.weeklyHistory.push({ week: rawWeek, init: segVal, final: sexVal });
+        const mIdx = item._monthName ? (mOrder[item._monthName] || 99) : 99;
+        const eIdx = existing.minMonth ? (mOrder[existing.minMonth] || 99) : 99;
+        const eMaxIdx = existing.maxMonth ? (mOrder[existing.maxMonth] || 0) : 0;
+
+        // Atualiza o Seg inicial da Coordenadoria APENAS se fomos mais para o passado
+        if (mIdx < eIdx || (mIdx === eIdx && rawWeek < existing.minWeek)) {
+             existing.seg = segVal;
+             existing.minWeek = rawWeek;
+             existing.minMonth = item._monthName;
+        }
+        // Atualiza o Sex final APENAS se fomos mais para o futuro
+        if (mIdx > eMaxIdx || (mIdx === eMaxIdx && rawWeek > existing.maxWeek)) {
+             existing.sex = sexVal;
+             existing.maxWeek = rawWeek;
+             existing.maxMonth = item._monthName;
+        }
+        
+        existing.allWeeksMsg = `Consolidado Histórico`;
+        existing.weeklyHistory.push({ week: rawWeek, init: segVal, final: sexVal, month: item._monthName });
       }
     });
 
     // Mapeamento final para agrupamento hierárquico
     for (let [, sectorAgg] of sectorMap) {
-      const { dirName, coordName, setorName, seg, sex, allWeeksMsg, itemObj, weeklyHistory } = sectorAgg;
-      const delta = sex - seg;
+      const { dirName, coordName, setorName, itemObj, weeklyHistory } = sectorAgg;
 
-      // Calcular quantos processos "saíram" (Baixados / Resolvidos) comparando semana a semana
-      let resolved = 0;
-      // 1. Ocorreram baixas dentro da própria semana (se fim < inicio)
-      weeklyHistory.forEach(w => {
-         if (w.init > w.final) {
-             resolved += (w.init - w.final);
-         }
+      const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
+      weeklyHistory.sort((a, b) => {
+         const mA = mOrder[a.month] || 99;
+         const mB = mOrder[b.month] || 99;
+         if (mA !== mB) return mA - mB;
+         return parseInt(a.week, 10) - parseInt(b.week, 10);
       });
-      // 2. Ocorreram baixas entre o fim de uma semana e o fim da próxima
-      weeklyHistory.sort((a, b) => a.week - b.week);
+
+      let globalResolved = 0;
+      weeklyHistory.forEach(w => {
+        if (w.init > w.final) globalResolved += (w.init - w.final);
+      });
       for (let i = 1; i < weeklyHistory.length; i++) {
-          const prevFinal = weeklyHistory[i-1].final;
-          const currFinal = weeklyHistory[i].final;
-          // Se a semana seguinte fechou com menos que a anterior, saíram processos!
-          if (currFinal < prevFinal) {
-              resolved += (prevFinal - currFinal);
+        const prevFinal = weeklyHistory[i - 1].final;
+        const currFinal = weeklyHistory[i].final;
+        if (currFinal < prevFinal) {
+          globalResolved += (prevFinal - currFinal);
+        }
+      }
+
+      let displaySeg = sectorAgg.seg;
+      let displaySex = sectorAgg.sex;
+      let displayDelta = displaySex - displaySeg;
+      let displayResolved = globalResolved;
+      let displayMsg = selectedMonth === 'Ano' ? 'Ano de 2026 (Consolidado)' : `Mês Inteiro (${sectorAgg.allWeeksMsg})`;
+
+      if (selectedWeek !== 'Todas') {
+        const wInt = parseInt(selectedWeek, 10);
+        const targetW = weeklyHistory.find(w => w.week === wInt);
+
+        if (!targetW) continue;
+
+        displaySeg = targetW.init;
+        displaySex = targetW.final;
+        displayDelta = displaySex - displaySeg;
+
+        let weekResolved = 0;
+        if (targetW.init > targetW.final) {
+          weekResolved += (targetW.init - targetW.final);
+        }
+
+        const wIdx = weeklyHistory.findIndex(w => w.week === wInt);
+        if (wIdx > 0) {
+          const prevW = weeklyHistory[wIdx - 1];
+          if (targetW.final < prevW.final) {
+            weekResolved += (prevW.final - targetW.final);
           }
+        }
+
+        displayResolved = weekResolved;
+        displayMsg = weekPeriods[selectedWeek] || `Semana ${selectedWeek}`;
       }
 
       if (!root[dirName]) {
@@ -232,22 +305,22 @@ const DashboardMacro = () => {
       const leaf = {
         ...itemObj,
         name: setorName,
-        seg,
-        sex,
-        delta,
-        resolved,
-        Semana_Referencia: selectedWeek === 'Todas' ? `Mês Inteiro (${allWeeksMsg})` : (weekPeriods[selectedWeek] || `Semana ${selectedWeek}`)
+        seg: displaySeg,
+        sex: displaySex,
+        delta: displayDelta,
+        resolved: displayResolved,
+        Semana_Referencia: displayMsg
       };
 
       root[dirName].coords[coordName].setores.push(leaf);
-      root[dirName].coords[coordName].seg += seg;
-      root[dirName].coords[coordName].sex += sex;
-      root[dirName].coords[coordName].delta += delta;
-      root[dirName].coords[coordName].resolved += resolved;
-      root[dirName].seg += seg;
-      root[dirName].sex += sex;
-      root[dirName].delta += delta;
-      root[dirName].resolved += resolved;
+      root[dirName].coords[coordName].seg += displaySeg;
+      root[dirName].coords[coordName].sex += displaySex;
+      root[dirName].coords[coordName].delta += displayDelta;
+      root[dirName].coords[coordName].resolved += displayResolved;
+      root[dirName].seg += displaySeg;
+      root[dirName].sex += displaySex;
+      root[dirName].delta += displayDelta;
+      root[dirName].resolved += displayResolved;
     }
 
     // Ordenação: maiores deltas primeiro
@@ -255,13 +328,32 @@ const DashboardMacro = () => {
       ...dir,
       coords: Object.values(dir.coords).sort((a, b) => b.delta - a.delta)
     })).sort((a, b) => b.delta - a.delta);
-  }, [data, selectedWeek]);
+  }, [filteredData, selectedWeek, selectedMonth]);
 
   const totalEstoqueInicial = treeData.reduce((acc, curr) => acc + curr.seg, 0);
   const totalEstoqueHoje = treeData.reduce((acc, curr) => acc + curr.sex, 0);
   const totalDelta = treeData.reduce((acc, curr) => acc + curr.delta, 0);
   const totalResolved = treeData.reduce((acc, curr) => acc + curr.resolved, 0);
   const totalEntered = totalDelta + totalResolved;
+
+  const donutChartData = useMemo(() => {
+    let result = [];
+    treeData.forEach(dir => {
+      dir.coords.forEach(coord => {
+        if (coord.sex > 0) {
+          result.push({
+            name: coord.name.split(' - ')[0],
+            value: coord.sex,
+            fullName: coord.name
+          });
+        }
+      });
+    });
+    return result.sort((a, b) => b.value - a.value).slice(0, 8);
+  }, [treeData]);
+
+  // Paleta Corporate: Emerald Escuro, Slate Azulado, Azul Celeste Escuro, Indigo, Teal Profundo, Slate Slate, Amber Sóbrio
+  const DONUT_COLORS = ['#059669', '#1e293b', '#0369a1', '#4338ca', '#0f766e', '#334155', '#ea580c', '#475569'];
 
   const toggleNode = (id) => setExpandedNodes(prev => ({ ...prev, [id]: !prev[id] }));
 
@@ -286,8 +378,8 @@ const DashboardMacro = () => {
   // Visão de Detalhe do Setor
   if (selectedSector) {
     const chartData = [
-      { name: selectedWeek === 'Todas' ? 'Início do Mês' : 'Início da Semana', value: selectedSector.seg, color: '#94a3b8' },
-      { name: selectedWeek === 'Todas' ? 'Final do Mês' : 'Final da Semana', value: selectedSector.sex, color: selectedSector.delta > 0 ? '#ef4444' : '#10b981' }
+      { name: selectedWeek === 'Todas' ? 'Início do Período' : 'Início da Semana', value: selectedSector.seg, color: '#94a3b8' },
+      { name: selectedWeek === 'Todas' ? 'Final do Período' : 'Final da Semana', value: selectedSector.sex, color: selectedSector.delta > 0 ? '#ef4444' : '#10b981' }
     ];
 
     const resolvedValue = selectedSector.resolved || 0;
@@ -417,11 +509,16 @@ const DashboardMacro = () => {
             <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Mês</label>
             <select
               value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              className="w-full sm:w-48 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+              onChange={(e) => {
+                 setSelectedMonth(e.target.value);
+                 if (e.target.value === 'Ano') setSelectedWeek('Todas');
+              }}
+              className="w-full sm:w-56 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
             >
-              <option value="Janeiro">Janeiro de 2026</option>
-              {/* Futuramente outros meses podem ser adicionados aqui */}
+              <option value="Janeiro">Janeiro</option>
+              <option value="Fevereiro">Fevereiro</option>
+              <option value="Março">Março</option>
+              <option value="Ano">Ano de 2026 (Consolidado)</option>
             </select>
           </div>
           <div className="flex-1 sm:flex-none">
@@ -429,10 +526,11 @@ const DashboardMacro = () => {
             <select
               value={selectedWeek}
               onChange={(e) => setSelectedWeek(e.target.value)}
-              className="w-full sm:w-64 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+              className={`w-full sm:w-64 border border-slate-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium ${selectedMonth === 'Ano' ? 'bg-slate-100 text-slate-400 opacity-70 cursor-not-allowed' : 'bg-slate-50 text-slate-700'}`}
+              disabled={selectedMonth === 'Ano'}
             >
-              <option value="Todas">Mês Inteiro (Consolidado)</option>
-              {availableWeeks.map(week => (
+              <option value="Todas">{selectedMonth === 'Ano' ? 'Ano Inteiro (Todos os Meses)' : 'Mês Inteiro (Consolidado)'}</option>
+              {selectedMonth !== 'Ano' && availableWeeks.map(week => (
                 <option key={week} value={week}>
                   {weekPeriods[week] ? `${weekPeriods[week]}` : `Semana ${week}`}
                 </option>
@@ -444,7 +542,7 @@ const DashboardMacro = () => {
 
       {/* KPI Global Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-        
+
         {/* CARD 1: ESTOQUE INICIAL */}
         <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 flex flex-col justify-center relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-8 text-slate-100 transition-transform duration-700 group-hover:scale-110">
@@ -522,7 +620,7 @@ const DashboardMacro = () => {
           </div>
           <div className="relative z-10 w-full">
             <h2 className="text-xs lg:text-[11px] xl:text-xs font-bold text-slate-400 uppercase tracking-normal mb-4" title="Total de processos novos que chegaram vs Total que foram tramitados/saíram da gaveta.">FLUXO DO PERÍODO (ENTRADAS E BAIXAS)</h2>
-            
+
             <div className="flex flex-col gap-3 w-full">
               {/* Entradas */}
               <div className="flex justify-between items-center bg-slate-800/80 px-4 py-3 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
@@ -531,7 +629,7 @@ const DashboardMacro = () => {
                   <CountUp end={totalEntered} duration={1.5} />
                 </span>
               </div>
-              
+
               {/* Saídas */}
               <div className="flex justify-between items-center bg-emerald-500/20 px-4 py-3 rounded-2xl border border-emerald-500/30 backdrop-blur-sm">
                 <span className="text-[10px] xl:text-xs font-bold text-emerald-400 uppercase">2. Tramitados (Saíram) -</span>
@@ -543,6 +641,47 @@ const DashboardMacro = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Gráfico de Distribuição */}
+      <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 mb-8 overflow-hidden relative group">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+          <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2 shrink-0">
+            <PieIcon size={18} className="text-blue-500" />
+            Distribuição de Processos por Coordenadoria
+          </h2>
+          <div className="flex items-start gap-2 bg-slate-50 border border-slate-100 p-3 rounded-xl max-w-sm">
+            <Info size={16} className="text-slate-400 shrink-0 mt-0.5" />
+            <p className="text-[10px] sm:text-xs text-slate-500 font-medium leading-relaxed">
+              Este gráfico exibe quais Coordenadorias detêm o maior volume do <strong className="font-bold text-slate-700">Estoque de Fechamento</strong> no período selecionado.
+            </p>
+          </div>
+        </div>
+        <div className="h-72 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={donutChartData}
+                cx="50%"
+                cy="50%"
+                innerRadius={70}
+                outerRadius={95}
+                paddingAngle={5}
+                dataKey="value"
+                stroke="none"
+              >
+                {donutChartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={DONUT_COLORS[index % DONUT_COLORS.length]} />
+                ))}
+              </Pie>
+              <RechartsTooltip
+                formatter={(value, name, props) => [`${value} processos`, props.payload.name]}
+                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
+              />
+              <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '11px', fontWeight: '600', color: '#64748b' }} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </motion.div>
 
       {/* Renderização da Árvore Hierárquica */}
       <div className="space-y-4">
@@ -580,76 +719,70 @@ const DashboardMacro = () => {
               </div>
             </div>
 
-            <AnimatePresence>
-              {expandedNodes[`dir-${dir.name}`] && (
-                <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden bg-slate-50/50">
-                  {dir.coords.map((coord, cIdx) => (
-                    <div key={cIdx} className="ml-8 border-l-2 border-slate-200">
-                      <div
-                        className="p-4 flex justify-between items-center cursor-pointer hover:bg-white transition-all border-b border-slate-100 group/coord"
-                        onClick={(e) => {
-                          const isChevron = e.target.closest('.chevron-area');
-                          if (isChevron) {
-                            toggleNode(`coord-${dir.name}-${coord.name}`);
-                          } else {
-                            setSelectedSector({ ...coord, level: 'Coordenadoria', Diretoria: dir.name });
-                          }
-                        }}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="p-1 rounded bg-white shadow-sm border border-slate-100 chevron-area hover:bg-slate-50 transition-colors"
-                            onClick={(e) => { e.stopPropagation(); toggleNode(`coord-${dir.name}-${coord.name}`); }}
-                          >
-                            {expandedNodes[`coord-${dir.name}-${coord.name}`] ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                          </div>
-                          <div>
-                            <h4 className="text-base font-bold text-slate-700 flex items-center gap-2">
-                              {coord.name}
-                              <Activity size={14} className="opacity-0 group-hover/coord:opacity-100 text-blue-500 transition-opacity" />
-                            </h4>
-                            <p className="text-[9px] font-bold text-slate-400 uppercase">Nível 2: Coordenadoria (Clique p/ detalhes)</p>
-                          </div>
+            {expandedNodes[`dir-${dir.name}`] && (
+              <div className="bg-slate-50/50">
+                {dir.coords.map((coord, cIdx) => (
+                  <div key={cIdx} className="ml-8 border-l-2 border-slate-200">
+                    <div
+                      className="p-4 flex justify-between items-center cursor-pointer hover:bg-white transition-all border-b border-slate-100 group/coord"
+                      onClick={(e) => {
+                        const isChevron = e.target.closest('.chevron-area');
+                        if (isChevron) {
+                          toggleNode(`coord-${dir.name}-${coord.name}`);
+                        } else {
+                          setSelectedSector({ ...coord, level: 'Coordenadoria', Diretoria: dir.name });
+                        }
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="p-1 rounded bg-white shadow-sm border border-slate-100 chevron-area hover:bg-slate-50 transition-colors"
+                          onClick={(e) => { e.stopPropagation(); toggleNode(`coord-${dir.name}-${coord.name}`); }}
+                        >
+                          {expandedNodes[`coord-${dir.name}-${coord.name}`] ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
                         </div>
-                        <div className="flex gap-6 text-right">
-                          <div className="w-20"><p className="text-[8px] font-bold text-slate-300 uppercase underline decoration-emerald-200" title="Estoque retido fisicamente na gaveta no final do período filtrado.">Estoque Fim</p><p className="font-bold text-slate-700">{coord.sex}</p></div>
-                          <div className="w-20"><p className="text-[8px] font-bold text-slate-300 uppercase">ACÚMULO (+/-)</p><p className={`font-bold ${coord.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{coord.delta > 0 ? '+' : ''}{coord.delta}</p></div>
+                        <div>
+                          <h4 className="text-base font-bold text-slate-700 flex items-center gap-2">
+                            {coord.name}
+                            <Activity size={14} className="opacity-0 group-hover/coord:opacity-100 text-blue-500 transition-opacity" />
+                          </h4>
+                          <p className="text-[9px] font-bold text-slate-400 uppercase">Nível 2: Coordenadoria (Clique p/ detalhes)</p>
                         </div>
                       </div>
-
-                      <AnimatePresence>
-                        {expandedNodes[`coord-${dir.name}-${coord.name}`] && (
-                          <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
-                            <div className="ml-10 py-2 space-y-1">
-                              {coord.setores.map((setor, sIdx) => (
-                                <div
-                                  key={sIdx}
-                                  onClick={() => setSelectedSector({ ...setor, level: 'Setor', Coordenadoria: coord.name, Diretoria: dir.name })}
-                                  className="p-3 mr-4 flex justify-between items-center bg-white rounded-lg border border-slate-200/60 shadow-sm cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group/leaf"
-                                >
-                                  <div>
-                                    <p className="font-bold text-slate-600 text-sm flex items-center gap-2">
-                                      {setor.name}
-                                      <Activity size={14} className="opacity-0 group-hover/leaf:opacity-100 text-blue-500 transition-opacity" />
-                                    </p>
-                                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Nível 3: Unidade Operacional (Clique p/ detalhes)</p>
-                                  </div>
-                                  <div className="flex gap-4 text-right">
-                                    <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'INÍCIO DO MÊS' : 'INÍCIO SEMANA'}</p><p className="text-xs font-medium text-slate-500">{setor.seg}</p></div>
-                                    <div className="text-right w-16"><p className="text-[7px] font-bold text-slate-400">ACÚMULO</p><p className={`text-xs font-black ${setor.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{setor.delta > 0 ? '+' : ''}{setor.delta}</p></div>
-                                    <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'FINAL DO MÊS' : 'FINAL SEMANA'}</p><p className="text-xs font-bold text-slate-800">{setor.sex}</p></div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      <div className="flex gap-6 text-right">
+                        <div className="w-20"><p className="text-[8px] font-bold text-slate-300 uppercase underline decoration-emerald-200" title="Estoque retido fisicamente na gaveta no final do período filtrado.">Estoque Fim</p><p className="font-bold text-slate-700">{coord.sex}</p></div>
+                        <div className="w-20"><p className="text-[8px] font-bold text-slate-300 uppercase">ACÚMULO (+/-)</p><p className={`font-bold ${coord.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{coord.delta > 0 ? '+' : ''}{coord.delta}</p></div>
+                      </div>
                     </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+
+                    {expandedNodes[`coord-${dir.name}-${coord.name}`] && (
+                      <div className="ml-10 py-2 space-y-1">
+                        {coord.setores.map((setor, sIdx) => (
+                          <div
+                            key={sIdx}
+                            onClick={() => setSelectedSector({ ...setor, level: 'Setor', Coordenadoria: coord.name, Diretoria: dir.name })}
+                            className="p-3 mr-4 flex justify-between items-center bg-white rounded-lg border border-slate-200/60 shadow-sm cursor-pointer hover:border-blue-300 hover:shadow-md transition-all group/leaf"
+                          >
+                            <div>
+                              <p className="font-bold text-slate-600 text-sm flex items-center gap-2">
+                                {setor.name}
+                                <Activity size={14} className="opacity-0 group-hover/leaf:opacity-100 text-blue-500 transition-opacity" />
+                              </p>
+                              <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Nível 3: Unidade Operacional (Clique p/ detalhes)</p>
+                            </div>
+                            <div className="flex gap-4 text-right">
+                              <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'INÍCIO DO MÊS' : 'INÍCIO SEMANA'}</p><p className="text-xs font-medium text-slate-500">{setor.seg}</p></div>
+                              <div className="text-right w-16"><p className="text-[7px] font-bold text-slate-400">ACÚMULO</p><p className={`text-xs font-black ${setor.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{setor.delta > 0 ? '+' : ''}{setor.delta}</p></div>
+                              <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'FINAL DO MÊS' : 'FINAL SEMANA'}</p><p className="text-xs font-bold text-slate-800">{setor.sex}</p></div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
