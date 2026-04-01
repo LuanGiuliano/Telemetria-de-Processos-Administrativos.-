@@ -59,9 +59,8 @@ const DashboardMacro = () => {
             currentMonth = c0.toUpperCase();
           } else if (c0.toUpperCase().includes('SEMANA')) {
             const m = c0.match(/SEMANA\s+(\d+)/i);
-            // Como estamos trabalhando com a aba JANEIRO como base inicial do cliente:
-            if (m && currentMonth === 'JANEIRO') {
-              periods[m[1]] = c1;
+            if (m && currentMonth) {
+              periods[`${currentMonth}_${m[1]}`] = c1;
             }
           }
         });
@@ -301,7 +300,7 @@ const DashboardMacro = () => {
         }
 
         displayResolved = weekResolved;
-        displayMsg = weekPeriods[selectedWeek] || `Semana ${selectedWeek}`;
+        displayMsg = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`] || `Semana ${selectedWeek}`;
       }
 
       if (!root[dirName]) {
@@ -369,7 +368,7 @@ const DashboardMacro = () => {
 
   const timeframe = useMemo(() => {
     if (selectedWeek !== 'Todas') {
-      const period = weekPeriods[selectedWeek];
+      const period = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`];
       return period ? `${selectedMonth} (${period})` : `${selectedMonth} - Semana ${selectedWeek}`;
     }
     return `${selectedMonth} - Mês Inteiro`;
@@ -542,7 +541,7 @@ const DashboardMacro = () => {
               <option value="Todas">{selectedMonth === 'Ano' ? 'Ano Inteiro (Todos os Meses)' : 'Mês Inteiro (Consolidado)'}</option>
               {selectedMonth !== 'Ano' && availableWeeks.map(week => (
                 <option key={week} value={week}>
-                  {weekPeriods[week] ? `${weekPeriods[week]}` : `Semana ${week}`}
+                  {weekPeriods[`${selectedMonth.toUpperCase()}_${week}`] ? `${weekPeriods[`${selectedMonth.toUpperCase()}_${week}`]}` : `Semana ${week}`}
                 </option>
               ))}
             </select>
