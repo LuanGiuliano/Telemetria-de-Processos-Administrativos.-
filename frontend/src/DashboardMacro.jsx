@@ -59,9 +59,8 @@ const DashboardMacro = () => {
             currentMonth = c0.toUpperCase();
           } else if (c0.toUpperCase().includes('SEMANA')) {
             const m = c0.match(/SEMANA\s+(\d+)/i);
-            // Como estamos trabalhando com a aba JANEIRO como base inicial do cliente:
-            if (m && currentMonth === 'JANEIRO') {
-              periods[m[1]] = c1;
+            if (m && currentMonth) {
+              periods[`${currentMonth}_${m[1]}`] = c1;
             }
           }
         });
@@ -166,7 +165,8 @@ const DashboardMacro = () => {
         "COR": "COR - COORDENADORIA DE ORGANIZAÇÃO DE REDE",
         "CAPO": "CAPO - COORDENADORIA DE APOSENTADORIA",
         "CPS": "CPS - COORDENADORIA DE PLANEJAMENTO E SELEÇÃO",
-        "CFOP": "CFOP - COORDENADORIA DE FOLHA DE PAGAMENTO"
+        "CFOP": "CFOP - COORDENADORIA DE FOLHA DE PAGAMENTO",
+        "CADDEP": "CADDEP - COORDENADORIA DE AVALIAÇÃO DE DESEMPENHO E DESENVOLVIMENTO DE PESSOAS"
       };
 
       let coordName = "DIRETORIAS";
@@ -190,10 +190,19 @@ const DashboardMacro = () => {
       const rawWeek = parseInt(item.SEMANA || 0, 10) || 0;
       if (rawWeek === 0) return; // Ignora linhas de headers repetidas
 
+      const rawSegStr = String(item['INICIO SEMANA'] || '').trim();
+      const rawSexStr = String(item['FINAL SEMANA'] || '').trim();
+
+      const isSegEmpty = rawSegStr === '' || rawSegStr === '-';
+      const isSexEmpty = rawSexStr === '' || rawSexStr === '-';
+
+      // Pular a inserção de semanas cujo valor ainda não foi preenchido na planilha para não zerar os dados finais
+      if (isSegEmpty || isSexEmpty) return;
+
       const key = `${dirName}|${coordName}|${setorName}`;
 
-      const segVal = parseInt(item['INICIO SEMANA'] || 0, 10) || 0;
-      const sexVal = parseInt(item['FINAL SEMANA'] || 0, 10) || 0;
+      const segVal = parseInt(rawSegStr, 10) || 0;
+      const sexVal = parseInt(rawSexStr, 10) || 0;
 
       if (!sectorMap.has(key)) {
         sectorMap.set(key, {
@@ -291,7 +300,7 @@ const DashboardMacro = () => {
         }
 
         displayResolved = weekResolved;
-        displayMsg = weekPeriods[selectedWeek] || `Semana ${selectedWeek}`;
+        displayMsg = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`] || `Semana ${selectedWeek}`;
       }
 
       if (!root[dirName]) {
@@ -359,7 +368,7 @@ const DashboardMacro = () => {
 
   const timeframe = useMemo(() => {
     if (selectedWeek !== 'Todas') {
-      const period = weekPeriods[selectedWeek];
+      const period = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`];
       return period ? `${selectedMonth} (${period})` : `${selectedMonth} - Semana ${selectedWeek}`;
     }
     return `${selectedMonth} - Mês Inteiro`;
@@ -438,11 +447,11 @@ const DashboardMacro = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-slate-50 p-6 lg:p-8 rounded-[2.5rem] border border-slate-100 flex flex-col justify-center">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{selectedWeek === 'Todas' ? 'Início do Mês' : 'Início da Semana'}</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{selectedMonth === 'Ano' ? 'Início do Ano' : (selectedWeek === 'Todas' ? 'Início do Mês' : 'Início da Semana')}</p>
                     <p className="text-5xl font-black text-slate-700">{selectedSector.seg}</p>
                   </div>
                   <div className="bg-slate-50 p-6 lg:p-8 rounded-[2.5rem] border border-slate-100 flex flex-col justify-center">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{selectedWeek === 'Todas' ? 'Final do Mês' : 'Final da Semana'}</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{selectedMonth === 'Ano' ? 'Final do Ano' : (selectedWeek === 'Todas' ? 'Final do Mês' : 'Final da Semana')}</p>
                     <p className="text-5xl font-black text-slate-900">{selectedSector.sex}</p>
                   </div>
                 </div>
@@ -532,7 +541,7 @@ const DashboardMacro = () => {
               <option value="Todas">{selectedMonth === 'Ano' ? 'Ano Inteiro (Todos os Meses)' : 'Mês Inteiro (Consolidado)'}</option>
               {selectedMonth !== 'Ano' && availableWeeks.map(week => (
                 <option key={week} value={week}>
-                  {weekPeriods[week] ? `${weekPeriods[week]}` : `Semana ${week}`}
+                  {weekPeriods[`${selectedMonth.toUpperCase()}_${week}`] ? `${weekPeriods[`${selectedMonth.toUpperCase()}_${week}`]}` : `Semana ${week}`}
                 </option>
               ))}
             </select>
@@ -771,9 +780,9 @@ const DashboardMacro = () => {
                               <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Nível 3: Unidade Operacional (Clique p/ detalhes)</p>
                             </div>
                             <div className="flex gap-4 text-right">
-                              <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'INÍCIO DO MÊS' : 'INÍCIO SEMANA'}</p><p className="text-xs font-medium text-slate-500">{setor.seg}</p></div>
+                              <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedMonth === 'Ano' ? 'INÍCIO DO ANO' : (selectedWeek === 'Todas' ? 'INÍCIO DO MÊS' : 'INÍCIO SEMANA')}</p><p className="text-xs font-medium text-slate-500">{setor.seg}</p></div>
                               <div className="text-right w-16"><p className="text-[7px] font-bold text-slate-400">ACÚMULO</p><p className={`text-xs font-black ${setor.delta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>{setor.delta > 0 ? '+' : ''}{setor.delta}</p></div>
-                              <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedWeek === 'Todas' ? 'FINAL DO MÊS' : 'FINAL SEMANA'}</p><p className="text-xs font-bold text-slate-800">{setor.sex}</p></div>
+                              <div className="w-16"><p className="text-[7px] font-bold text-slate-400 leading-tight">{selectedMonth === 'Ano' ? 'FINAL DO ANO' : (selectedWeek === 'Todas' ? 'FINAL DO MÊS' : 'FINAL SEMANA')}</p><p className="text-xs font-bold text-slate-800">{setor.sex}</p></div>
                             </div>
                           </div>
                         ))}
