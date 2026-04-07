@@ -3,7 +3,7 @@ import Papa from 'papaparse';
 import CountUp from 'react-countup';
 import { Layers, Activity, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Info, ChevronDown, ChevronRight, ArrowLeft, BarChart3, PieChart as PieIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 // URL do CSV Público no Google Sheets (Planilha NOVA - Janeiro)
 const CSV_URL_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=0";
@@ -361,6 +361,54 @@ const DashboardMacro = () => {
     return result.sort((a, b) => b.value - a.value).slice(0, 8);
   }, [treeData]);
 
+  const trendData = useMemo(() => {
+    if (filteredData.length === 0) return [];
+    
+    const weeklyTotals = {};
+    const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
+    
+    filteredData.forEach(item => {
+      if (!item.NOME || item.NOME.includes("UNIDADES PAE EM ORDEM")) return;
+      const rawWeek = parseInt(item.SEMANA || 0, 10) || 0;
+      if (rawWeek === 0) return;
+      
+      const sexVal = parseInt(String(item['FINAL SEMANA'] || '').trim(), 10);
+      if (isNaN(sexVal)) return;
+      
+      const mIdx = mOrder[item._monthName] || 99;
+      
+      const key = selectedMonth === 'Ano' 
+         ? `${mIdx.toString().padStart(2, '0')}_${item._monthName}_${rawWeek}` 
+         : `W${rawWeek}`;
+         
+      if (!weeklyTotals[key]) {
+        weeklyTotals[key] = {
+           _sortKey: selectedMonth === 'Ano' ? mIdx * 100 + rawWeek : rawWeek,
+           name: `Sem ${String(rawWeek).padStart(2, '0')} (${item._monthName.substring(0,3)})`,
+           stock: 0
+        };
+      }
+      weeklyTotals[key].stock += sexVal;
+    });
+    
+    let result = Object.values(weeklyTotals).sort((a, b) => a._sortKey - b._sortKey);
+    
+    if (result.length > 1) {
+      const n = result.length;
+      const startStock = result[0].stock;
+
+      result = result.map((pt, i) => ({
+         ...pt,
+         // Linha de Burn-down: começa no estoque inicial e cai linearmente até 0 no último ponto
+         tendencia: Math.max(0, Math.round(startStock - (startStock / (n - 1)) * i))
+      }));
+    } else if (result.length === 1) {
+      result[0].tendencia = 0;
+    }
+    
+    return result;
+  }, [filteredData, selectedMonth]);
+
   // Paleta Corporate: Emerald Escuro, Slate Azulado, Azul Celeste Escuro, Indigo, Teal Profundo, Slate Slate, Amber Sóbrio
   const DONUT_COLORS = ['#059669', '#1e293b', '#0369a1', '#4338ca', '#0f766e', '#334155', '#ea580c', '#475569'];
 
@@ -472,17 +520,24 @@ const DashboardMacro = () => {
                 </div>
 
                 <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-8 rounded-[2.5rem] text-emerald-100 shadow-xl shadow-emerald-200 border border-emerald-400 flex flex-col justify-center">
-                  <p className="text-xs font-bold opacity-90 uppercase mb-2">Produtividade (Tramitados)</p>
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex justify-between items-start">
+                    <p className="text-xs font-bold opacity-90 uppercase mb-2">Produtividade GERAL (Taxa de Resolução)</p>
+                  </div>
+                  <div className="flex items-baseline gap-2 mb-1">
                     <p className="text-5xl lg:text-6xl font-black text-white">{resolvedValue}</p>
                     <p className="text-xl font-bold text-emerald-200">/ {totalVolume}</p>
                   </div>
-                  <div className="mt-3 inline-block bg-white/20 rounded-full px-3 py-1 text-xs font-bold text-white self-start backdrop-blur-sm border border-emerald-400/50">
-                    {resolutionRate}% de Taxa de Resolução
+                  <div className="mt-2 mb-4 inline-block bg-white/20 rounded-full px-3 py-1 text-xs font-bold text-white self-start backdrop-blur-sm border border-emerald-400/50">
+                    {resolutionRate}% de processos tramitados/resolvidos
                   </div>
-                  <p className="text-[10px] mt-4 opacity-80 font-medium leading-tight">
-                    Dos {totalVolume} processos que passaram pela unidade no período (somando tudo), a equipe conseguiu tramitar e finalizar a grande maioria de {resolvedValue}.
-                  </p>
+                  
+                  <div className="bg-white/10 rounded-xl p-4 border border-white/20">
+                    <p className="text-[10px] lg:text-xs opacity-95 font-medium leading-relaxed">
+                      A unidade lidou com uma "massa total" de <strong className="text-white font-black">{totalVolume} processos</strong> no período selecionado.<br/><br/>
+                      <span className="opacity-80">Como chegamos aos {totalVolume}?</span><br/>
+                      É a soma exata dos <strong className="text-white">{resolvedValue} baixados</strong> (que saíram da caixa) mais os <strong className="text-white">{selectedSector.sex} parados</strong> (que continuam na caixa no fim do período).
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -651,46 +706,110 @@ const DashboardMacro = () => {
         </motion.div>
       </div>
 
-      {/* Gráfico de Distribuição */}
-      <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 mb-8 overflow-hidden relative group">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-          <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2 shrink-0">
-            <PieIcon size={18} className="text-blue-500" />
-            Distribuição de Processos por Coordenadoria
-          </h2>
-          <div className="flex items-start gap-2 bg-slate-50 border border-slate-100 p-3 rounded-xl max-w-sm">
-            <Info size={16} className="text-slate-400 shrink-0 mt-0.5" />
-            <p className="text-[10px] sm:text-xs text-slate-500 font-medium leading-relaxed">
-              Este gráfico exibe quais Coordenadorias detêm o maior volume do <strong className="font-bold text-slate-700">Estoque de Fechamento</strong> no período selecionado.
-            </p>
+      {/* Gráficos Secundários */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 overflow-hidden relative group flex flex-col">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4 shrink-0">
+            <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+              <PieIcon size={18} className="text-blue-500" />
+              Distribuição por Coordenadoria
+            </h2>
           </div>
-        </div>
-        <div className="h-72 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={donutChartData}
-                cx="50%"
-                cy="50%"
-                innerRadius={70}
-                outerRadius={95}
-                paddingAngle={5}
-                dataKey="value"
-                stroke="none"
-              >
-                {donutChartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={DONUT_COLORS[index % DONUT_COLORS.length]} />
-                ))}
-              </Pie>
-              <RechartsTooltip
-                formatter={(value, name, props) => [`${value} processos`, props.payload.name]}
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
-              />
-              <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '11px', fontWeight: '600', color: '#64748b' }} />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </motion.div>
+          <div className="flex-1 min-h-[300px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={donutChartData}
+                  cx="50%"
+                  cy="45%"
+                  innerRadius={65}
+                  outerRadius={90}
+                  paddingAngle={5}
+                  dataKey="value"
+                  stroke="none"
+                >
+                  {donutChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={DONUT_COLORS[index % DONUT_COLORS.length]} />
+                  ))}
+                </Pie>
+                <RechartsTooltip
+                  formatter={(value, name, props) => [`${value} processos`, props.payload.name]}
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
+                />
+                <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '11px', fontWeight: '600', color: '#64748b' }} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+
+        {/* Novo Gráfico de Tendência (Regressão Linear) */}
+        <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 overflow-hidden relative group flex flex-col">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4 shrink-0">
+            <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+              <TrendingDown size={18} className="text-emerald-500" />
+              Gráfico de Desempenho (Burn-Down) • {selectedMonth === 'Ano' ? 'Acumulado Anual' : `Mês de ${selectedMonth}`}
+            </h2>
+            <div className="flex items-start gap-2 bg-slate-50 border border-slate-100 p-2 rounded-xl max-w-xs hidden sm:flex">
+              <Info size={14} className="text-slate-400 shrink-0 mt-0.5" />
+              <p className="text-[9px] text-slate-500 font-medium leading-relaxed">
+                A linha laranja dita a <strong>meta ideal de queda</strong> até 0. A área cinza mostra a <strong>realidade</strong> das gavetas.
+              </p>
+            </div>
+          </div>
+          <div className="flex-1 min-h-[300px] w-full -ml-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: selectedMonth === 'Ano' ? 10 : 20, left: 0 }}>
+                <defs>
+                  <linearGradient id="colorStock" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#94a3b8" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis 
+                  dataKey="name" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 9, fill: '#64748b', fontWeight: 600 }}
+                  interval="preserveStartEnd"
+                  angle={selectedMonth === 'Ano' ? -45 : 0}
+                  textAnchor={selectedMonth === 'Ano' ? 'end' : 'middle'}
+                  dy={selectedMonth === 'Ano' ? 5 : 10}
+                  height={selectedMonth === 'Ano' ? 70 : 30}
+                />
+                <YAxis 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fontSize: 10, fill: '#64748b' }}
+                />
+                <RechartsTooltip
+                  contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
+                  labelStyle={{ color: '#0f172a', marginBottom: '4px' }}
+                />
+                <Legend verticalAlign="bottom" wrapperStyle={{ fontSize: '11px', fontWeight: '600', color: '#64748b', paddingTop: '20px' }} />
+                <Area 
+                  type="monotone" 
+                  dataKey="stock" 
+                  name="Esvaziamento Real da Caixa" 
+                  stroke="#64748b" 
+                  strokeWidth={3} 
+                  fillOpacity={1} 
+                  fill="url(#colorStock)" 
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="tendencia" 
+                  name="Queda Ideal Necessária (Rumo ao Zero)" 
+                  stroke="#f97316" 
+                  strokeWidth={2} 
+                  strokeDasharray="5 5"
+                  dot={false}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Renderização da Árvore Hierárquica */}
       <div className="space-y-4">
