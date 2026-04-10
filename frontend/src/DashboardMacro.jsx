@@ -258,17 +258,14 @@ const DashboardMacro = () => {
          return parseInt(a.week, 10) - parseInt(b.week, 10);
       });
 
+      // Corrigido: conta apenas a queda dentro de cada semana (init → final).
+      // O segundo loop foi removido pois causava dupla contagem:
+      // a queda entre o FINAL da semana anterior e o FINAL da semana atual
+      // já está capturada pelo próprio (init - final) de cada semana individualmente.
       let globalResolved = 0;
       weeklyHistory.forEach(w => {
         if (w.init > w.final) globalResolved += (w.init - w.final);
       });
-      for (let i = 1; i < weeklyHistory.length; i++) {
-        const prevFinal = weeklyHistory[i - 1].final;
-        const currFinal = weeklyHistory[i].final;
-        if (currFinal < prevFinal) {
-          globalResolved += (prevFinal - currFinal);
-        }
-      }
 
       let displaySeg = sectorAgg.seg;
       let displaySex = sectorAgg.sex;
@@ -286,18 +283,11 @@ const DashboardMacro = () => {
         displaySex = targetW.final;
         displayDelta = displaySex - displaySeg;
 
-        let weekResolved = 0;
-        if (targetW.init > targetW.final) {
-          weekResolved += (targetW.init - targetW.final);
-        }
-
-        const wIdx = weeklyHistory.findIndex(w => w.week === wInt);
-        if (wIdx > 0) {
-          const prevW = weeklyHistory[wIdx - 1];
-          if (targetW.final < prevW.final) {
-            weekResolved += (prevW.final - targetW.final);
-          }
-        }
+        // Corrigido: apenas o delta intra-semana (init → final) é tramitado naquela semana.
+        // A comparação com o FINAL da semana anterior foi removida (dupla contagem).
+        const weekResolved = targetW.init > targetW.final
+          ? targetW.init - targetW.final
+          : 0;
 
         displayResolved = weekResolved;
         displayMsg = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`] || `Semana ${selectedWeek}`;

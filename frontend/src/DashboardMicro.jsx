@@ -80,6 +80,9 @@ const DashboardMicro = () => {
   // State para os Filtros
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSetor, setSelectedSetor] = useState('Todos');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  
   const [cardTick, setCardTick] = useState(0);
   const [isSetorModalOpen, setIsSetorModalOpen] = useState(false);
   const [isAssuntoModalOpen, setIsAssuntoModalOpen] = useState(false);
@@ -100,13 +103,22 @@ const DashboardMicro = () => {
       const matchSearch = item.PROTOCOLO?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.ASSUNTO?.toLowerCase().includes(searchTerm.toLowerCase());
       const matchSetor = selectedSetor === 'Todos' || item.SIGLA_SETOR === selectedSetor;
-      return matchSearch && matchSetor;
+      
+      let matchDate = true;
+      if (startDate && item.Data_Curta) {
+        matchDate = matchDate && (item.Data_Curta >= startDate);
+      }
+      if (endDate && item.Data_Curta) {
+        matchDate = matchDate && (item.Data_Curta <= endDate);
+      }
+
+      return matchSearch && matchSetor && matchDate;
     });
-  }, [rawData, searchTerm, selectedSetor]);
+  }, [rawData, searchTerm, selectedSetor, startDate, endDate]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedSetor]);
+  }, [searchTerm, selectedSetor, startDate, endDate]);
 
   const activeTimeline = useMemo(() => {
     const contagem = {};
@@ -183,6 +195,14 @@ const DashboardMicro = () => {
     return `de ${format(minDate)} a ${format(maxDate)}`;
   }, [rawData]);
 
+  // Limites min e max para o input type="date" vindos do rawData
+  const dateLimits = useMemo(() => {
+    if (rawData.length === 0) return { min: '', max: '' };
+    const validDates = rawData.map(d => d.Data_Curta).filter(Boolean).sort();
+    if (validDates.length === 0) return { min: '', max: '' };
+    return { min: validDates[0], max: validDates[validDates.length - 1] };
+  }, [rawData]);
+
   const totalItems = filteredData.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -211,8 +231,8 @@ const DashboardMicro = () => {
         )}
 
         {/* Filtros em Glassmorphism */}
-        <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-slate-100 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex items-center gap-2 w-full md:w-1/2 relative">
+        <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-slate-100 mb-8 flex flex-col lg:flex-row gap-4 items-center justify-between">
+          <div className="flex items-center gap-2 w-full lg:w-1/3 relative">
             <Search className="absolute left-3 text-slate-400" size={18} />
             <input
               type="text"
@@ -222,7 +242,7 @@ const DashboardMicro = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2 w-full md:w-1/3 relative">
+          <div className="flex items-center gap-2 w-full lg:w-1/4 relative">
             <Filter className="absolute left-3 text-slate-400" size={18} />
             <select
               className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block pl-10 p-2.5 outline-none transition-all appearance-none cursor-pointer"
@@ -233,6 +253,34 @@ const DashboardMicro = () => {
                 <option key={setor} value={setor}>{setor === 'Todos' ? 'Todos os Setores' : setor}</option>
               ))}
             </select>
+          </div>
+
+          <div className="flex items-center gap-2 w-full lg:w-auto">
+             <div className="flex items-center gap-2 w-full relative">
+               <Calendar className="absolute left-3 text-slate-400" size={18} />
+               <input
+                 type="date"
+                 className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block pl-10 p-2.5 pr-3 outline-none transition-all cursor-pointer"
+                 value={startDate}
+                 min={dateLimits.min}
+                 max={dateLimits.max}
+                 onChange={(e) => setStartDate(e.target.value)}
+                 title="Data Inicial"
+               />
+             </div>
+             <span className="text-slate-400 font-medium text-sm">até</span>
+             <div className="flex items-center gap-2 w-full relative">
+               <Calendar className="absolute left-3 text-slate-400" size={18} />
+               <input
+                 type="date"
+                 className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-green-500 focus:border-green-500 block pl-10 p-2.5 pr-3 outline-none transition-all cursor-pointer"
+                 value={endDate}
+                 min={dateLimits.min}
+                 max={dateLimits.max}
+                 onChange={(e) => setEndDate(e.target.value)}
+                 title="Data Final"
+               />
+             </div>
           </div>
         </motion.div>
 
