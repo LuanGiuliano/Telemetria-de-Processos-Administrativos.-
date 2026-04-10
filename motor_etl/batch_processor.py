@@ -5,7 +5,7 @@ import pandas as pd
 import re
 import json
 import multiprocessing
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Constantes globais — devem ficar no nível do módulo para serem pickleable
@@ -35,24 +35,35 @@ _KEY_MAP = {
 # ─────────────────────────────────────────────────────────────────────────────
 # Worker de pré-scan (detecta Setor Origem em cada página — rápido)
 # ─────────────────────────────────────────────────────────────────────────────
+import pypdfium2 as pdfium
+
 def _prescan_setores(pdf_path: str) -> list:
     """
-    Passagem rápida e sequencial usando apenas extract_text() para determinar
-    o setor_origem de cada página. Retorna uma lista indexada por número de página.
-    extract_text() é ~5× mais rápido que extract_words(), tornando esta varredura leve.
+    Passagem super-rápida (pypdfium2) para determinar o setor_origem de cada página. 
+    Evita o congelamento do pdfplumber que tenta montar a estrutura visual inteira em memória.
     """
     page_setores = []
     current_setor = "DESCONHECIDO"
-    with pdfplumber.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            text = page.extract_text() or ""
-            for line in text.split('\n'):
-                if "SETOR ORIGEM:" in line.upper():
-                    try:
-                        current_setor = line.upper().split('ORIGEM:')[1].strip()
-                    except Exception:
-                        pass
-            page_setores.append(current_setor)
+    
+    pdf = pdfium.PdfDocument(pdf_path)
+    for i in range(len(pdf)):
+        page = pdf[i]
+        textpage = page.get_textpage()
+        text = textpage.get_text_bounded() or ""
+        
+        for line in text.split('\n'):
+            if "SETOR ORIGEM:" in line.upper():
+                try:
+                    current_setor = line.upper().split('ORIGEM:')[1].strip()
+                except Exception:
+                    pass
+        page_setores.append(current_setor)
+        
+        # Libera RAM
+        textpage.close()
+        page.close()
+        
+    pdf.close()
     return page_setores
 
 
@@ -61,20 +72,18 @@ def _prescan_setores(pdf_path: str) -> list:
 # ─────────────────────────────────────────────────────────────────────────────
 def _process_page_range(args: tuple) -> list:
     """
-    Processa as páginas [start_page, end_page) de um PDF.
-    Recebe args = (pdf_path, start_page, end_page, page_setores).
+    Processa um chunk do PDF.
+    Recebe args = (chunk_pdf_path, chunk_page_setores).
     Retorna lista de dicts de processos extraídos.
     """
-    pdf_path, start_page, end_page, page_setores = args
+    chunk_pdf_path, chunk_page_setores = args
     dados = []
     proc_atual = None
 
-    with pdfplumber.open(pdf_path) as pdf:
-        n_pages = len(pdf.pages)
-        for page_idx in range(start_page, min(end_page, n_pages)):
-            page = pdf.pages[page_idx]
-            setor_origem = (page_setores[page_idx]
-                            if page_idx < len(page_setores)
+    with pdfplumber.open(chunk_pdf_path) as pdf:
+        for page_idx, page in enumerate(pdf.pages):
+            setor_origem = (chunk_page_setores[page_idx]
+                            if page_idx < len(chunk_page_setores)
                             else "DESCONHECIDO")
 
             words = page.extract_words()
@@ -173,26 +182,48 @@ def extract_from_pdf(pdf_path: str, progress_cb=None) -> list:
     if progress_cb:
         progress_cb(15)
 
-    # Passo 2: extração paralela
-    n_cpus = max(1, multiprocessing.cpu_count() - 1)  # deixa 1 CPU livre para o OS
+    # Passo 2: criar chunks minúsculos com pypdfium2 para aliviar o pdfplumber
+    chunk_size = 50
+    chunks_args = []
+    
+    pdf_ium = pdfium.PdfDocument(pdf_path)
+    base_dir = os.path.dirname(pdf_path)
+    base_name = os.path.basename(pdf_path)
+    
+    for i in range(0, n_pages, chunk_size):
+        end_idx = min(i + chunk_size, n_pages)
+        chunk_pdf = pdfium.PdfDocument.new()
+        chunk_pdf.import_pages(pdf_ium, list(range(i, end_idx)))
+        
+        chunk_name = os.path.join(base_dir, f"temp_chunk_{i}_{base_name}")
+        chunk_pdf.save(chunk_name)
+        chunk_pdf.close()
+        
+        chunk_page_setores = page_setores[i:end_idx]
+        chunks_args.append((chunk_name, chunk_page_setores))
+        
+    pdf_ium.close()
 
-    # Muitos chunks pequenos para progresso granular; mínimo de 20 páginas por chunk
-    chunk_size = max(20, n_pages // (n_cpus * 6))
-    chunks = [
-        (pdf_path, i, min(i + chunk_size, n_pages), page_setores)
-        for i in range(0, n_pages, chunk_size)
-    ]
-    n_chunks = len(chunks)
-
+    # Passo 3: extração paralela
+    n_workers = max(1, multiprocessing.cpu_count() - 1)
+    n_chunks = len(chunks_args)
     all_dados: list = []
     completed = 0
 
-    with ProcessPoolExecutor(max_workers=n_cpus) as executor:
-        futures = {executor.submit(_process_page_range, chunk): i
-                   for i, chunk in enumerate(chunks)}
+    with ThreadPoolExecutor(max_workers=n_workers) as executor:
+        futures = {executor.submit(_process_page_range, arg): arg[0]
+                   for arg in chunks_args}
         for future in as_completed(futures):
-            chunk_dados = future.result()   # propaga exceções do worker
-            all_dados.extend(chunk_dados)
+            chunk_path = futures[future]
+            try:
+                chunk_dados = future.result()
+                all_dados.extend(chunk_dados)
+            except Exception as e:
+                print(f"Erro no chunk {chunk_path}: {e}")
+            finally:
+                if os.path.exists(chunk_path):
+                    os.remove(chunk_path)
+                    
             completed += 1
             if progress_cb:
                 pct = 15 + int(completed / n_chunks * 70)   # 15% → 85%
@@ -281,7 +312,6 @@ def processar_lote(pasta_entrada, arquivo_saida):
 
 
 if __name__ == '__main__':
-    # Guarda obrigatória para multiprocessing no Windows (spawn context)
     multiprocessing.freeze_support()
 
     pasta_entrada = os.path.abspath(
