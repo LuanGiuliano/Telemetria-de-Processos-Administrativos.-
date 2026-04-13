@@ -5,7 +5,7 @@ import {
   PieChart, Pie, Cell, Legend
 } from 'recharts';
 import {
-  FileText, TrendingUp, Calendar, Activity, PieChart as PieChartIcon, Search, Filter, Layers, X
+  FileText, TrendingUp, Calendar, Activity, PieChart as PieChartIcon, Search, Filter, Layers, X, Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from './lib/supabase';
@@ -51,17 +51,24 @@ const DashboardMicro = () => {
           }
         }
 
-        const normalizedData = (allData || []).map(row => ({
-          PROTOCOLO: row.protocolo,
-          ASSUNTO: row.assunto,
-          INTERESSADO: row.interessado,
-          Data_Curta: row.data,
-          Data_Protocolo: row.data_protocolo,
-          Tipo_Protocolo: row.tipo_protocolo,
-          SIGLA_SETOR: row.Setor_Origem,
-          SETOR_ATUAL: row.Setor_Origem,
-          COMPLEMENTO_SETOR_ATUAL: row.complemento
-        }));
+        const normalizedData = (allData || []).map(row => {
+          let cleanInteressado = row.interessado || '';
+          
+          // Muitas vezes o PDF funde a coluna de Tipo (ELETRONICO) e Data do Protocolo (DD/MM/YYYY) para dentro da coluna Interessado
+          cleanInteressado = cleanInteressado.replace(/^(?:ELETRONICO|ELETRÔNICO|FISICO|FÍSICO)\s*(?:\d{2}\/\d{2}\/\d{4})?\s*/i, '').trim();
+          
+          return {
+            PROTOCOLO: row.protocolo,
+            ASSUNTO: row.assunto,
+            INTERESSADO: cleanInteressado,
+            Data_Curta: row.data,
+            Data_Protocolo: row.data_protocolo,
+            Tipo_Protocolo: row.tipo_protocolo,
+            SIGLA_SETOR: row.Setor_Origem,
+            SETOR_ATUAL: row.Setor_Origem,
+            COMPLEMENTO_SETOR_ATUAL: row.complemento
+          };
+        });
 
         // Ordena por data decrescente
         normalizedData.sort((a, b) => new Date(b.Data_Curta) - new Date(a.Data_Curta));
@@ -296,8 +303,8 @@ const DashboardMicro = () => {
                 <h2 className="text-xl font-bold uppercase tracking-wider">Volume de Processos Tramitados</h2>
               </div>
               <div className="mt-4 flex items-baseline">
-                <span className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter shadow-sm">
-                  <CountUp end={totalProcessos} separator="." duration={1.5} useEasing={true} />
+                <span className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter shadow-sm flex items-center">
+                  {isLoading ? <Loader2 className="animate-spin text-slate-300" size={80} /> : <CountUp end={totalProcessos} separator="." duration={1.5} useEasing={true} />}
                 </span>
                 <span className="ml-4 text-2xl font-bold text-slate-600">itens filtrados</span>
               </div>
@@ -310,8 +317,9 @@ const DashboardMicro = () => {
                 <TrendingUp size={24} />
                 <h3 className="font-bold">Média Diária</h3>
               </div>
-              <div className="text-4xl font-extrabold text-slate-800">
-                <CountUp end={mediaDiaria} duration={1} /> <span className="text-lg font-medium text-slate-600">/dia</span>
+              <div className="text-4xl font-extrabold text-slate-800 flex items-center gap-2">
+                {isLoading ? <Loader2 className="animate-spin text-slate-300" size={32} /> : <CountUp end={mediaDiaria} duration={1} separator="." />} 
+                <span className="text-lg font-medium text-slate-600">/dia</span>
               </div>
             </div>
 
@@ -320,8 +328,9 @@ const DashboardMicro = () => {
                 <Calendar size={24} />
                 <h3 className="font-bold">Dias Analisados</h3>
               </div>
-              <div className="text-4xl font-extrabold text-slate-800">
-                <CountUp end={diasAnalisados} duration={1} /> <span className="text-lg font-medium text-slate-600">dias</span>
+              <div className="text-4xl font-extrabold text-slate-800 flex items-center gap-2">
+                {isLoading ? <Loader2 className="animate-spin text-slate-300" size={32} /> : <CountUp end={diasAnalisados} duration={1} separator="." />} 
+                <span className="text-lg font-medium text-slate-600">dias</span>
               </div>
             </div>
           </div>
@@ -342,8 +351,10 @@ const DashboardMicro = () => {
                     <span className="bg-emerald-800/50 text-emerald-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-emerald-500/30">Top Setor</span>
                     <h3 className="text-2xl font-extrabold tracking-tight mt-3 drop-shadow-sm line-clamp-2" title={currentSectorCard.name}>{currentSectorCard.name}</h3>
                   </div>
-                  <div className="z-10 text-right w-1/3">
-                    <div className="text-5xl font-black drop-shadow-md"><CountUp end={currentSectorCard.value} duration={1.5} preserveValue={true} /></div>
+                  <div className="z-10 text-right w-1/3 flex justify-end">
+                    <div className="text-5xl font-black drop-shadow-md">
+                      {isLoading ? <Loader2 className="animate-spin text-emerald-200" size={48} /> : <CountUp end={currentSectorCard.value} duration={1.5} preserveValue={true} separator="." />}
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -363,8 +374,10 @@ const DashboardMicro = () => {
                     <span className="bg-teal-800/50 text-teal-100 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm border border-teal-500/30">Top Assunto</span>
                     <h3 className="text-xl font-extrabold tracking-tight mt-3 drop-shadow-sm line-clamp-2" title={currentAssuntoCard.name}>{currentAssuntoCard.name}</h3>
                   </div>
-                  <div className="z-10 text-right w-1/3">
-                    <div className="text-5xl font-black drop-shadow-md"><CountUp end={currentAssuntoCard.value} duration={1.5} preserveValue={true} /></div>
+                  <div className="z-10 text-right w-1/3 flex justify-end">
+                    <div className="text-5xl font-black drop-shadow-md">
+                      {isLoading ? <Loader2 className="animate-spin text-teal-200" size={48} /> : <CountUp end={currentAssuntoCard.value} duration={1.5} preserveValue={true} separator="." />}
+                    </div>
                   </div>
                 </motion.div>
               )}
@@ -482,7 +495,7 @@ const DashboardMicro = () => {
                   <th scope="col" className="px-6 py-4">Data</th>
                   <th scope="col" className="px-6 py-4">Setor</th>
                   <th scope="col" className="px-6 py-4 w-1/3">Assunto</th>
-                  <th scope="col" className="px-6 py-4">Interessado</th>
+                  <th scope="col" className="px-6 py-4">Destinatário</th>
                 </tr>
               </thead>
               <tbody>
@@ -517,8 +530,8 @@ const DashboardMicro = () => {
                       <td className="px-6 py-4 text-xs font-medium text-slate-600 truncate max-w-[300px]" title={item.ASSUNTO}>
                         {item.ASSUNTO?.length > 70 ? item.ASSUNTO.substring(0, 70) + '...' : item.ASSUNTO}
                       </td>
-                      <td className="px-6 py-4 text-xs text-slate-400 truncate max-w-[200px]" title={item.INTERESSADO}>
-                        {item.INTERESSADO?.length > 30 ? item.INTERESSADO.substring(0, 30) + '...' : item.INTERESSADO}
+                      <td className="px-6 py-4 text-xs font-bold text-slate-600 whitespace-normal break-words min-w-[150px] max-w-[300px]" title={item.INTERESSADO}>
+                        {item.INTERESSADO}
                       </td>
                     </tr>
                   );
