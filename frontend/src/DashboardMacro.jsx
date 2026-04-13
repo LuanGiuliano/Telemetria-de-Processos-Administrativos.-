@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Papa from 'papaparse';
 import CountUp from 'react-countup';
-import { Layers, Activity, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Info, ChevronDown, ChevronRight, ArrowLeft, BarChart3, PieChart as PieIcon } from 'lucide-react';
+import { Layers, Activity, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Info, ChevronDown, ChevronRight, ArrowLeft, BarChart3, Search, PieChart as PieIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid } from 'recharts';
 
@@ -10,7 +10,8 @@ const CSV_URL_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJC
 const SHEET_SOURCES = [
   { mes: 'Janeiro', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=803624263' },
   { mes: 'Fevereiro', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=121971937' },
-  { mes: 'Março', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2097433804' }
+  { mes: 'Março', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2097433804' },
+  { mes: 'Abril', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2118749375' }
 ];
 
 const MOCK_DATA = [
@@ -27,6 +28,7 @@ const DashboardMacro = () => {
   // Filtros
   const [selectedMonth, setSelectedMonth] = useState('Janeiro');
   const [selectedWeek, setSelectedWeek] = useState('Todas');
+  const [searchTerm, setSearchTerm] = useState('');
   const [weekPeriods, setWeekPeriods] = useState({});
 
   useEffect(() => {
@@ -125,9 +127,20 @@ const DashboardMacro = () => {
   }, []);
 
   const filteredData = useMemo(() => {
-    if (selectedMonth === 'Ano') return data;
-    return data.filter(item => item._monthName && item._monthName.toUpperCase() === selectedMonth.toUpperCase());
-  }, [data, selectedMonth]);
+    let result = data;
+    if (selectedMonth !== 'Ano') {
+      result = result.filter(item => item._monthName && item._monthName.toUpperCase() === selectedMonth.toUpperCase());
+    }
+    if (searchTerm.trim() !== '') {
+      const terms = searchTerm.toLowerCase().split(' ').filter(t => t);
+      result = result.filter(item => {
+        const nome = String(item.NOME || '').toLowerCase();
+        const diretoria = String(item.DIRETORIA || '').toLowerCase();
+        return terms.every(t => nome.includes(t) || diretoria.includes(t));
+      });
+    }
+    return result;
+  }, [data, selectedMonth, searchTerm]);
 
   const availableWeeks = useMemo(() => {
     const weeks = new Set();
@@ -150,8 +163,6 @@ const DashboardMacro = () => {
       // Ignorar cabeçalhos extras
       if (!item.NOME || item.NOME.includes("UNIDADES PAE EM ORDEM")) return;
 
-      const dirName = item.DIRETORIA && item.DIRETORIA !== '-' ? item.DIRETORIA : "OUTROS";
-
       let rawName = item.NOME || "PADRÃO";
       if (item.NOME && item.NOME.includes('>')) {
         const parts = item.NOME.split('>').map(p => p.trim());
@@ -171,10 +182,12 @@ const DashboardMacro = () => {
 
       let coordName = "DIRETORIAS";
       let setorName = rawName;
+      let detectedSigla = null;
 
       for (const [sigla, descricao] of Object.entries(COORDENADORIAS)) {
         if (rawName.startsWith(sigla) || (item.NOME && item.NOME.includes(`> ${sigla}`))) {
           coordName = descricao;
+          detectedSigla = sigla;
 
           const isMain = rawName.toUpperCase().includes("COORDENADORIA") || rawName.toUpperCase().includes("SECRETARIA") || rawName.trim() === sigla;
 
@@ -185,6 +198,17 @@ const DashboardMacro = () => {
           }
           break;
         }
+      }
+
+      // Usa DIRETORIA da planilha quando preenchida; caso contrário, usa a sigla da
+      // coordenadoria detectada pelo NOME (ex.: meses novos sem DIRETORIA preenchida)
+      let dirName = (item.DIRETORIA && item.DIRETORIA !== '-' && item.DIRETORIA.trim() !== '')
+        ? item.DIRETORIA.trim()
+        : (detectedSigla || "OUTROS");
+
+      // Forçar CADDEP e seus subsetores a ficarem sempre dentro da caixa da DIPSE, independentemente do preenchimento da planilha
+      if (detectedSigla === "CADDEP" || rawName.includes("CADDEP")) {
+        dirName = "DIPSE";
       }
 
       const rawWeek = parseInt(item.SEMANA || 0, 10) || 0;
@@ -223,24 +247,24 @@ const DashboardMacro = () => {
         const existing = sectorMap.get(key);
         // Em visão consolidada anual, a mínima semana global é a do mês mais antigo
         const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
-        
+
         const mIdx = item._monthName ? (mOrder[item._monthName] || 99) : 99;
         const eIdx = existing.minMonth ? (mOrder[existing.minMonth] || 99) : 99;
         const eMaxIdx = existing.maxMonth ? (mOrder[existing.maxMonth] || 0) : 0;
 
         // Atualiza o Seg inicial da Coordenadoria APENAS se fomos mais para o passado
         if (mIdx < eIdx || (mIdx === eIdx && rawWeek < existing.minWeek)) {
-             existing.seg = segVal;
-             existing.minWeek = rawWeek;
-             existing.minMonth = item._monthName;
+          existing.seg = segVal;
+          existing.minWeek = rawWeek;
+          existing.minMonth = item._monthName;
         }
         // Atualiza o Sex final APENAS se fomos mais para o futuro
         if (mIdx > eMaxIdx || (mIdx === eMaxIdx && rawWeek > existing.maxWeek)) {
-             existing.sex = sexVal;
-             existing.maxWeek = rawWeek;
-             existing.maxMonth = item._monthName;
+          existing.sex = sexVal;
+          existing.maxWeek = rawWeek;
+          existing.maxMonth = item._monthName;
         }
-        
+
         existing.allWeeksMsg = `Consolidado Histórico`;
         existing.weeklyHistory.push({ week: rawWeek, init: segVal, final: sexVal, month: item._monthName });
       }
@@ -252,20 +276,34 @@ const DashboardMacro = () => {
 
       const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
       weeklyHistory.sort((a, b) => {
-         const mA = mOrder[a.month] || 99;
-         const mB = mOrder[b.month] || 99;
-         if (mA !== mB) return mA - mB;
-         return parseInt(a.week, 10) - parseInt(b.week, 10);
+        const mA = mOrder[a.month] || 99;
+        const mB = mOrder[b.month] || 99;
+        if (mA !== mB) return mA - mB;
+        return parseInt(a.week, 10) - parseInt(b.week, 10);
       });
 
-      // Corrigido: conta apenas a queda dentro de cada semana (init → final).
-      // O segundo loop foi removido pois causava dupla contagem:
-      // a queda entre o FINAL da semana anterior e o FINAL da semana atual
-      // já está capturada pelo próprio (init - final) de cada semana individualmente.
+      // Cálculo correto de processos tramitados (resolvidos):
+      // Precisamos somar toda vez que o estoque "caiu". Isso pode acontecer:
+      // 1. Durante a semana (init > final)
+      // 2. Entre o fim de uma semana e o começo da próxima (prev_final > atual_init)
       let globalResolved = 0;
-      weeklyHistory.forEach(w => {
-        if (w.init > w.final) globalResolved += (w.init - w.final);
-      });
+
+      for (let i = 0; i < weeklyHistory.length; i++) {
+        const w = weeklyHistory[i];
+
+        // Variação inter-semana (do fim da semana passada para o início desta)
+        if (i > 0) {
+          const prevFinal = weeklyHistory[i - 1].final;
+          if (prevFinal > w.init) {
+            globalResolved += (prevFinal - w.init);
+          }
+        }
+
+        // Variação intra-semana (durante a semana atual)
+        if (w.init > w.final) {
+          globalResolved += (w.init - w.final);
+        }
+      }
 
       let displaySeg = sectorAgg.seg;
       let displaySex = sectorAgg.sex;
@@ -353,49 +391,49 @@ const DashboardMacro = () => {
 
   const trendData = useMemo(() => {
     if (filteredData.length === 0) return [];
-    
+
     const weeklyTotals = {};
     const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
-    
+
     filteredData.forEach(item => {
       if (!item.NOME || item.NOME.includes("UNIDADES PAE EM ORDEM")) return;
       const rawWeek = parseInt(item.SEMANA || 0, 10) || 0;
       if (rawWeek === 0) return;
-      
+
       const sexVal = parseInt(String(item['FINAL SEMANA'] || '').trim(), 10);
       if (isNaN(sexVal)) return;
-      
+
       const mIdx = mOrder[item._monthName] || 99;
-      
-      const key = selectedMonth === 'Ano' 
-         ? `${mIdx.toString().padStart(2, '0')}_${item._monthName}_${rawWeek}` 
-         : `W${rawWeek}`;
-         
+
+      const key = selectedMonth === 'Ano'
+        ? `${mIdx.toString().padStart(2, '0')}_${item._monthName}_${rawWeek}`
+        : `W${rawWeek}`;
+
       if (!weeklyTotals[key]) {
         weeklyTotals[key] = {
-           _sortKey: selectedMonth === 'Ano' ? mIdx * 100 + rawWeek : rawWeek,
-           name: `Sem ${String(rawWeek).padStart(2, '0')} (${item._monthName.substring(0,3)})`,
-           stock: 0
+          _sortKey: selectedMonth === 'Ano' ? mIdx * 100 + rawWeek : rawWeek,
+          name: `Sem ${String(rawWeek).padStart(2, '0')} (${item._monthName.substring(0, 3)})`,
+          stock: 0
         };
       }
       weeklyTotals[key].stock += sexVal;
     });
-    
+
     let result = Object.values(weeklyTotals).sort((a, b) => a._sortKey - b._sortKey);
-    
+
     if (result.length > 1) {
       const n = result.length;
       const startStock = result[0].stock;
 
       result = result.map((pt, i) => ({
-         ...pt,
-         // Linha de Burn-down: começa no estoque inicial e cai linearmente até 0 no último ponto
-         tendencia: Math.max(0, Math.round(startStock - (startStock / (n - 1)) * i))
+        ...pt,
+        // Linha de Burn-down: começa no estoque inicial e cai linearmente até 0 no último ponto
+        tendencia: Math.max(0, Math.round(startStock - (startStock / (n - 1)) * i))
       }));
     } else if (result.length === 1) {
       result[0].tendencia = 0;
     }
-    
+
     return result;
   }, [filteredData, selectedMonth]);
 
@@ -520,11 +558,11 @@ const DashboardMacro = () => {
                   <div className="mt-2 mb-4 inline-block bg-white/20 rounded-full px-3 py-1 text-xs font-bold text-white self-start backdrop-blur-sm border border-emerald-400/50">
                     {resolutionRate}% de processos tramitados/resolvidos
                   </div>
-                  
+
                   <div className="bg-white/10 rounded-xl p-4 border border-white/20">
                     <p className="text-[10px] lg:text-xs opacity-95 font-medium leading-relaxed">
-                      A unidade lidou com uma "massa total" de <strong className="text-white font-black">{totalVolume} processos</strong> no período selecionado.<br/><br/>
-                      <span className="opacity-80">Como chegamos aos {totalVolume}?</span><br/>
+                      A unidade lidou com uma "massa total" de <strong className="text-white font-black">{totalVolume} processos</strong> no período selecionado.<br /><br />
+                      <span className="opacity-80">Como chegamos aos {totalVolume}?</span><br />
                       É a soma exata dos <strong className="text-white">{resolvedValue} baixados</strong> (que saíram da caixa) mais os <strong className="text-white">{selectedSector.sex} parados</strong> (que continuam na caixa no fim do período).
                     </p>
                   </div>
@@ -553,25 +591,42 @@ const DashboardMacro = () => {
       )}
 
       {/* Filtros de Mês e Semana */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row gap-6 items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-8 flex flex-col xl:flex-row gap-6 items-center justify-between">
+        <div className="flex items-center gap-3 shrink-0 self-start xl:self-center">
           <BarChart3 className="text-emerald-600" size={24} />
-          <h2 className="font-bold text-slate-700 text-lg">Filtros de Período</h2>
+          <h2 className="font-bold text-slate-700 text-lg">Filtros e Pesquisas</h2>
         </div>
-        <div className="flex gap-4 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto xl:justify-end">
+
+          {/* Pesquisa Livre */}
+          <div className="flex-1 sm:max-w-xs xl:max-w-md">
+            <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Pesquisar Unidade (Nome ou Dir)</label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+              <input
+                type="text"
+                placeholder="Pesquisar (CCM, SAGEP...)"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium transition-all"
+              />
+            </div>
+          </div>
+
           <div className="flex-1 sm:flex-none">
             <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Mês</label>
             <select
               value={selectedMonth}
               onChange={(e) => {
-                 setSelectedMonth(e.target.value);
-                 if (e.target.value === 'Ano') setSelectedWeek('Todas');
+                setSelectedMonth(e.target.value);
+                if (e.target.value === 'Ano') setSelectedWeek('Todas');
               }}
               className="w-full sm:w-56 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
             >
               <option value="Janeiro">Janeiro</option>
               <option value="Fevereiro">Fevereiro</option>
               <option value="Março">Março</option>
+              <option value="Abril">Abril</option>
               <option value="Ano">Ano de 2026 (Consolidado)</option>
             </select>
           </div>
@@ -604,9 +659,9 @@ const DashboardMacro = () => {
           </div>
           <div className="relative z-10">
             <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider mb-2" title="Total exato de processos na gaveta no INÍCIO deste período.">ESTOQUE INICIAL (ABERTURA)</h2>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-5xl xl:text-6xl font-black text-slate-400 tracking-tighter">
-                <CountUp end={totalEstoqueInicial} duration={1.5} />
+            <div className="flex flex-wrap items-baseline gap-2 mt-2">
+              <span className="text-4xl xl:text-5xl font-black text-slate-400 tracking-tighter">
+                <CountUp end={totalEstoqueInicial} duration={1.5} separator="." />
               </span>
             </div>
             <div className="mt-4 inline-block bg-slate-50 rounded-full px-4 py-1 text-[10px] font-bold text-slate-500 border border-slate-200">
@@ -622,11 +677,11 @@ const DashboardMacro = () => {
           </div>
           <div className="relative z-10">
             <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider mb-2" title="Total exato de processos estocados/parados no fim deste período.">ESTOQUE ATUAL (FECHAMENTO)</h2>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-5xl xl:text-6xl font-black text-slate-900 tracking-tighter">
-                <CountUp end={totalEstoqueHoje} duration={1.5} />
+            <div className="flex flex-wrap items-baseline gap-2 mt-2">
+              <span className="text-4xl xl:text-5xl font-black text-slate-900 tracking-tighter">
+                <CountUp end={totalEstoqueHoje} duration={1.5} separator="." />
               </span>
-              <span className="text-xs font-bold text-slate-500 leading-tight">parados</span>
+              <span className="text-[10px] xl:text-xs font-bold text-slate-500 leading-tight">parados</span>
             </div>
             <div className="mt-4 inline-block bg-slate-100 rounded-full px-4 py-1 text-[10px] font-bold text-slate-600">
               Posição: {timeframe}
@@ -656,11 +711,11 @@ const DashboardMacro = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-between gap-1 mt-2">
-              <span className={`text-5xl xl:text-6xl font-black tracking-tighter ${totalDelta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
-                {totalDelta > 0 ? '+' : ''}<CountUp end={totalDelta} duration={1.5} />
+            <div className="flex flex-wrap items-center justify-between gap-1 mt-2">
+              <span className={`text-4xl xl:text-5xl font-black tracking-tighter ${totalDelta > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+                {totalDelta > 0 ? '+' : ''}<CountUp end={totalDelta} duration={1.5} separator="." />
               </span>
-              <div className="flex items-center justify-center p-2 xl:p-3 rounded-full bg-slate-50 shadow-inner shrink-0">
+              <div className="flex items-center justify-center p-2 rounded-full bg-slate-50 shadow-inner shrink-0">
                 {totalDelta > 0 ? <TrendingUp size={24} className="text-red-500" /> : <TrendingDown size={24} className="text-emerald-500" />}
               </div>
             </div>
@@ -677,18 +732,18 @@ const DashboardMacro = () => {
 
             <div className="flex flex-col gap-3 w-full">
               {/* Entradas */}
-              <div className="flex justify-between items-center bg-slate-800/80 px-4 py-3 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
-                <span className="text-[10px] xl:text-xs font-bold text-slate-300 uppercase">1. Chegaram (Novos) +</span>
-                <span className="text-2xl lg:text-3xl font-black text-white tracking-tighter shadow-sm">
-                  <CountUp end={totalEntered} duration={1.5} />
+              <div className="flex justify-between items-center bg-slate-800/80 px-4 py-3 rounded-2xl border border-slate-700/50 backdrop-blur-sm gap-2">
+                <span className="text-[10px] xl:text-xs font-bold text-slate-300 uppercase leading-tight min-w-0">1. Chegaram (Novos) +</span>
+                <span className="text-3xl lg:text-3xl font-black text-white tracking-tighter shadow-sm shrink-0">
+                  <CountUp end={totalEntered} duration={1.5} separator="." />
                 </span>
               </div>
 
               {/* Saídas */}
-              <div className="flex justify-between items-center bg-emerald-500/20 px-4 py-3 rounded-2xl border border-emerald-500/30 backdrop-blur-sm">
-                <span className="text-[10px] xl:text-xs font-bold text-emerald-400 uppercase">2. Tramitados (Saíram) -</span>
-                <span className="text-2xl lg:text-3xl font-black text-emerald-400 tracking-tighter shadow-sm">
-                  <CountUp end={totalResolved} duration={1.5} />
+              <div className="flex justify-between items-center bg-emerald-500/20 px-4 py-3 rounded-2xl border border-emerald-500/30 backdrop-blur-sm gap-2">
+                <span className="text-[10px] xl:text-xs font-bold text-emerald-400 uppercase leading-tight min-w-0">2. Tramitados (Saíram) -</span>
+                <span className="text-3xl lg:text-3xl font-black text-emerald-400 tracking-tighter shadow-sm shrink-0">
+                  <CountUp end={totalResolved} duration={1.5} separator="." />
                 </span>
               </div>
             </div>
@@ -751,15 +806,15 @@ const DashboardMacro = () => {
               <ComposedChart data={trendData} margin={{ top: 10, right: 10, bottom: selectedMonth === 'Ano' ? 10 : 20, left: 0 }}>
                 <defs>
                   <linearGradient id="colorStock" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#94a3b8" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
                   tick={{ fontSize: 9, fill: '#64748b', fontWeight: 600 }}
                   interval="preserveStartEnd"
                   angle={selectedMonth === 'Ano' ? -45 : 0}
@@ -767,9 +822,9 @@ const DashboardMacro = () => {
                   dy={selectedMonth === 'Ano' ? 5 : 10}
                   height={selectedMonth === 'Ano' ? 70 : 30}
                 />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
                   tick={{ fontSize: 10, fill: '#64748b' }}
                 />
                 <RechartsTooltip
@@ -777,21 +832,21 @@ const DashboardMacro = () => {
                   labelStyle={{ color: '#0f172a', marginBottom: '4px' }}
                 />
                 <Legend verticalAlign="bottom" wrapperStyle={{ fontSize: '11px', fontWeight: '600', color: '#64748b', paddingTop: '20px' }} />
-                <Area 
-                  type="monotone" 
-                  dataKey="stock" 
-                  name="Esvaziamento Real da Caixa" 
-                  stroke="#64748b" 
-                  strokeWidth={3} 
-                  fillOpacity={1} 
-                  fill="url(#colorStock)" 
+                <Area
+                  type="monotone"
+                  dataKey="stock"
+                  name="Esvaziamento Real da Caixa"
+                  stroke="#64748b"
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#colorStock)"
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="tendencia" 
-                  name="Queda Ideal Necessária (Rumo ao Zero)" 
-                  stroke="#f97316" 
-                  strokeWidth={2} 
+                <Line
+                  type="monotone"
+                  dataKey="tendencia"
+                  name="Queda Ideal Necessária (Rumo ao Zero)"
+                  stroke="#f97316"
+                  strokeWidth={2}
                   strokeDasharray="5 5"
                   dot={false}
                 />
