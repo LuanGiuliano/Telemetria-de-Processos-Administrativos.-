@@ -117,7 +117,7 @@ const App = () => {
 
                 <div className="text-slate-600 space-y-4 text-sm leading-relaxed relative z-10">
                   <p>
-                    O <strong>Sistema Inteligente de Rastreabilidade Administrativa (SIRA)</strong> é uma plataforma analítica de alta performance desenvolvida para monitorar e otimizar o fluxo de Processos Administrativos Eletrônicos (PAE).
+                    O <strong>Sistema Inteligente de Rastreabilidade Administrativa (SIRA)</strong> é uma plataforma analítica de alta performance desenvolvida pela Secretaria de Estado de Educação por meio da Secretaria Adjunta de Pessoas (SAGEP).
                   </p>
                   <p>
                     Seu objetivo principal é dar total transparência e celeridade ao ciclo de vida dos processos na Secretaria, permitindo que gestores identifiquem <strong>gargalos operacionais, acúmulo de demandas e métricas de desempenho.</strong>
