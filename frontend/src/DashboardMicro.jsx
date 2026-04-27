@@ -378,7 +378,7 @@ const DashboardMicro = () => {
                     <div className="text-5xl font-black drop-shadow-md">
                       {isLoading ? <Loader2 className="animate-spin text-teal-200" size={48} /> : <CountUp end={currentAssuntoCard.value} duration={1.5} preserveValue={true} separator="." />}
                     </div>
-                  </div>
+                    </div>
                 </motion.div>
               )}
             </AnimatePresence>

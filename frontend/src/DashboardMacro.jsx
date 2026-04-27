@@ -77,8 +77,12 @@ const DashboardMacro = () => {
           const mIdx = mOrder[source.mes] || 0;
 
           const lines = sheetTexts[i].split('\n');
+          // Pula linhas em branco ou lixo antes da primeira tabela
+          while (lines.length > 0 && !lines[0].includes('UNIDADES PAE EM ORDEM') && !lines[0].includes('NOME')) {
+            lines.shift();
+          }
           if (lines.length > 0 && lines[0].includes('UNIDADES PAE EM ORDEM')) {
-            lines.shift(); // Remove a primeira linha inteira
+            lines.shift(); // Remove a primeira linha inteira para o PapaParse pegar NOME como header
           }
           const cleanCSV = lines.join('\n');
 
@@ -87,14 +91,29 @@ const DashboardMacro = () => {
             skipEmptyLines: true,
             complete: (results) => {
               if (results.data && results.data.length > 0) {
-                const enhanced = results.data.filter(r => r && r.NOME && r.NOME !== '' && r.NOME.toUpperCase() !== 'NOME' && !r.NOME.includes('UNIDADES PAE EM ORDEM')).map(row => {
-                  let weekVal = String(row.SEMANA || '').trim();
-                  if (weekVal !== '' && weekVal.toUpperCase() !== 'SEMANA' && !isNaN(parseInt(weekVal, 10))) {
-                    row.SEMANA = weekVal;
+                let currentSemanaInferida = 1;
+                const enhanced = [];
+                for (const row of results.data) {
+                  if (!row || !row.NOME || row.NOME.trim() === '') continue;
+
+                  if (row.NOME.includes('UNIDADES PAE EM ORDEM')) {
+                    currentSemanaInferida++;
+                    continue;
                   }
+
+                  if (row.NOME.toUpperCase() === 'NOME') {
+                    continue;
+                  }
+
+                  let weekVal = String(row.SEMANA || '').trim();
+                  if (weekVal === '' || weekVal.toUpperCase() === 'SEMANA' || isNaN(parseInt(weekVal, 10))) {
+                    weekVal = String(currentSemanaInferida);
+                  }
+
+                  row.SEMANA = weekVal;
                   row._monthName = source.mes;
-                  return row;
-                });
+                  enhanced.push(row);
+                }
                 combinedData.push(...enhanced);
               } else {
                 hasError = true;
@@ -218,15 +237,17 @@ const DashboardMacro = () => {
       const rawSexStr = String(item['FINAL SEMANA'] || '').trim();
 
       const isSegEmpty = rawSegStr === '' || rawSegStr === '-';
-      const isSexEmpty = rawSexStr === '' || rawSexStr === '-';
 
-      // Pular a inserção de semanas cujo valor ainda não foi preenchido na planilha para não zerar os dados finais
-      if (isSegEmpty || isSexEmpty) return;
-
-      const key = `${dirName}|${coordName}|${setorName}`;
+      // Pular a inserção se o Início da Semana não estiver preenchido (linha vazia)
+      if (isSegEmpty) return;
 
       const segVal = parseInt(rawSegStr, 10) || 0;
-      const sexVal = parseInt(rawSexStr, 10) || 0;
+      
+      // Se o Final da Semana estiver vazio (ex: semana vigente), assume que o estoque atual é igual ao inicial
+      const isSexEmpty = rawSexStr === '' || rawSexStr === '-';
+      const sexVal = isSexEmpty ? segVal : (parseInt(rawSexStr, 10) || 0);
+
+      const key = `${dirName}|${coordName}|${setorName}`;
 
       if (!sectorMap.has(key)) {
         sectorMap.set(key, {
@@ -450,6 +471,40 @@ const DashboardMacro = () => {
     return `${selectedMonth} - Mês Inteiro`;
   }, [selectedMonth, selectedWeek, weekPeriods]);
 
+  const lastUpdatePeriod = useMemo(() => {
+    if (data.length === 0) return null;
+    let maxMonthIdx = 0;
+    let maxWeek = 0;
+    let maxMonthName = '';
+
+    const mOrder = { 'Janeiro': 1, 'Fevereiro': 2, 'Março': 3, 'Abril': 4, 'Maio': 5, 'Junho': 6, 'Julho': 7, 'Agosto': 8, 'Setembro': 9, 'Outubro': 10, 'Novembro': 11, 'Dezembro': 12 };
+
+    data.forEach(item => {
+      const w = parseInt(item.SEMANA, 10);
+      if (isNaN(w)) return;
+      const mIdx = mOrder[item._monthName] || 0;
+      
+      if (mIdx > maxMonthIdx) {
+        maxMonthIdx = mIdx;
+        maxWeek = w;
+        maxMonthName = item._monthName;
+      } else if (mIdx === maxMonthIdx && w > maxWeek) {
+        maxWeek = w;
+      }
+    });
+
+    if (maxMonthName && maxWeek) {
+      const periodStr = weekPeriods[`${maxMonthName.toUpperCase()}_${maxWeek}`];
+      if (periodStr) {
+        const parts = periodStr.split('-');
+        if (parts.length > 0) {
+          return parts[0].trim();
+        }
+      }
+    }
+    return null;
+  }, [data, weekPeriods]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { staggerChildren: 0.1 } }
@@ -586,6 +641,15 @@ const DashboardMacro = () => {
           <div>
             <p className="font-bold">Aviso: Usando Dados de Demonstração</p>
             <p className="text-sm">Houve um problema ao ler a planilha. Verifique se as colunas (NOME, DIRETORIA, INICIO SEMANA, FINAL SEMANA, SEMANA) estão presentes.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Aviso Superior de Última Atualização */}
+      {lastUpdatePeriod && (
+        <div className="flex justify-end mb-4 relative z-10">
+          <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-4 py-1.5 rounded-full text-xs uppercase font-black tracking-wider flex items-center gap-2 shadow-sm">
+            <CheckCircle2 size={16} /> Banco Atualizado até: {lastUpdatePeriod}
           </div>
         </div>
       )}
