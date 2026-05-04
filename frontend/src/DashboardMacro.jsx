@@ -11,7 +11,8 @@ const SHEET_SOURCES = [
   { mes: 'Janeiro', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=803624263' },
   { mes: 'Fevereiro', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=121971937' },
   { mes: 'Março', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2097433804' },
-  { mes: 'Abril', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2118749375' }
+  { mes: 'Abril', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2118749375' },
+  { mes: 'Maio', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=113258948' }
 ];
 
 const MOCK_DATA = [
@@ -235,6 +236,7 @@ const DashboardMacro = () => {
 
       const rawSegStr = String(item['INICIO SEMANA'] || '').trim();
       const rawSexStr = String(item['FINAL SEMANA'] || '').trim();
+      const rawArqStr = String(item['PROCESSOS ARQUIVADOS'] || '').trim();
 
       const isSegEmpty = rawSegStr === '' || rawSegStr === '-';
 
@@ -246,6 +248,7 @@ const DashboardMacro = () => {
       // Se o Final da Semana estiver vazio (ex: semana vigente), assume que o estoque atual é igual ao inicial
       const isSexEmpty = rawSexStr === '' || rawSexStr === '-';
       const sexVal = isSexEmpty ? segVal : (parseInt(rawSexStr, 10) || 0);
+      const arqVal = parseInt(rawArqStr, 10) || 0;
 
       const key = `${dirName}|${coordName}|${setorName}`;
 
@@ -257,12 +260,13 @@ const DashboardMacro = () => {
           setorName,
           seg: segVal,
           sex: sexVal,
+          arq: arqVal,
           minWeek: rawWeek,
           maxWeek: rawWeek,
           minMonth: item._monthName,
           maxMonth: item._monthName,
           allWeeksMsg: `Semana ${item.SEMANA}`,
-          weeklyHistory: [{ week: rawWeek, init: segVal, final: sexVal, month: item._monthName }]
+          weeklyHistory: [{ week: rawWeek, init: segVal, final: sexVal, arq: arqVal, month: item._monthName }]
         });
       } else {
         const existing = sectorMap.get(key);
@@ -286,8 +290,10 @@ const DashboardMacro = () => {
           existing.maxMonth = item._monthName;
         }
 
+        existing.arq = (existing.arq || 0) + arqVal;
+
         existing.allWeeksMsg = `Consolidado Histórico`;
-        existing.weeklyHistory.push({ week: rawWeek, init: segVal, final: sexVal, month: item._monthName });
+        existing.weeklyHistory.push({ week: rawWeek, init: segVal, final: sexVal, arq: arqVal, month: item._monthName });
       }
     });
 
@@ -308,9 +314,11 @@ const DashboardMacro = () => {
       // 1. Durante a semana (init > final)
       // 2. Entre o fim de uma semana e o começo da próxima (prev_final > atual_init)
       let globalResolved = 0;
+      let globalArchived = 0;
 
       for (let i = 0; i < weeklyHistory.length; i++) {
         const w = weeklyHistory[i];
+        globalArchived += (w.arq || 0);
 
         // Variação inter-semana (do fim da semana passada para o início desta)
         if (i > 0) {
@@ -330,6 +338,7 @@ const DashboardMacro = () => {
       let displaySex = sectorAgg.sex;
       let displayDelta = displaySex - displaySeg;
       let displayResolved = globalResolved;
+      let displayArchived = globalArchived;
       let displayMsg = selectedMonth === 'Ano' ? 'Ano de 2026 (Consolidado)' : `Mês Inteiro (${sectorAgg.allWeeksMsg})`;
 
       if (selectedWeek !== 'Todas') {
@@ -341,6 +350,7 @@ const DashboardMacro = () => {
         displaySeg = targetW.init;
         displaySex = targetW.final;
         displayDelta = displaySex - displaySeg;
+        displayArchived = targetW.arq || 0;
 
         // Corrigido: apenas o delta intra-semana (init → final) é tramitado naquela semana.
         // A comparação com o FINAL da semana anterior foi removida (dupla contagem).
@@ -353,11 +363,11 @@ const DashboardMacro = () => {
       }
 
       if (!root[dirName]) {
-        root[dirName] = { name: dirName, seg: 0, sex: 0, delta: 0, resolved: 0, coords: {} };
+        root[dirName] = { name: dirName, seg: 0, sex: 0, delta: 0, resolved: 0, archived: 0, coords: {} };
       }
 
       if (!root[dirName].coords[coordName]) {
-        root[dirName].coords[coordName] = { name: coordName, seg: 0, sex: 0, delta: 0, resolved: 0, setores: [] };
+        root[dirName].coords[coordName] = { name: coordName, seg: 0, sex: 0, delta: 0, resolved: 0, archived: 0, setores: [] };
       }
 
       const leaf = {
@@ -367,6 +377,7 @@ const DashboardMacro = () => {
         sex: displaySex,
         delta: displayDelta,
         resolved: displayResolved,
+        archived: displayArchived,
         Semana_Referencia: displayMsg
       };
 
@@ -375,10 +386,12 @@ const DashboardMacro = () => {
       root[dirName].coords[coordName].sex += displaySex;
       root[dirName].coords[coordName].delta += displayDelta;
       root[dirName].coords[coordName].resolved += displayResolved;
+      root[dirName].coords[coordName].archived += displayArchived;
       root[dirName].seg += displaySeg;
       root[dirName].sex += displaySex;
       root[dirName].delta += displayDelta;
       root[dirName].resolved += displayResolved;
+      root[dirName].archived += displayArchived;
     }
 
     // Ordenação: maiores deltas primeiro
@@ -392,7 +405,8 @@ const DashboardMacro = () => {
   const totalEstoqueHoje = treeData.reduce((acc, curr) => acc + curr.sex, 0);
   const totalDelta = treeData.reduce((acc, curr) => acc + curr.delta, 0);
   const totalResolved = treeData.reduce((acc, curr) => acc + curr.resolved, 0);
-  const totalEntered = totalDelta + totalResolved;
+  const totalArchived = treeData.reduce((acc, curr) => acc + curr.archived, 0);
+  const totalEntered = totalDelta + totalResolved + totalArchived;
 
   const donutChartData = useMemo(() => {
     let result = [];
@@ -691,6 +705,7 @@ const DashboardMacro = () => {
               <option value="Fevereiro">Fevereiro</option>
               <option value="Março">Março</option>
               <option value="Abril">Abril</option>
+              <option value="Maio">Maio</option>
               <option value="Ano">Ano de 2026 (Consolidado)</option>
             </select>
           </div>
@@ -808,6 +823,14 @@ const DashboardMacro = () => {
                 <span className="text-[10px] xl:text-xs font-bold text-emerald-400 uppercase leading-tight min-w-0">2. Tramitados (Saíram) -</span>
                 <span className="text-3xl lg:text-3xl font-black text-emerald-400 tracking-tighter shadow-sm shrink-0">
                   <CountUp end={totalResolved} duration={1.5} separator="." />
+                </span>
+              </div>
+
+              {/* Arquivados */}
+              <div className="flex justify-between items-center bg-blue-500/20 px-4 py-3 rounded-2xl border border-blue-500/30 backdrop-blur-sm gap-2">
+                <span className="text-[10px] xl:text-xs font-bold text-blue-400 uppercase leading-tight min-w-0">3. Arquivados (Saíram) -</span>
+                <span className="text-3xl lg:text-3xl font-black text-blue-400 tracking-tighter shadow-sm shrink-0">
+                  <CountUp end={totalArchived} duration={1.5} separator="." />
                 </span>
               </div>
             </div>
