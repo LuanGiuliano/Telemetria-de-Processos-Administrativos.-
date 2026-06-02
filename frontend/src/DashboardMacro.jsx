@@ -1123,25 +1123,25 @@ const DashboardMacro = () => {
 
             <div className="flex flex-col gap-3 w-full">
               {/* Entradas */}
-              <div className="flex justify-between items-center bg-slate-800/80 px-4 py-3 rounded-2xl border border-slate-700/50 backdrop-blur-sm gap-2">
-                <span className="text-[10px] xl:text-xs font-bold text-slate-300 uppercase leading-tight min-w-0">1. Chegaram (Novos) +</span>
-                <span className="text-3xl lg:text-3xl font-black text-white tracking-tighter shadow-sm shrink-0">
+              <div className="flex flex-col bg-slate-800/80 px-4 py-3 rounded-2xl border border-slate-700/50 backdrop-blur-sm gap-1">
+                <span className="text-[10px] xl:text-xs font-bold text-slate-300 uppercase leading-tight">1. Chegaram (Novos) +</span>
+                <span className="text-3xl lg:text-3xl font-black text-white tracking-tighter shadow-sm self-end">
                   <CountUp end={totalEntered} duration={1.5} separator="." />
                 </span>
               </div>
 
               {/* Saídas */}
-              <div className="flex justify-between items-center bg-emerald-500/20 px-4 py-3 rounded-2xl border border-emerald-500/30 backdrop-blur-sm gap-2">
-                <span className="text-[10px] xl:text-xs font-bold text-emerald-400 uppercase leading-tight min-w-0">2. Tramitados (Saíram) -</span>
-                <span className="text-3xl lg:text-3xl font-black text-emerald-400 tracking-tighter shadow-sm shrink-0">
+              <div className="flex flex-col bg-emerald-500/20 px-4 py-3 rounded-2xl border border-emerald-500/30 backdrop-blur-sm gap-1">
+                <span className="text-[10px] xl:text-xs font-bold text-emerald-400 uppercase leading-tight">2. Tramitados (Saíram) -</span>
+                <span className="text-3xl lg:text-3xl font-black text-emerald-400 tracking-tighter shadow-sm self-end">
                   <CountUp end={totalResolved} duration={1.5} separator="." />
                 </span>
               </div>
 
               {/* Arquivados */}
-              <div className="flex justify-between items-center bg-blue-500/20 px-4 py-3 rounded-2xl border border-blue-500/30 backdrop-blur-sm gap-2">
-                <span className="text-[10px] xl:text-xs font-bold text-blue-400 uppercase leading-tight min-w-0">3. Arquivados (Saíram) -</span>
-                <span className="text-3xl lg:text-3xl font-black text-blue-400 tracking-tighter shadow-sm shrink-0">
+              <div className="flex flex-col bg-blue-500/20 px-4 py-3 rounded-2xl border border-blue-500/30 backdrop-blur-sm gap-1">
+                <span className="text-[10px] xl:text-xs font-bold text-blue-400 uppercase leading-tight">3. Arquivados (Saíram) -</span>
+                <span className="text-3xl lg:text-3xl font-black text-blue-400 tracking-tighter shadow-sm self-end">
                   <CountUp end={totalArchived} duration={1.5} separator="." />
                 </span>
               </div>
