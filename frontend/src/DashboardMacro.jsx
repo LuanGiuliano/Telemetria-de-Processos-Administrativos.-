@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import Papa from 'papaparse';
 import CountUp from 'react-countup';
-import { Layers, Activity, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Info, ChevronDown, ChevronRight, ArrowLeft, BarChart3, Search, PieChart as PieIcon } from 'lucide-react';
+import { Layers, Activity, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Info, ChevronDown, ChevronRight, ArrowLeft, BarChart3, Search, PieChart as PieIcon, FileDown, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid } from 'recharts';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 // URL do CSV Público no Google Sheets (Planilha NOVA - Janeiro)
 const CSV_URL_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=0";
@@ -25,12 +27,18 @@ const DashboardMacro = () => {
   const [errorStatus, setErrorStatus] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState({});
   const [selectedSector, setSelectedSector] = useState(null);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Filtros
   const [selectedMonth, setSelectedMonth] = useState('Janeiro');
   const [selectedWeek, setSelectedWeek] = useState('Todas');
   const [searchTerm, setSearchTerm] = useState('');
   const [weekPeriods, setWeekPeriods] = useState({});
+
+  // Ref para captura do dashboard
+  const dashboardRef = useRef(null);
+  const kpiRef = useRef(null);
+  const chartsRef = useRef(null);
 
   useEffect(() => {
     const fetchCSV = async () => {
@@ -477,6 +485,290 @@ const DashboardMacro = () => {
 
   const toggleNode = (id) => setExpandedNodes(prev => ({ ...prev, [id]: !prev[id] }));
 
+  // ── Geração de PDF ──────────────────────────────────────────────────────────
+  const generatePDF = useCallback(async () => {
+    setIsGeneratingPDF(true);
+    try {
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pageW = 210;
+      const pageH = 297;
+      const margin = 14;
+      const contentW = pageW - margin * 2;
+
+      // ── Paleta de cores institucional ──
+      const GREEN  = [5, 150, 105];   // emerald-600
+      const DARK   = [15, 23, 42];    // slate-900
+      const LIGHT  = [248, 250, 252]; // slate-50
+      const BORDER = [226, 232, 240]; // slate-200
+
+      // ── Cabeçalho ──────────────────────────────────────────────────────────
+      pdf.setFillColor(...GREEN);
+      pdf.rect(0, 0, pageW, 38, 'F');
+
+      // Faixa decorativa direita
+      pdf.setFillColor(4, 120, 87); // emerald-700
+      pdf.rect(pageW - 30, 0, 30, 38, 'F');
+
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(16);
+      pdf.text('SIRA-PAE', margin, 14);
+
+      pdf.setFontSize(9);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Sistema de Registro e Acompanhamento de Processos Administrativos Escolares', margin, 21);
+
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Relatório Macro — Telemetria de Processos', margin, 30);
+
+      // Data de geração (canto direito)
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      pdf.setFontSize(7);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(dateStr, pageW - margin, 34, { align: 'right' });
+
+      // ── Linha de filtros ativos ─────────────────────────────────────────────
+      let y = 45;
+      pdf.setFillColor(...LIGHT);
+      pdf.roundedRect(margin, y, contentW, 14, 3, 3, 'F');
+      pdf.setDrawColor(...BORDER);
+      pdf.roundedRect(margin, y, contentW, 14, 3, 3, 'S');
+
+      pdf.setTextColor(...DARK);
+      pdf.setFontSize(8);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('FILTROS ATIVOS:', margin + 4, y + 6);
+
+      pdf.setFont('helvetica', 'normal');
+      const mesLabel = selectedMonth === 'Ano' ? 'Ano de 2026 (Consolidado)' : selectedMonth;
+      const periodoLabel = selectedWeek === 'Todas'
+        ? (selectedMonth === 'Ano' ? 'Ano Inteiro' : 'Mês Inteiro (Consolidado)')
+        : (weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`] || `Semana ${selectedWeek}`);
+      const searchLabel = searchTerm.trim() ? `  |  Pesquisa: "${searchTerm.trim()}"` : '';
+      pdf.text(`Mês: ${mesLabel}   |   Período: ${periodoLabel}${searchLabel}`, margin + 38, y + 6);
+
+      // Data de referência (linha 2 da faixa de filtros)
+      pdf.setTextColor(80, 80, 80);
+      pdf.setFontSize(7);
+      const timeframeLabel = selectedWeek !== 'Todas'
+        ? (weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`] ? `${selectedMonth} (${weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`]})` : `${selectedMonth} — Semana ${selectedWeek}`)
+        : `${selectedMonth} — Mês Inteiro`;
+      pdf.text(`Referência: ${timeframeLabel}`, margin + 4, y + 11);
+
+      y += 20;
+
+      // ── KPIs textuais ──────────────────────────────────────────────────────
+      const kpis = [
+        { label: 'ESTOQUE INICIAL',    value: totalEstoqueInicial, color: [100, 116, 139] },
+        { label: 'ESTOQUE FINAL',      value: totalEstoqueHoje,    color: [...DARK] },
+        { label: totalDelta > 0 ? 'ACÚMULO (+)' : 'DESACÚMULO (-)', value: totalDelta, color: totalDelta > 0 ? [239, 68, 68] : [16, 185, 129] },
+        { label: 'PROCESSOS ENTRADOS', value: totalEntered,        color: [15, 118, 110] },
+        { label: 'TRAMITADOS (BAIXAS)',  value: totalResolved,     color: [16, 185, 129] },
+        { label: 'ARQUIVADOS',          value: totalArchived,      color: [59, 130, 246] },
+      ];
+
+      const colW = contentW / 3;
+      const rowH = 20;
+
+      kpis.forEach((kpi, i) => {
+        const col = i % 3;
+        const row = Math.floor(i / 3);
+        const x = margin + col * colW;
+        const ky = y + row * (rowH + 3);
+
+        pdf.setFillColor(255, 255, 255);
+        pdf.setDrawColor(...BORDER);
+        pdf.roundedRect(x + 1, ky, colW - 2, rowH, 2, 2, 'FD');
+
+        // Label
+        pdf.setTextColor(100, 116, 139);
+        pdf.setFontSize(6.5);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(kpi.label, x + 5, ky + 6);
+
+        // Value
+        pdf.setTextColor(...kpi.color);
+        pdf.setFontSize(15);
+        pdf.setFont('helvetica', 'bold');
+        const valStr = kpi.value > 0 && kpi.label.includes('ACÚMULO') ? `+${kpi.value.toLocaleString('pt-BR')}` : kpi.value.toLocaleString('pt-BR');
+        pdf.text(valStr, x + 5, ky + 16);
+      });
+
+      y += 2 * (rowH + 3) + 6;
+
+      // ── Captura dos gráficos via html2canvas ───────────────────────────────
+      const captureEl = async (ref, label) => {
+        if (!ref?.current) return null;
+        const canvas = await html2canvas(ref.current, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+        });
+        return { canvas, label };
+      };
+
+      const captures = await Promise.all([
+        captureEl(chartsRef, 'Gráficos: Distribuição por Coordenadoria e Burn-Down'),
+      ]);
+
+      for (const cap of captures) {
+        if (!cap) continue;
+        const { canvas, label } = cap;
+        const imgData = canvas.toDataURL('image/png');
+        const ratio = canvas.height / canvas.width;
+        const imgW = contentW;
+        const imgH = imgW * ratio;
+
+        // Verificar se cabe na página atual
+        if (y + imgH + 16 > pageH - 20) {
+          // Adiciona nova página
+          pdf.addPage();
+          // Mini header na nova página
+          pdf.setFillColor(...GREEN);
+          pdf.rect(0, 0, pageW, 10, 'F');
+          pdf.setTextColor(255, 255, 255);
+          pdf.setFontSize(7);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('SIRA-PAE — Relatório Macro', margin, 7);
+          pdf.text(dateStr, pageW - margin, 7, { align: 'right' });
+          y = 16;
+        }
+
+        // Título da seção
+        pdf.setTextColor(...DARK);
+        pdf.setFontSize(8);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(label.toUpperCase(), margin, y + 4);
+        pdf.setDrawColor(...GREEN);
+        pdf.setLineWidth(0.5);
+        pdf.line(margin, y + 6, margin + contentW, y + 6);
+        y += 10;
+
+        pdf.addImage(imgData, 'PNG', margin, y, imgW, imgH);
+        y += imgH + 8;
+      }
+
+      // ── Tabela resumo por Coordenadoria ────────────────────────────────────
+      if (y + 50 > pageH - 20) {
+        pdf.addPage();
+        pdf.setFillColor(...GREEN);
+        pdf.rect(0, 0, pageW, 10, 'F');
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(7);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('SIRA-PAE — Relatório Macro', margin, 7);
+        pdf.text(dateStr, pageW - margin, 7, { align: 'right' });
+        y = 16;
+      }
+
+      pdf.setTextColor(...DARK);
+      pdf.setFontSize(8);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('RESUMO POR COORDENADORIA', margin, y + 4);
+      pdf.setDrawColor(...GREEN);
+      pdf.setLineWidth(0.5);
+      pdf.line(margin, y + 6, margin + contentW, y + 6);
+      y += 12;
+
+      // Cabeçalho da tabela
+      const cols = [
+        { header: 'COORDENADORIA',    x: margin,         w: 78 },
+        { header: 'EST. INICIAL',     x: margin + 78,    w: 26 },
+        { header: 'EST. FINAL',       x: margin + 104,   w: 26 },
+        { header: 'ACÚMULO',          x: margin + 130,   w: 26 },
+        { header: 'TRAMITADOS',       x: margin + 156,   w: 26 },
+      ];
+
+      const tblHeaderH = 7;
+      pdf.setFillColor(...GREEN);
+      pdf.rect(margin, y, contentW, tblHeaderH, 'F');
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(6.5);
+      pdf.setFont('helvetica', 'bold');
+      cols.forEach(c => pdf.text(c.header, c.x + 2, y + 5));
+      y += tblHeaderH;
+
+      // Linhas da tabela
+      treeData.forEach((dir, dIdx) => {
+        dir.coords.forEach((coord, cIdx) => {
+          if (y + 7 > pageH - 20) {
+            pdf.addPage();
+            pdf.setFillColor(...GREEN);
+            pdf.rect(0, 0, pageW, 10, 'F');
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFontSize(7);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('SIRA-PAE — Relatório Macro', margin, 7);
+            pdf.text(dateStr, pageW - margin, 7, { align: 'right' });
+            y = 16;
+            // Reexibe cabeçalho da tabela
+            pdf.setFillColor(...GREEN);
+            pdf.rect(margin, y, contentW, tblHeaderH, 'F');
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFontSize(6.5);
+            pdf.setFont('helvetica', 'bold');
+            cols.forEach(c => pdf.text(c.header, c.x + 2, y + 5));
+            y += tblHeaderH;
+          }
+
+          const rowBg = (dIdx + cIdx) % 2 === 0 ? [255, 255, 255] : [248, 250, 252];
+          pdf.setFillColor(...rowBg);
+          pdf.rect(margin, y, contentW, 7, 'F');
+          pdf.setDrawColor(...BORDER);
+          pdf.rect(margin, y, contentW, 7, 'S');
+
+          const coordShort = coord.name.length > 45 ? coord.name.substring(0, 45) + '…' : coord.name;
+          pdf.setTextColor(...DARK);
+          pdf.setFontSize(6);
+          pdf.setFont('helvetica', 'normal');
+          pdf.text(coordShort,                          cols[0].x + 2, y + 5);
+          pdf.text(String(coord.seg),                   cols[1].x + 2, y + 5);
+          pdf.text(String(coord.sex),                   cols[2].x + 2, y + 5);
+
+          // Delta com cor
+          const dColor = coord.delta > 0 ? [220, 38, 38] : [16, 185, 129];
+          pdf.setTextColor(...dColor);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text((coord.delta > 0 ? '+' : '') + String(coord.delta), cols[3].x + 2, y + 5);
+
+          pdf.setTextColor(...DARK);
+          pdf.setFont('helvetica', 'normal');
+          pdf.text(String(coord.resolved),              cols[4].x + 2, y + 5);
+
+          y += 7;
+        });
+      });
+
+      // ── Rodapé ─────────────────────────────────────────────────────────────
+      const totalPages = pdf.getNumberOfPages();
+      for (let p = 1; p <= totalPages; p++) {
+        pdf.setPage(p);
+        pdf.setFillColor(...DARK);
+        pdf.rect(0, pageH - 12, pageW, 12, 'F');
+        pdf.setTextColor(180, 180, 180);
+        pdf.setFontSize(6.5);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text(
+          `SEDUC-PA — Secretaria de Estado de Educação do Pará   |   SIRA-PAE — Telemetria de Processos Administrativos   |   Filtro: ${mesLabel} / ${periodoLabel}`,
+          margin, pageH - 5
+        );
+        pdf.text(`Página ${p} de ${totalPages}`, pageW - margin, pageH - 5, { align: 'right' });
+      }
+
+      // ── Salvar ─────────────────────────────────────────────────────────────
+      const filename = `SIRA-PAE_Macro_${selectedMonth}_${selectedWeek === 'Todas' ? 'MesInteiro' : 'Sem' + selectedWeek}_${now.toISOString().slice(0,10)}.pdf`;
+      pdf.save(filename);
+    } catch (err) {
+      console.error('Erro ao gerar PDF:', err);
+      alert('Ocorreu um erro ao gerar o PDF. Verifique o console para mais detalhes.');
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  }, [selectedMonth, selectedWeek, searchTerm, weekPeriods, totalEstoqueInicial, totalEstoqueHoje, totalDelta, totalEntered, totalResolved, totalArchived, treeData]);
+
   const timeframe = useMemo(() => {
     if (selectedWeek !== 'Todas') {
       const period = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`];
@@ -632,7 +924,7 @@ const DashboardMacro = () => {
                     <p className="text-[10px] lg:text-xs opacity-95 font-medium leading-relaxed">
                       A unidade lidou com uma "massa total" de <strong className="text-white font-black">{totalVolume} processos</strong> no período selecionado.<br /><br />
                       <span className="opacity-80">Como chegamos aos {totalVolume}?</span><br />
-                      É a soma exata dos <strong className="text-white">{resolvedValue} baixados</strong> (que saíram da caixa) mais os <strong className="text-white">{selectedSector.sex} parados</strong> (que continuam na caixa no fim do período).
+                      É a soma exata dos <strong className="text-white">{resolvedValue} baixados</strong> (que saíram da caixa, <strong>incluindo {selectedSector.archived || 0} arquivados</strong>) mais os <strong className="text-white">{selectedSector.sex} parados</strong> (que continuam na caixa no fim do período).
                     </p>
                   </div>
                 </div>
@@ -669,15 +961,19 @@ const DashboardMacro = () => {
       )}
 
       {/* Filtros de Mês e Semana */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-8 flex flex-col xl:flex-row gap-6 items-center justify-between">
-        <div className="flex items-center gap-3 shrink-0 self-start xl:self-center">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-8 flex flex-col gap-5">
+        
+        {/* Título */}
+        <div className="flex items-center gap-3">
           <BarChart3 className="text-emerald-600" size={24} />
           <h2 className="font-bold text-slate-700 text-lg">Filtros e Pesquisas</h2>
         </div>
-        <div className="flex flex-col sm:flex-row gap-4 w-full xl:w-auto xl:justify-end">
 
-          {/* Pesquisa Livre */}
-          <div className="flex-1 sm:max-w-xs xl:max-w-md">
+        {/* Controles */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-4 items-end">
+          
+          {/* Pesquisa Livre - 4 colunas em XL */}
+          <div className="xl:col-span-4">
             <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Pesquisar Unidade (Nome ou Dir)</label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -686,12 +982,13 @@ const DashboardMacro = () => {
                 placeholder="Pesquisar (CCM, SAGEP...)"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium transition-all"
+                className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium transition-all"
               />
             </div>
           </div>
 
-          <div className="flex-1 sm:flex-none">
+          {/* Mês - 3 colunas em XL */}
+          <div className="xl:col-span-3">
             <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Mês</label>
             <select
               value={selectedMonth}
@@ -699,7 +996,7 @@ const DashboardMacro = () => {
                 setSelectedMonth(e.target.value);
                 if (e.target.value === 'Ano') setSelectedWeek('Todas');
               }}
-              className="w-full sm:w-56 bg-slate-50 border border-slate-200 text-slate-700 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+              className="w-full bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
             >
               <option value="Janeiro">Janeiro</option>
               <option value="Fevereiro">Fevereiro</option>
@@ -709,12 +1006,14 @@ const DashboardMacro = () => {
               <option value="Ano">Ano de 2026 (Consolidado)</option>
             </select>
           </div>
-          <div className="flex-1 sm:flex-none">
+          
+          {/* Período - 3 colunas em XL */}
+          <div className="xl:col-span-3">
             <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Período</label>
             <select
               value={selectedWeek}
               onChange={(e) => setSelectedWeek(e.target.value)}
-              className={`w-full sm:w-64 border border-slate-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium ${selectedMonth === 'Ano' ? 'bg-slate-100 text-slate-400 opacity-70 cursor-not-allowed' : 'bg-slate-50 text-slate-700'}`}
+              className={`w-full border border-slate-200 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium ${selectedMonth === 'Ano' ? 'bg-slate-100 text-slate-400 opacity-70 cursor-not-allowed' : 'bg-slate-50 text-slate-700'}`}
               disabled={selectedMonth === 'Ano'}
             >
               <option value="Todas">{selectedMonth === 'Ano' ? 'Ano Inteiro (Todos os Meses)' : 'Mês Inteiro (Consolidado)'}</option>
@@ -724,6 +1023,21 @@ const DashboardMacro = () => {
                 </option>
               ))}
             </select>
+          </div>
+          
+          {/* Botão Gerar PDF - 2 colunas em XL */}
+          <div className="xl:col-span-2">
+            <button
+              id="btn-gerar-pdf"
+              onClick={generatePDF}
+              disabled={isGeneratingPDF || isLoading}
+              className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold px-4 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 text-sm tracking-wide group"
+              title="Gerar relatório PDF com todos os gráficos e tabela conforme os filtros ativos"
+            >
+              {isGeneratingPDF
+                ? <><Loader2 size={16} className="animate-spin" /> Gerando...</>
+                : <><FileDown size={16} className="group-hover:-translate-y-0.5 transition-transform" /> Gerar PDF</>}
+            </button>
           </div>
         </div>
       </div>
@@ -839,7 +1153,7 @@ const DashboardMacro = () => {
       </div>
 
       {/* Gráficos Secundários */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
+      <div ref={chartsRef} className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
         <motion.div variants={itemVariants} className="bg-white rounded-3xl p-6 lg:p-8 shadow-xl border border-slate-100 overflow-hidden relative group flex flex-col">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4 shrink-0">
             <h2 className="text-xs lg:text-sm font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
