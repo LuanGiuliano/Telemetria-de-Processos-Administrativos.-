@@ -18,64 +18,68 @@ const DashboardMicro = () => {
   const [rawData, setRawData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Busca os dados diretamente da tabela tramitacoes_micro no Supabase sem limite de 1000 linhas
+  // Dados fictícios para apresentação (05/01/2026 a 02/06/2026) com ~97.000 processos
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        let allData = [];
-        let from = 0;
-        let to = 999;
-        let hasMore = true;
+        setIsLoading(true);
+        // Simula o delay da rede
+        await new Promise(resolve => setTimeout(resolve, 800));
 
-        // O Supabase limita as respostas a 1000 linhas por padrão.
-        // O loop busca blocos de 1000 iterativamente até acabar os dados.
-        while (hasMore) {
-          const { data, error } = await supabase
-            .from('tramitacoes_micro')
-            .select('*')
-            .range(from, to);
+        const mockData = [];
+        const start = new Date('2026-01-05T00:00:00').getTime();
+        const end = new Date('2026-06-02T23:59:59').getTime();
+        
+        const setores = [
+          'SEDUC SETOR DESTINO: SEDUC - CADDEP - COORDENADORIA DE AVALIAÇÃO DE DESEMPENHO E DESENVOLVIMENTO PROFISSIONAL - SEDUC',
+          'SEDUC - SAGEP SETOR DESTINO: SEDUC - CGRH',
+          'SEDUC - CGRH SETOR DESTINO: SEDUC - SAGEP',
+          'SEDUC - GABINETE SETOR DESTINO: SEDUC - ASSESSORIA JURÍDICA',
+          'SEDUC - TI SETOR DESTINO: SEDUC - INFRAESTRUTURA',
+          'ESCOLA ESTADUAL SETOR DESTINO: SEDUC - SAGEP',
+          'SEDUC - FINANCEIRO SETOR DESTINO: SEDUC - COMPRAS',
+          'SEDUC - NÚCLEO DE LICITAÇÕES SETOR DESTINO: SEDUC - CONTRATOS'
+        ];
+        
+        const assuntos = [
+          'ELABORAÇÃO DE PREENCHIMENTO PROVISÓRIO',
+          'SOLICITAÇÃO DE FÉRIAS REGULAMENTARES',
+          'PROGRESSÃO FUNCIONAL POR TITULAÇÃO',
+          'APOSENTADORIA POR TEMPO DE CONTRIBUIÇÃO',
+          'LICENÇA PARA TRATAMENTO DE SAÚDE',
+          'PAGAMENTO DE DIÁRIAS E PASSAGENS',
+          'REMOÇÃO DE SERVIDOR A PEDIDO',
+          'AVERBAÇÃO DE TEMPO DE SERVIÇO',
+          'CONCESSÃO DE LICENÇA PRÊMIO',
+          'REVISÃO DE VENCIMENTOS'
+        ];
 
-          if (error) throw error;
-
-          if (data && data.length > 0) {
-            allData = [...allData, ...data];
-            from += 1000;
-            to += 1000;
-
-            // Se vieram menos de 1000 linhas, chegamos no final da tabela
-            if (data.length < 1000) {
-              hasMore = false;
-            }
-          } else {
-            hasMore = false;
-          }
+        // Gera aproximadamente 97.432 processos aleatórios
+        const total = 97432;
+        for (let i = 0; i < total; i++) {
+          const randomDate = new Date(start + Math.random() * (end - start));
+          const day = String(randomDate.getDate()).padStart(2, '0');
+          const month = String(randomDate.getMonth() + 1).padStart(2, '0');
+          const year = randomDate.getFullYear();
+          const dateStr = `${year}-${month}-${day}`;
+          
+          mockData.push({
+            PROTOCOLO: `2026/${Math.floor(1000000 + Math.random() * 9000000)}`,
+            ASSUNTO: assuntos[Math.floor(Math.random() * assuntos.length)],
+            INTERESSADO: `Servidor Público ${Math.floor(Math.random() * 80000)}`,
+            Data_Curta: dateStr,
+            SIGLA_SETOR: setores[Math.floor(Math.random() * setores.length)],
+            Data_Protocolo: `${day}/${month}/${year}`,
+            Tipo_Protocolo: Math.random() > 0.2 ? 'ELETRÔNICO' : 'FÍSICO'
+          });
         }
-
-        const normalizedData = (allData || []).map(row => {
-          let cleanInteressado = row.interessado || '';
-          
-          // Muitas vezes o PDF funde a coluna de Tipo (ELETRONICO) e Data do Protocolo (DD/MM/YYYY) para dentro da coluna Interessado
-          cleanInteressado = cleanInteressado.replace(/^(?:ELETRONICO|ELETRÔNICO|FISICO|FÍSICO)\s*(?:\d{2}\/\d{2}\/\d{4})?\s*/i, '').trim();
-          
-          return {
-            PROTOCOLO: row.protocolo,
-            ASSUNTO: row.assunto,
-            INTERESSADO: cleanInteressado,
-            Data_Curta: row.data,
-            Data_Protocolo: row.data_protocolo,
-            Tipo_Protocolo: row.tipo_protocolo,
-            SIGLA_SETOR: row.Setor_Origem,
-            SETOR_ATUAL: row.Setor_Origem,
-            COMPLEMENTO_SETOR_ATUAL: row.complemento
-          };
-        });
-
+        
         // Ordena por data decrescente
-        normalizedData.sort((a, b) => new Date(b.Data_Curta) - new Date(a.Data_Curta));
+        mockData.sort((a, b) => new Date(b.Data_Curta) - new Date(a.Data_Curta));
 
-        setRawData(normalizedData);
+        setRawData(mockData);
       } catch (error) {
-        console.error("Erro ao carregar os dados do Supabase:", error);
+        console.error("Erro ao gerar os dados mockados:", error);
       } finally {
         setIsLoading(false);
       }
@@ -522,10 +526,43 @@ const DashboardMicro = () => {
                     <tr key={idx} className="bg-white border-b hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-4 font-semibold text-slate-900 whitespace-nowrap">{protPart}</td>
                       <td className="px-6 py-4 whitespace-nowrap">{formattedDate}</td>
-                      <td className="px-6 py-4">
-                        <span className="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-emerald-200">
-                          {item.SIGLA_SETOR || 'N/A'}
-                        </span>
+                      <td className="px-6 py-4 align-top">
+                        {(() => {
+                          const setorStr = item.SIGLA_SETOR || 'N/A';
+                          if (setorStr === 'N/A') {
+                            return (
+                              <span className="bg-slate-100 text-slate-500 text-xs font-semibold px-2 py-1 rounded border border-slate-200">
+                                N/A
+                              </span>
+                            );
+                          }
+                          const match = setorStr.match(/(.*?)(?:SETOR DESTINO:)(.*)/i);
+                          if (match) {
+                            const origem = match[1].trim();
+                            const destino = match[2].trim();
+                            return (
+                              <div className="flex flex-col gap-2 min-w-[240px] max-w-[320px]">
+                                {origem && (
+                                  <div className="flex items-start gap-2 bg-emerald-50/50 p-2 rounded-lg border border-emerald-100/50">
+                                    <span className="bg-emerald-100 text-emerald-700 text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 mt-0.5">Origem</span>
+                                    <span className="text-xs font-semibold text-slate-700 leading-snug break-words">{origem}</span>
+                                  </div>
+                                )}
+                                {destino && (
+                                  <div className="flex items-start gap-2 bg-blue-50/50 p-2 rounded-lg border border-blue-100/50">
+                                    <span className="bg-blue-100 text-blue-700 text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 mt-0.5">Destino</span>
+                                    <span className="text-xs font-semibold text-slate-700 leading-snug break-words">{destino}</span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                          return (
+                            <div className="bg-slate-50 p-2 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200 leading-snug break-words min-w-[200px] max-w-[300px]">
+                              {setorStr}
+                            </div>
+                          );
+                        })()}
                       </td>
                       <td className="px-6 py-4 text-xs font-medium text-slate-600 truncate max-w-[300px]" title={item.ASSUNTO}>
                         {item.ASSUNTO?.length > 70 ? item.ASSUNTO.substring(0, 70) + '...' : item.ASSUNTO}

@@ -952,13 +952,11 @@ const DashboardMacro = () => {
       )}
 
       {/* Aviso Superior de Última Atualização */}
-      {lastUpdatePeriod && (
-        <div className="flex justify-end mb-4 relative z-10">
-          <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-4 py-1.5 rounded-full text-xs uppercase font-black tracking-wider flex items-center gap-2 shadow-sm">
-            <CheckCircle2 size={16} /> Banco Atualizado até: {lastUpdatePeriod}
-          </div>
+      <div className="flex justify-end mb-4 relative z-10">
+        <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-4 py-1.5 rounded-full text-xs uppercase font-black tracking-wider flex items-center gap-2 shadow-sm">
+          <CheckCircle2 size={16} /> Atualizado Maio 2026
         </div>
-      )}
+      </div>
 
       {/* Filtros de Mês e Semana */}
       <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-8 flex flex-col gap-5">
