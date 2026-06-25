@@ -14,7 +14,8 @@ const SHEET_SOURCES = [
   { mes: 'Fevereiro', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=121971937' },
   { mes: 'Março', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2097433804' },
   { mes: 'Abril', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=2118749375' },
-  { mes: 'Maio', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=113258948' }
+  { mes: 'Maio', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=113258948' },
+  { mes: 'Junho', url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQSLPSJbJCJxPYEIMoNwTX7qfQ_OU6InYSnt6JJwDcXbNyt7KpZbPtce4sxDrL_lwjYsYRb6uHdA77G/pub?output=csv&gid=1373483840' }
 ];
 
 const MOCK_DATA = [
@@ -30,7 +31,7 @@ const DashboardMacro = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Filtros
-  const [selectedMonth, setSelectedMonth] = useState('Janeiro');
+  const [selectedMonth, setSelectedMonth] = useState('Junho');
   const [selectedWeek, setSelectedWeek] = useState('Todas');
   const [searchTerm, setSearchTerm] = useState('');
   const [weekPeriods, setWeekPeriods] = useState({});
@@ -157,7 +158,15 @@ const DashboardMacro = () => {
   const filteredData = useMemo(() => {
     let result = data;
     if (selectedMonth !== 'Ano') {
-      result = result.filter(item => item._monthName && item._monthName.toUpperCase() === selectedMonth.toUpperCase());
+      if (selectedMonth.toUpperCase() === 'JUNHO') {
+        // Combina Maio e Junho para que o estoque base de Maio some com os novos de Junho
+        result = result.filter(item => 
+          item._monthName && 
+          (item._monthName.toUpperCase() === 'JUNHO' || item._monthName.toUpperCase() === 'MAIO')
+        );
+      } else {
+        result = result.filter(item => item._monthName && item._monthName.toUpperCase() === selectedMonth.toUpperCase());
+      }
     }
     if (searchTerm.trim() !== '') {
       const terms = searchTerm.toLowerCase().split(' ').filter(t => t);
@@ -353,21 +362,39 @@ const DashboardMacro = () => {
         const wInt = parseInt(selectedWeek, 10);
         const targetW = weeklyHistory.find(w => w.week === wInt);
 
-        if (!targetW) continue;
+        if (!targetW) {
+          // Busca a última semana disponível antes da selecionada (usando a ordenação do array)
+          const pastWeeks = weeklyHistory.filter(w => {
+            const mA = mOrder[w.month] || 99;
+            const mB = mOrder[selectedMonth === 'Ano' ? 'Dezembro' : selectedMonth] || 99;
+            if (mA < mB) return true;
+            if (mA === mB) return parseInt(w.week, 10) < wInt;
+            return false;
+          });
+          
+          if (pastWeeks.length === 0) continue; // Setor não existia ainda
+          
+          const lastKnown = pastWeeks[pastWeeks.length - 1];
+          displaySeg = lastKnown.final;
+          displaySex = lastKnown.final; // Estoque continuou parado
+          displayDelta = 0;
+          displayArchived = 0;
+          displayResolved = 0;
+          displayMsg = `Semana ${selectedWeek} (Herdado de ${lastKnown.month})`;
+        } else {
+          displaySeg = targetW.init;
+          displaySex = targetW.final;
+          displayDelta = displaySex - displaySeg;
+          displayArchived = targetW.arq || 0;
 
-        displaySeg = targetW.init;
-        displaySex = targetW.final;
-        displayDelta = displaySex - displaySeg;
-        displayArchived = targetW.arq || 0;
+          // Corrigido: apenas o delta intra-semana (init → final) é tramitado naquela semana.
+          const weekResolved = targetW.init > targetW.final
+            ? targetW.init - targetW.final
+            : 0;
 
-        // Corrigido: apenas o delta intra-semana (init → final) é tramitado naquela semana.
-        // A comparação com o FINAL da semana anterior foi removida (dupla contagem).
-        const weekResolved = targetW.init > targetW.final
-          ? targetW.init - targetW.final
-          : 0;
-
-        displayResolved = weekResolved;
-        displayMsg = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`] || `Semana ${selectedWeek}`;
+          displayResolved = weekResolved;
+          displayMsg = weekPeriods[`${selectedMonth.toUpperCase()}_${selectedWeek}`] || `Semana ${selectedWeek}`;
+        }
       }
 
       if (!root[dirName]) {
@@ -954,7 +981,7 @@ const DashboardMacro = () => {
       {/* Aviso Superior de Última Atualização */}
       <div className="flex justify-end mb-4 relative z-10">
         <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-4 py-1.5 rounded-full text-xs uppercase font-black tracking-wider flex items-center gap-2 shadow-sm">
-          <CheckCircle2 size={16} /> Atualizado Maio 2026
+          <CheckCircle2 size={16} /> Atualizado Junho 2026
         </div>
       </div>
 
@@ -1001,6 +1028,7 @@ const DashboardMacro = () => {
               <option value="Março">Março</option>
               <option value="Abril">Abril</option>
               <option value="Maio">Maio</option>
+              <option value="Junho">Junho</option>
               <option value="Ano">Ano de 2026 (Consolidado)</option>
             </select>
           </div>
