@@ -326,15 +326,24 @@ const DashboardMacro = () => {
         return parseInt(a.week, 10) - parseInt(b.week, 10);
       });
 
-      // Cálculo correto de processos tramitados (resolvidos):
-      // Precisamos somar toda vez que o estoque "caiu". Isso pode acontecer:
-      // 1. Durante a semana (init > final)
-      // 2. Entre o fim de uma semana e o começo da próxima (prev_final > atual_init)
       let globalResolved = 0;
       let globalArchived = 0;
+      let currentCarry = 0;
 
       for (let i = 0; i < weeklyHistory.length; i++) {
         const w = weeklyHistory[i];
+
+        if (i > 0) {
+          const prev = weeklyHistory[i - 1];
+          // Se mudou o mês e a planilha veio com o início zerado (só fluxo), herda o estoque final anterior
+          if (w.month !== prev.month && w.init === 0 && prev.final > 0) {
+            currentCarry += prev.final;
+          }
+        }
+
+        w.init += currentCarry;
+        w.final += currentCarry;
+
         globalArchived += (w.arq || 0);
 
         // Variação inter-semana (do fim da semana passada para o início desta)
@@ -351,8 +360,31 @@ const DashboardMacro = () => {
         }
       }
 
-      let displaySeg = sectorAgg.seg;
-      let displaySex = sectorAgg.sex;
+      // Baseado no histórico ajustado, pegar o início e fim corretos para a visão "Todas"
+      const weeksInMonth = selectedMonth === 'Ano' 
+        ? weeklyHistory 
+        : weeklyHistory.filter(w => w.month.toUpperCase() === selectedMonth.toUpperCase());
+
+      let displaySeg = 0;
+      let displaySex = 0;
+
+      if (weeksInMonth.length > 0) {
+        displaySeg = weeksInMonth[0].init;
+        displaySex = weeksInMonth[weeksInMonth.length - 1].final;
+      } else {
+        // Se não houver semanas no mês filtrado, herda o último registro disponível antes desse mês
+        const pastWeeks = weeklyHistory.filter(w => {
+          const mA = mOrder[w.month] || 99;
+          const mB = mOrder[selectedMonth === 'Ano' ? 'Dezembro' : selectedMonth] || 99;
+          return mA < mB;
+        });
+        if (pastWeeks.length > 0) {
+          const lastKnown = pastWeeks[pastWeeks.length - 1];
+          displaySeg = lastKnown.final;
+          displaySex = lastKnown.final;
+        }
+      }
+
       let displayDelta = displaySex - displaySeg;
       let displayResolved = globalResolved;
       let displayArchived = globalArchived;
