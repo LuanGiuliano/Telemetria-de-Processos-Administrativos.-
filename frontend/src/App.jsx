@@ -42,11 +42,6 @@ const App = () => {
               alt="PAE Logo"
               className="h-20 md:h-24 rounded-3xl object-contain drop-shadow-xl"
             />
-            <img
-              src="/seduc-logo.png"
-              alt="SEDUC Logo"
-              className="h-20 md:h-24 bg-white p-2 rounded-2xl shadow-xl object-contain"
-            />
           </div>
         </header>
 
