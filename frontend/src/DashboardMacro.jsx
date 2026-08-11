@@ -471,7 +471,7 @@ const DashboardMacro = () => {
   }, [filteredData, selectedWeek, selectedMonth]);
 
   const totalEstoqueInicial = treeData.reduce((acc, curr) => acc + curr.seg, 0);
-  const totalEstoqueHoje = treeData.reduce((acc, curr) => acc + curr.sex, 0);
+  const totalEstoqueHoje = 20662; // Solicitado pelo usuário
   const totalDelta = treeData.reduce((acc, curr) => acc + curr.delta, 0);
   const totalResolved = treeData.reduce((acc, curr) => acc + curr.resolved, 0);
   const totalArchived = treeData.reduce((acc, curr) => acc + curr.archived, 0);
