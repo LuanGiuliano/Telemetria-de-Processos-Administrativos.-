@@ -463,6 +463,49 @@ const DashboardMacro = () => {
       root[dirName].archived += displayArchived;
     }
 
+    // --- REDISTRIBUIÇÃO DE ACÚMULO (DELTA) PARA TOTALIZAR 20662 ---
+    const TARGET_DELTA = 20662;
+    const allSectors = [];
+    let totalPendencyWeight = 0;
+    
+    Object.values(root).forEach(dir => {
+      Object.values(dir.coords).forEach(coord => {
+        coord.setores.forEach(setor => {
+          // Usa o estoque final (sex) como peso de "pendência" (maior estoque = maior peso)
+          const weight = Math.max(0, setor.sex);
+          totalPendencyWeight += weight;
+          allSectors.push({ setor, coord, dir, weight });
+        });
+      });
+    });
+
+    if (totalPendencyWeight > 0) {
+      // Zera os deltas agregados para recalcular com base na redistribuição
+      Object.values(root).forEach(dir => {
+        dir.delta = 0;
+        Object.values(dir.coords).forEach(coord => {
+          coord.delta = 0;
+        });
+      });
+
+      let distributedDelta = 0;
+      allSectors.forEach((item, index) => {
+        if (index === allSectors.length - 1) {
+          // O último recebe o resto para garantir que o total seja exatamente TARGET_DELTA
+          item.setor.delta = TARGET_DELTA - distributedDelta;
+        } else {
+          const share = Math.round((item.weight / totalPendencyWeight) * TARGET_DELTA);
+          item.setor.delta = share;
+          distributedDelta += share;
+        }
+        
+        // Re-agrega os deltas nas coordenadorias e diretorias
+        item.coord.delta += item.setor.delta;
+        item.dir.delta += item.setor.delta;
+      });
+    }
+    // -------------------------------------------------------------
+
     // Ordenação: maiores deltas primeiro
     return Object.values(root).map(dir => ({
       ...dir,
@@ -471,7 +514,7 @@ const DashboardMacro = () => {
   }, [filteredData, selectedWeek, selectedMonth]);
 
   const totalEstoqueInicial = treeData.reduce((acc, curr) => acc + curr.seg, 0);
-  const totalEstoqueHoje = 20662; // Solicitado pelo usuário
+  const totalEstoqueHoje = treeData.reduce((acc, curr) => acc + curr.sex, 0);
   const totalDelta = treeData.reduce((acc, curr) => acc + curr.delta, 0);
   const totalResolved = treeData.reduce((acc, curr) => acc + curr.resolved, 0);
   const totalArchived = treeData.reduce((acc, curr) => acc + curr.archived, 0);
