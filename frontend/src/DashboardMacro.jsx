@@ -1106,6 +1106,8 @@ const DashboardMacro = () => {
               <option value="Abril">Abril</option>
               <option value="Maio">Maio</option>
               <option value="Junho">Junho</option>
+              <option value="Julho">Julho</option>
+              <option value="Agosto">Agosto</option>
               <option value="Ano">Ano de 2026 (Consolidado)</option>
             </select>
           </div>
