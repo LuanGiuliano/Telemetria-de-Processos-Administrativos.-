@@ -1057,8 +1057,8 @@ const DashboardMacro = () => {
 
       {/* Aviso Superior de Última Atualização */}
       <div className="flex justify-end mb-4 relative z-10">
-        <div className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-4 py-1.5 rounded-full text-xs uppercase font-black tracking-wider flex items-center gap-2 shadow-sm">
-          <CheckCircle2 size={16} /> Atualizado Junho 2026
+        <div className="bg-emerald-500/10 text-emerald-700 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 border border-emerald-500/20 shadow-sm">
+          <CheckCircle2 size={16} /> Atualizado Agosto 2026
         </div>
       </div>
 
